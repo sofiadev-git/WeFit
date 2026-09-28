@@ -1,0 +1,96 @@
+# ==========================================
+# Configurazione locale / dati sensibili
+# ==========================================
+src/main/resources/application.properties
+src/main/resources/import.sql
+
+.env
+.env.*
+!.env.example
+
+
+# ==========================================
+# Maven / build
+# ==========================================
+target/
+.mvn/wrapper/maven-wrapper.jar
+
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+
+# ==========================================
+# File caricati durante l'esecuzione
+# ==========================================
+uploads/
+
+
+# ==========================================
+# Log
+# ==========================================
+logs/
+*.log
+
+
+# ==========================================
+# Spring Tool Suite
+# ==========================================
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache/
+
+
+# ==========================================
+# IntelliJ IDEA
+# ==========================================
+.idea/
+*.iws
+*.iml
+*.ipr
+
+
+# ==========================================
+# NetBeans
+# ==========================================
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+
+# ==========================================
+# VS Code
+# ==========================================
+.vscode/
+
+
+# ==========================================
+# React / Vite
+# quando aggiungeremo il frontend
+# ==========================================
+**/node_modules/
+**/dist/
+**/.vite/
+**/coverage/
+
+
+# ==========================================
+# Sistema operativo
+# ==========================================
+.DS_Store
+Thumbs.db
+
+
+# ==========================================
+# File generati da Spring Initializr
+# ==========================================
+HELP.md
