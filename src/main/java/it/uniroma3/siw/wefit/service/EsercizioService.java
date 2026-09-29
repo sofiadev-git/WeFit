@@ -1,7 +1,9 @@
 package it.uniroma3.siw.wefit.service;
 
+import it.uniroma3.siw.wefit.exception.NotAllowedException;
 import it.uniroma3.siw.wefit.exception.NotFoundException;
 import it.uniroma3.siw.wefit.model.Esercizio;
+import it.uniroma3.siw.wefit.model.Routine;
 import it.uniroma3.siw.wefit.model.Utente;
 import it.uniroma3.siw.wefit.repository.EsercizioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +37,9 @@ public class EsercizioService {
     }
 
     @Transactional
-    public Esercizio updateEsercizio(Esercizio esercizio, Long esercizioId){
+    public Esercizio updateEsercizio(Esercizio esercizio, Long esercizioId, Utente utente){
         Esercizio e= getEsercizio(esercizioId);
+        checkAutore(e,utente);
         e.setNome(esercizio.getNome());
         e.setCategoria(esercizio.getCategoria());
         e.setDescrizione(esercizio.getDescrizione());
@@ -44,9 +47,17 @@ public class EsercizioService {
     }
 
     @Transactional
-    public void deleteEsercizio(Long id){
+    public void deleteEsercizio(Long id, Utente utente){
+        Esercizio e = getEsercizio(id);
+        checkAutore(e,utente);
         esercizioRepository.deleteById(id);
         //aggiungere anche se partecipa a una routine
+    }
+
+    private void checkAutore(Esercizio esercizio, Utente utente){
+        if(!esercizio.getAutore().getId().equals(utente.getId())){
+            throw new NotAllowedException("Non si possono modificare esercizi di utenti diversi dall'utente correntemente loggato.");
+        }
     }
 
 }

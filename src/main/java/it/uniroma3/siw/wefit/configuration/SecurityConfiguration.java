@@ -40,7 +40,6 @@ public class SecurityConfiguration {
     protected SecurityFilterChain configure(final HttpSecurity httpSecurity) throws Exception{
 
         httpSecurity.authorizeHttpRequests(authorize->{
-            authorize.requestMatchers(HttpMethod.GET,"/films/*/recensioni/nuova").authenticated();
             authorize.requestMatchers(HttpMethod.GET, "/",
                     "/register",
                     "/css/**",

@@ -1,6 +1,7 @@
 package it.uniroma3.siw.wefit.service;
 
 import it.uniroma3.siw.wefit.dto.RoutineDetailsDto;
+import it.uniroma3.siw.wefit.exception.NotAllowedException;
 import it.uniroma3.siw.wefit.exception.NotFoundException;
 import it.uniroma3.siw.wefit.model.Routine;
 import it.uniroma3.siw.wefit.model.Utente;
@@ -48,8 +49,9 @@ public class RoutineService {
     }
 
     @Transactional
-    public Routine updateRoutine(Long id,Routine routine){
+    public Routine updateRoutine(Long id,Routine routine, Utente utente){
         Routine r= getRoutine(id);
+        checkAutore(r,utente);
         r.setDescrizione(routine.getDescrizione());
         r.setNome(routine.getNome());
         // r.setEserciziDellaRoutine(routine.getEserciziDellaRoutine()); no sono gestiti dal loro service
@@ -57,13 +59,17 @@ public class RoutineService {
     }
 
     @Transactional
-    public void deleteRoutine(Long id){
+    public void deleteRoutine(Long id, Utente utenteId){
+        Routine r = getRoutine(id);
+        checkAutore(r,utenteId);
         routineRepository.deleteById(id);
     }
 
-
-
-
+    private void checkAutore(Routine routine, Utente utente){
+        if(!routine.getAutore().getId().equals(utente.getId())){
+            throw new NotAllowedException("Non si possono modificare routine di utenti diversi dall'utente correntemente loggato.");
+        }
+    }
 
 
 
