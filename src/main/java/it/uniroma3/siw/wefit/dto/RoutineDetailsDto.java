@@ -7,6 +7,8 @@ public record RoutineDetailsDto (
         String descrizione,
         String nomeUtente,
         Integer numeroEsercizi,
+        boolean bookmarked,
         List<EsercizioDellaDto> esercizi
+
 ) {
 }

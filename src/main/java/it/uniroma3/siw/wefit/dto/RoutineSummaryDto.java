@@ -19,6 +19,7 @@ public record RoutineSummaryDto(
     Long id,
     String nome,
     String nomeUtente,
-    Integer numeroEsercizi
+    Integer numeroEsercizi,
+    boolean bookmarked
     )
 {}
