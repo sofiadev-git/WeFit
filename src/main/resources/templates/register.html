@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Registrati | WeFit</title>
+
+  <link rel="stylesheet" href="../static/css/home.css" th:href="@{/css/home.css}">
+  <link rel="stylesheet" href="../static/css/accesso.css" th:href="@{/css/accesso.css}">
+</head>
+
+<body class="auth-body">
+
+<header class="site-header">
+  <nav class="navbar" aria-label="Navigazione principale">
+
+    <a class="logo" href="/" th:href="@{/}" aria-label="WeFit, pagina iniziale">
+      We<span>Fit</span>
+    </a>
+
+    <div class="nav-links">
+      <a href="/" th:href="@{/}">Home</a>
+      <a href="/routines" th:href="@{/routines}">Routine</a>
+      <a href="/esercizi" th:href="@{/esercizi}">Esercizi</a>
+      <a href="/esercizi/miei" th:href="@{/esercizi/miei}">I miei esercizi</a>
+    </div>
+
+    <form class="nav-search" action="/routines" th:action="@{/routines}" method="get" role="search">
+      <label class="visually-hidden" for="routine-search">Cerca una routine</label>
+
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="10.5" cy="10.5" r="6.5"/>
+        <path d="m16 16 5 5"/>
+      </svg>
+
+      <input id="routine-search" type="search" name="q" placeholder="Cerca una routine...">
+    </form>
+
+    <div class="account">
+      <div class="auth-actions" th:if="${authentication == null or authentication.name == 'anonymousUser'}">
+        <a class="button button-outline" href="/login" th:href="@{/login}">Accedi</a>
+        <a class="button button-primary" href="/register" th:href="@{/register}">Registrati</a>
+      </div>
+
+      <details class="account-menu" th:if="${authentication != null and authentication.name != 'anonymousUser'}">
+        <summary>
+          <span class="avatar" aria-hidden="true">●</span>
+          <span th:text="${authentication.name}">Utente</span>
+        </summary>
+
+        <div class="account-dropdown">
+          <form action="/logout" th:action="@{/logout}" method="post">
+            <button type="submit">Esci</button>
+          </form>
+        </div>
+      </details>
+    </div>
+
+  </nav>
+</header>
+
+<main class="auth-page">
+
+  <section class="auth-card">
+
+    <div class="auth-heading">
+      <h1>Registrati</h1>
+      <p>Crea il tuo account e inizia ad allenarti con WeFit.</p>
+    </div>
+
+    <form class="auth-form"
+          th:action="@{/register}"
+          method="post"
+          th:object="${credenziali}">
+
+      <!-- Errori generali inseriti tramite bindingResult.reject(...) -->
+      <div class="form-message error" th:if="${#fields.hasGlobalErrors()}">
+        <p th:each="errore : ${#fields.globalErrors()}" th:text="${errore}"></p>
+      </div>
+
+      <div class="form-field">
+        <label for="username">Nome utente</label>
+
+        <input id="username"
+               type="text"
+               th:field="*{username}"
+               placeholder="Scegli un nome utente"
+               autocomplete="username"
+               required>
+
+        <span class="field-error"
+              th:if="${#fields.hasErrors('username')}"
+              th:errors="*{username}">
+                </span>
+      </div>
+
+      <div class="form-field">
+        <label for="password">Password</label>
+
+        <input id="password"
+               type="password"
+               th:field="*{password}"
+               placeholder="Scegli una password"
+               autocomplete="new-password"
+               required>
+
+        <span class="field-error"
+              th:if="${#fields.hasErrors('password')}"
+              th:errors="*{password}">
+                </span>
+      </div>
+
+      <button class="button button-primary auth-submit" type="submit">Registrati</button>
+
+    </form>
+
+    <p class="auth-switch">
+      Hai già un account?
+      <a href="/login" th:href="@{/login}">Accedi</a>
+    </p>
+
+  </section>
+
+</main>
+
+</body>
+</html>

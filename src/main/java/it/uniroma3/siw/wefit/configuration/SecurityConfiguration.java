@@ -41,15 +41,22 @@ public class SecurityConfiguration {
 
         httpSecurity.authorizeHttpRequests(authorize->{
             authorize.requestMatchers(HttpMethod.GET, "/",
+                    "/index",
                     "/register",
                     "/css/**",
+                    "/api/routines/*", // Tutti possono vedere delle routine es. api/routines/5
+                    "/images/**",
                     "/favicon.ico").permitAll();
             authorize.requestMatchers(HttpMethod.POST, "/register", "/login").permitAll();
+            authorize.requestMatchers("/api/**").authenticated(); //qualsiasi operazione se non la visualizzazione
             authorize.requestMatchers(HttpMethod.GET, "/admin/**").hasAnyAuthority(ADMIN_ROLE);
             authorize.requestMatchers(HttpMethod.POST, "/admin/**").hasAnyAuthority(ADMIN_ROLE);
             authorize.anyRequest().authenticated();
         });
 
+
+        /*/Login non ha bisogno di un @PostMapping perché Spring Security ha già un filtro che gestisce proprio quella richiesta,
+        * perché la sicurezza deve essere controllata prima che la richiesta arrivi ai controller*/
         httpSecurity.formLogin(form ->{
            form.loginPage("/login").permitAll();
            form.defaultSuccessUrl("/",true);

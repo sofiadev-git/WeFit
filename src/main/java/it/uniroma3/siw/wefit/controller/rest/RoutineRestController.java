@@ -26,7 +26,7 @@ public class RoutineRestController {
 
     @PostMapping("/{id}/bookmark")
     public  RoutineDetailsDto toggleBookmark(@PathVariable Long id, Authentication authentication){
-        Utente utente = utenteService.findUtenteByUsername(authentication.getName());
+        Utente utente = utenteService.findUtenteByUsername(authentication.getName()); // mostra solo quelli di quell'utente
         return routineService.toggleBookmark(id,utente);
 
     }
