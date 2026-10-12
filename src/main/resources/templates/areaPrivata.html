@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<body>
+<!-- Frammento renderizzato dal mapping ESISTENTE /esercizi?sezione=area -->
+<div th:fragment="areaContent" class="private-dashboard">
+    <section class="private-hero">
+        <div class="private-hero-inner">
+            <h1>Area riservata</h1>
+            <p>Gestisci rapidamente i tuoi contenuti personali.</p>
+        </div>
+    </section>
+
+    <div class="private-content">
+        <!-- Visitatore: non mostriamo collegamenti alle operazioni private -->
+        <section class="private-guest-card" th:if="${utente == null}">
+
+            <div>
+                <h2>Entra nella tua Area privata</h2>
+                <p>Accedi o registrati per creare, modificare e gestire i tuoi esercizi e le tue routine.</p>
+                <div class="private-guest-buttons">
+                    <a class="button button-primary" th:href="@{/login}" href="/login">Accedi</a>
+                    <a class="button private-secondary-button" th:href="@{/register}" href="/register">Registrati</a>
+                </div>
+            </div>
+        </section>
+
+        <aside class="private-admin-notice" th:if="${utente != null and utente.role == 'ADMIN'}" role="note">
+            <strong>Attenzione, hai fatto l'accesso come admin, gli esercizi che andrai a creare qui saranno disponibili per tutti gli utenti.</strong>
+        </aside>
+
+        <section class="private-grid" th:if="${utente != null}" aria-label="Funzioni dell'area privata">
+            <article class="private-action-card">
+                <span class="private-card-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M3 9v6m3-9v12m3-9v6m6-6v6m3-9v12m3-9v6M6 12h12"/></svg>
+                </span>
+                <h2>I miei esercizi</h2>
+                <p th:text="${utente.role == 'ADMIN' ? 'Visualizza e gestisci gli esercizi globali che hai creato. Mantieni sempre aggiornato il catalogo WeFit.' : 'Visualizza, gestisci e modifica i tuoi esercizi personali. Mantieni la tua libreria sempre aggiornata.'}">Visualizza e gestisci i tuoi esercizi.</p>
+                <a class="private-card-button" th:href="@{/esercizi(sezione='miei')}" href="/esercizi?sezione=miei">
+                    Apri esercizi <span aria-hidden="true">→</span>
+                </a>
+            </article>
+            <article class="private-action-card">
+                <span class="private-card-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 9h6M9 13h6M9 17h4"/></svg>
+                </span>
+                <h2>Le mie routine</h2>
+                <p>Accedi alle tue routine di allenamento, modificale o crea nuove combinazioni per raggiungere i tuoi obiettivi.</p>
+                <span class="private-card-button private-card-button-disabled" aria-disabled="true">Prossimamente <span aria-hidden="true">→</span></span>
+            </article>
+        </section>
+    </div>
+</div>
+</body>
+</html>

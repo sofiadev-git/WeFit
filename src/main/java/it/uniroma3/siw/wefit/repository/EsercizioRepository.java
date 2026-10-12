@@ -12,5 +12,7 @@ public interface EsercizioRepository extends JpaRepository<Esercizio,Long> {
     * 2. Esercizi personalizzati, creati dai singoli utenti e visualizzabili/utilizzabili sono da questi.
     *
     * Quindi la lista di esercizi disponibili per un utente è data dagli esercizi default + personalizzati dell'utente.*/
-    List<Esercizio> findByEsercizioDefaultTrueOrAutore_Id(Long utenteId);
+    List<Esercizio> findByAutore_Id(Long utenteId);
+
+    List<Esercizio> findByEsercizioDefaultTrue();
 }

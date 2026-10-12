@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifica esercizio | WeFit</title>
+    <link rel="stylesheet" href="../static/css/home.css" th:href="@{/css/home.css}">
+    <link rel="stylesheet" href="../static/css/esercizi-form.css" th:href="@{/css/esercizi-form.css}">
+</head>
+<body>
+<header th:replace="~{fragments/navbar :: navbar('area')}"></header>
+
+<main class="exercise-page">
+    <div class="exercise-page-heading">
+    <h1>Modifica il tuo esercizio</h1>
+    <a class="exercise-back-link" href="/esercizi?sezione=miei" th:href="@{/esercizi(sezione='miei')}">
+        <span aria-hidden="true">←</span> Torna agli esercizi
+    </a>
+</div>
+
+    <div class="exercise-layout">
+        <section class="exercise-form-card" aria-label="Dati dell'esercizio">
+            <form class="exercise-form" method="post" th:action="@{/esercizi/{id}(id=${esercizio.id})}" th:object="${esercizio}">
+                <!-- L'ID serve solo a ripopolare la form in caso di errore. Il backend autorizza in base all'ID dell'URL. -->
+                <input type="hidden" th:field="*{id}">
+                <div class="exercise-global-errors" th:if="${#fields.hasGlobalErrors()}">
+                    <p th:each="errore : ${#fields.globalErrors()}" th:text="${errore}"></p>
+                </div>
+
+                <div class="exercise-field">
+    <label for="nome">Nome <span class="exercise-required" aria-hidden="true">*</span></label>
+    <input id="nome" type="text" th:field="*{nome}"
+           placeholder="Es. Military press" required maxlength="160"
+           th:attr="aria-invalid=${#fields.hasErrors('nome')}" />
+    <span class="exercise-field-error" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
+</div>
+
+<div class="exercise-field">
+    <label for="categoria">Categoria (gruppo muscolare) <span class="exercise-required" aria-hidden="true">*</span></label>
+    <input id="categoria" type="text" th:field="*{categoria}"
+           list="categorie-muscolari" placeholder="Seleziona o inserisci un gruppo muscolare"
+           required maxlength="120"
+           th:attr="aria-invalid=${#fields.hasErrors('categoria')}" />
+    <datalist id="categorie-muscolari">
+        <option value="Petto"></option>
+        <option value="Schiena"></option>
+        <option value="Spalle"></option>
+        <option value="Braccia"></option>
+        <option value="Addome"></option>
+        <option value="Gambe"></option>
+        <option value="Glutei"></option>
+        <option value="Total body"></option>
+        <option value="Cardio"></option>
+    </datalist>
+    <span class="exercise-field-error" th:if="${#fields.hasErrors('categoria')}" th:errors="*{categoria}"></span>
+</div>
+
+<div class="exercise-field">
+    <label for="descrizione">Descrizione <span class="exercise-optional">(opzionale)</span></label>
+    <textarea id="descrizione" th:field="*{descrizione}" rows="6"
+              placeholder="Descrivi come si esegue l'esercizio..."></textarea>
+    <span class="exercise-field-error" th:if="${#fields.hasErrors('descrizione')}" th:errors="*{descrizione}"></span>
+</div>
+
+                <div class="exercise-actions">
+                    <a class="button exercise-cancel" href="/esercizi?sezione=miei" th:href="@{/esercizi(sezione='miei')}">Annulla</a>
+                    <button class="button button-primary exercise-submit" type="submit">Salva modifiche</button>
+                </div>
+            </form>
+        </section>
+
+        <aside class="exercise-info" aria-label="Informazioni sull'esercizio" th:if="${esercizio.esercizioDefault}">
+    <span class="exercise-info-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M3 12h18M12 3c-2.9 2.5-4.4 5.5-4.4 9S9.1 18.5 12 21c2.9-2.5 4.4-5.5 4.4-9S14.9 5.5 12 3Z"></path>
+        </svg>
+    </span>
+    <div>
+        <h2>Esercizio globale</h2>
+        <p>Questo esercizio sarà visibile a tutti gli utenti della piattaforma e potrà essere utilizzato nelle loro routine.</p>
+    </div>
+</aside>
+<aside class="exercise-info" aria-label="Informazioni sull'esercizio" th:unless="${esercizio.esercizioDefault}">
+    <span class="exercise-info-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="4"></circle><path d="M5 21v-2a7 7 0 0 1 14 0v2"></path>
+        </svg>
+    </span>
+    <div>
+        <h2>Esercizio personale</h2>
+        <p>Questo esercizio sarà utilizzabile solo a te. Potrai usarlo nelle tue routine.</p>
+    </div>
+</aside>
+    </div>
+</main>
+</body>
+</html>

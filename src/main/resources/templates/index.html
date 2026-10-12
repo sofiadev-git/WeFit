@@ -7,41 +7,7 @@
     <link rel="stylesheet" href="../static/css/home.css" th:href="@{/css/home.css}">
 </head>
 <body>
-<header class="site-header">
-    <nav class="navbar" aria-label="Navigazione principale">
-        <a class="logo" href="/" th:href="@{/}" aria-label="WeFit, pagina iniziale">We<span>Fit</span></a>
-        <div class="nav-links">
-            <a class="active" href="/" th:href="@{/}" aria-current="page">Home</a>
-            <a href="/routines" th:href="@{/routines}">Routine</a>
-            <a href="/esercizi" th:href="@{/esercizi}">Esercizi</a>
-            <a href="/esercizi/miei" th:href="@{/esercizi/miei}">I miei esercizi</a>
-        </div>
-        <form class="nav-search" action="/routines" th:action="@{/routines}" method="get" role="search">
-            <label class="visually-hidden" for="routine-search">Cerca una routine</label>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg>
-            <input id="routine-search" type="search" name="q" placeholder="Cerca una routine...">
-        </form>
-        <div class="account">
-            <div class="auth-actions"
-                 th:if="${authentication == null or authentication.name == 'anonymousUser'}">
-                <a class="button button-outline" href="/login" th:href="@{/login}">Accedi</a>
-                <a class="button button-primary" href="/register" th:href="@{/register}">Registrati</a>
-            </div>
-            <details class="account-menu"
-                     th:if="${authentication != null and authentication.name != 'anonymousUser'}">
-                <summary>
-                    <span class="avatar" aria-hidden="true">●</span>
-                    <span th:text="${authentication.name}">Utente</span>
-                </summary>
-                <div class="account-dropdown">
-                    <form action="/logout" th:action="@{/logout}" method="post">
-                        <button type="submit">Esci</button>
-                    </form>
-                </div>
-            </details>
-        </div>
-    </nav>
-</header>
+<header th:replace="~{fragments/navbar :: navbar('home')}"></header>
 <main>
     <section class="hero" aria-labelledby="hero-title">
         <div class="hero-content">

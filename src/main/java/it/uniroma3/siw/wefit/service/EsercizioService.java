@@ -3,7 +3,6 @@ package it.uniroma3.siw.wefit.service;
 import it.uniroma3.siw.wefit.exception.NotAllowedException;
 import it.uniroma3.siw.wefit.exception.NotFoundException;
 import it.uniroma3.siw.wefit.model.Esercizio;
-import it.uniroma3.siw.wefit.model.Routine;
 import it.uniroma3.siw.wefit.model.Utente;
 import it.uniroma3.siw.wefit.repository.EsercizioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +16,37 @@ public class EsercizioService {
     @Autowired
     EsercizioRepository esercizioRepository;
 
+    /*un utente può visualizzare gli esercizi con EsercizioDefault=true o esercizi di cui è l'autore*/
     @Transactional(readOnly = true)
-    public List<Esercizio> getAllEsercizi(){
-       return esercizioRepository.findAll();
+    public List<Esercizio> getEserciziUtente(Utente utente){
+        if (utente == null ) {
+            return List.of();
+        } /*al posto di dare null da una lista vuota*/
+        return esercizioRepository.findByAutore_Id(utente.getId());
     }
 
     @Transactional(readOnly = true)
-    public Esercizio getEsercizio(Long id){
-        return esercizioRepository.findById(id).orElseThrow(()-> new NotFoundException("esercizio non trovato"));
+    public List<Esercizio> getEserciziDefault(){
+        return esercizioRepository.findByEsercizioDefaultTrue();
+    }
+
+    @Transactional(readOnly = true)
+    public Esercizio getEsercizioDefaultOrAutore(Long id, Utente utente){
+        Esercizio esercizio = esercizioRepository.findById(id).orElseThrow(()-> new NotFoundException("esercizio non trovato"));
+        if(esercizio.isEsercizioDefault()){
+            return esercizio;
+        }
+        if (utente != null && esercizio.getAutore().getId().equals(utente.getId())) {
+            return esercizio;
+        }
+        throw new NotAllowedException("non hai accesso a questo esercizio");
+    }
+
+    @Transactional(readOnly = true)
+    public Esercizio getEsercizioAutore(Long id,Utente utente){
+        Esercizio esercizio = esercizioRepository.findById(id).orElseThrow(()-> new NotFoundException("esercizio non trovato"));
+        checkAutore(esercizio,utente);
+        return esercizio;
     }
 
     @Transactional
@@ -38,7 +60,7 @@ public class EsercizioService {
 
     @Transactional
     public Esercizio updateEsercizio(Esercizio esercizio, Long esercizioId, Utente utente){
-        Esercizio e= getEsercizio(esercizioId);
+        Esercizio e= getEsercizioDefaultOrAutore(esercizioId,utente);
         checkAutore(e,utente);
         e.setNome(esercizio.getNome());
         e.setCategoria(esercizio.getCategoria());
@@ -48,7 +70,7 @@ public class EsercizioService {
 
     @Transactional
     public void deleteEsercizio(Long id, Utente utente){
-        Esercizio e = getEsercizio(id);
+        Esercizio e = getEsercizioDefaultOrAutore(id,utente);
         checkAutore(e,utente);
         esercizioRepository.deleteById(id);
         //aggiungere anche se partecipa a una routine

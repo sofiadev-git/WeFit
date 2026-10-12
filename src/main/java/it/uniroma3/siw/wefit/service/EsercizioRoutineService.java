@@ -44,7 +44,7 @@ public class EsercizioRoutineService {
     @Transactional
     public EsercizioRoutine createEsercizioRoutine(Long routineId, Long esercizioId, EsercizioRoutine esercizioRoutine, Utente utente){
         Routine r = routineService.getRoutine(routineId);
-        Esercizio e = esercizioService.getEsercizio(esercizioId);
+        Esercizio e = esercizioService.getEsercizioDefaultOrAutore(esercizioId,utente);
         checkAutoreRoutine(r,utente);
         checkAutoreEsercizio(e,utente);
         esercizioRoutine.setRoutine(r);

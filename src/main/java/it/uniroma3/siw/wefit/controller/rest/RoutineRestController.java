@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
-@RequestMapping("api/routine")
+@RequestMapping("api/routines")
 public class RoutineRestController {
 
     @Autowired

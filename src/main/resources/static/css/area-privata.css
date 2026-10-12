@@ -1,0 +1,92 @@
+/* WeFit - Area privata / I miei esercizi / catalogo pubblico */
+.private-dashboard, .private-list-page { color: #172b3b; }
+.private-hero {
+    min-height: 320px;
+    display: flex; align-items: center;
+    background: linear-gradient(90deg,rgba(14,35,52,.96) 0%,rgba(14,35,52,.9) 40%,rgba(14,35,52,.49) 80%),url('../images/home.png') center 45% / cover;
+    color: white;
+}
+.private-hero-inner { width: 83%; max-width: 1450px; margin: auto; padding: 48px 0; }
+.private-hero h1 { font-size: clamp(48px,5vw,78px); font-weight: 800; letter-spacing: -2px; margin: 0 0 12px; }
+.private-hero p { color: #c0d0dc; font-size: clamp(17px,1.7vw,26px); line-height:1.4; margin:0; }
+.private-content { max-width: 1360px; width: 83%; margin: auto; padding: 46px 0 80px; }
+.private-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:36px; }
+.private-action-card {
+    min-height: 345px; padding: 38px 42px;
+    border:1px solid #e7edf1; border-radius:16px;
+    background:white; box-shadow: 0 9px 26px #152e4012;
+    display:flex; flex-direction:column; align-items:flex-start;
+}
+.private-card-icon {
+    width:76px; height:76px; display:grid; place-items:center; border-radius:16px;
+    background:linear-gradient(145deg,#83f9ba,#55e6aa); color:#07543d;
+}
+.private-card-icon svg { width:40px; height:40px; fill:none; stroke:currentColor; stroke-width:2.6; stroke-linecap:round; stroke-linejoin:round; }
+.private-action-card h2 {font-size:clamp(28px,2.5vw,38px);letter-spacing:-1px;margin:20px 0 13px;line-height:1.15;}
+.private-action-card p { font-size:19px; color:#4b6178; line-height:1.44; margin:0 0 24px; max-width:470px; }
+.private-card-button { margin-top:auto; min-width:250px; padding:15px 26px; font-weight:750; background:#63eeb0; border-radius:10px; color:#0b2c27; display:flex; align-items:center; justify-content:space-between; gap:20px; font-size:18px; }
+.private-card-button:hover {background:#7af8c2;}
+.private-card-button span {font-size:27px; line-height:1;}
+.private-card-button-disabled {background:#e9eff1;color:#778a93;cursor:not-allowed;}
+.private-guest-card {display:flex;align-items:center;gap:28px;padding:40px 44px;background:white;border:1px solid #e2ebee;box-shadow:0 8px 28px #173e4c12;border-radius:16px;max-width:900px;margin:0 auto;}
+.private-guest-card h2 {font-size:clamp(24px,2.5vw,33px);margin:0 0 12px;letter-spacing:-.5px;}
+.private-guest-card p {font-size:18px;line-height:1.55;color:#536a7b;margin:0 0 23px;}
+.private-guest-icon {display:grid;place-items:center;min-width:86px;height:86px;background:#dbf8e9;color:#158259;border-radius:20px;font-size:40px;}
+.private-guest-buttons {display:flex;align-items:center;flex-wrap:wrap;gap:14px;}
+.private-secondary-button {border:1px solid #a4b3ba;color:#1a3647;background:#fff;}
+.private-secondary-button:hover {background:#eaf3f0;}
+.private-admin-notice {background:#e8f4fd;border:1px solid #b7d8f1;border-left:4px solid #3575ad;color:#234965;border-radius:9px;padding:17px 21px;margin-bottom:28px;line-height:1.55;font-size:15px;}
+.private-list-page {background:#f5f8fa;min-height:calc(100vh - 90px);}
+.private-list-container {max-width:1380px;width:88%;margin:0 auto;padding:44px 0 80px;}
+.private-breadcrumb {display:flex;align-items:center;gap:10px;font-size:14px;color:#61778a;margin-bottom:27px;}
+.private-breadcrumb a:hover {text-decoration:underline;color:#0d7853;}
+.private-list-heading {display:flex;justify-content:space-between;align-items:center;gap:26px;margin-bottom:26px;flex-wrap:wrap;}
+.private-list-heading h1 {font-size:clamp(32px,3vw,43px);margin:0 0 9px;letter-spacing:-1.2px;}
+.private-list-heading p {font-size:17px;color:#597083;margin:0;line-height:1.55;}
+.private-create-button {display:inline-flex;gap:9px;align-items:center;justify-content:center;background:#16a575;color:#fff;border-radius:8px;padding:15px 22px;font-size:16px;font-weight:700;box-shadow:0 3px 9px #05966925;}
+.private-create-button:hover {background:#0b8d62;}
+.private-tools {display:flex;align-items:stretch;gap:16px;margin:24px 0 15px;}
+.private-filter-input {flex:1;display:flex;align-items:center;gap:9px;border:1px solid #d7e1e6;border-radius:8px;background:#fff;padding:0 15px;min-height:48px;}
+.private-filter-input>span {font-size:25px;color:#708592;}
+.private-filter-input input {font:inherit;font-size:15px;border:0;outline:0;width:100%;background:transparent;color:#1a3040;}
+.private-tools select {border:1px solid #d7e1e6;border-radius:8px;min-width:210px;background:#fff;padding:0 14px;font:inherit;color:#425b68;}
+.private-table-wrap {overflow-x:auto;border:1px solid #e2e8ed;border-radius:12px;background:#fff;box-shadow:0 3px 18px #1133440c;}
+.private-exercise-table {width:100%;border-collapse:collapse;text-align:left;min-width:680px;}
+.private-exercise-table th {font-size:13px;font-weight:800;letter-spacing:.15px;background:#f8fafb;color:#556b79;padding:18px 22px;border-bottom:1px solid #e4edf0;}
+.private-exercise-table td {font-size:15px;color:#415464;padding:16px 22px;border-bottom:1px solid #e9eff1;vertical-align:middle;}
+.private-exercise-table tbody tr:last-child td {border-bottom:0;}
+.private-exercise-table tbody tr:hover {background:#fbfefd;}
+.private-exercise-table tr[hidden] {display:none;}
+.private-name-link {font-weight:750;color:#203444;}
+.private-name-link:hover {color:#078d63;text-decoration:underline;}
+.private-pill {display:inline-block;border-radius:6px;padding:6px 10px;font-size:13px;font-weight:700;white-space:nowrap;}
+.private-pill-global {background:#d8f6e7;color:#216b4d;}
+.private-pill-personal {background:#e5effe;color:#32669c;}
+.private-actions-head {text-align:right;}
+.private-row-actions {display:flex;align-items:center;justify-content:flex-end;gap:10px;}
+.private-icon-button {width:35px;height:35px;display:grid;place-items:center;border:0;border-radius:8px;background:#f0f4f7;color:#34586b;cursor:pointer;}
+.private-icon-button:hover {background:#e1eaf0;}
+.private-icon-button svg {width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+.private-delete-form {margin:0;}
+.private-delete-button {color:#ba384d;background:#fcf0f1;}
+.private-delete-button:hover {background:#f9dfe4;}
+.private-table-view {font-weight:700;color:#0c9066;white-space:nowrap;}
+.private-table-view:hover {text-decoration:underline;}
+.private-no-filter-results {text-align:center;padding:28px;color:#667d88;}
+.private-no-filter-results[hidden] {display:none;}
+.private-empty-list {text-align:center;padding:65px 25px;border:1px dashed #b9cdd2;border-radius:14px;background:white;}
+.private-empty-icon {font-size:36px;color:#08996a;display:inline-grid;place-items:center;width:72px;height:72px;background:#dcf9e9;border-radius:16px;}
+.private-empty-list h2 {font-size:26px;margin:20px 0 10px;}
+.private-empty-list p {color:#607685;font-size:17px;margin:0 0 26px;}
+.private-guest-compact {margin:26px 0 0;}
+.private-detail-card {background:#fff;border:1px solid #e1e9ed;border-radius:14px;padding:45px 48px;box-shadow:0 5px 18px #173e4c0a;max-width:950px;}
+.private-detail-card h1 {margin:20px 0 14px;font-size:clamp(32px,3.5vw,48px);}
+.private-detail-category {font-size:18px;color:#526b7c;margin:0 0 35px;}
+.private-detail-card h2 {font-size:22px;margin:0 0 15px;}
+.private-detail-description {font-size:17px;color:#496375;line-height:1.65;white-space:pre-wrap;}
+.private-detail-actions {display:flex;gap:17px;align-items:center;margin-top:38px;flex-wrap:wrap;}
+.private-return-link {font-weight:700;color:#0f8b61;}
+.private-account-link {display:block;padding:10px 12px;font-size:14px;color:#203343;}
+.private-account-link:hover {background:#e9f4ed;}
+@media (max-width:920px){.private-grid{grid-template-columns:1fr;}.private-content,.private-hero-inner{width:90%;}.private-action-card{min-height:310px;}.private-list-container{width:92%;}}
+@media (max-width:650px){.private-hero{min-height:250px;}.private-hero h1{font-size:45px;}.private-content{padding-top:26px;}.private-action-card{padding:28px 24px;}.private-guest-card{padding:26px;align-items:flex-start;flex-direction:column;}.private-guest-icon{min-width:65px;height:65px;}.private-card-button{min-width:220px;}.private-tools{flex-direction:column;}.private-tools select{min-height:48px;}.private-list-container{padding-top:30px;}.private-detail-card{padding:29px 25px;}}
