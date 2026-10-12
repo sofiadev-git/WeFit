@@ -35,13 +35,13 @@ public class RoutineService {
     }
 
     @Transactional(readOnly = true)
-    public List<Routine> getRoutinesUtente(Long utenteId){
-        return routineRepository.findByAutore_Id(utenteId);
+    public List<Routine> getRoutinesUtente(Utente utente){
+        return routineRepository.findByAutore_Id(utente.getId());
     }
 
     @Transactional(readOnly = true)
-    public Routine getRoutineUtente(Long utenteId, Long id){
-        return routineRepository.findRoutineByAutore_Id(utenteId, id);
+    public Routine getRoutineUtente(Utente utente, Long id){
+        return routineRepository.findRoutineByAutore_Id(utente.getId(), id);
     }
 
     @Transactional(readOnly = true)
@@ -88,9 +88,9 @@ public class RoutineService {
     }
 
     @Transactional
-    public void deleteRoutine(Long id, Utente utenteId){
+    public void deleteRoutine(Long id, Utente utente){
         Routine r = getRoutine(id);
-        checkAutore(r,utenteId);
+        checkAutore(r,utente);
         routineRepository.deleteRoutineSalvataByRoutineId(r.getId());
         routineRepository.deleteById(id);
     }

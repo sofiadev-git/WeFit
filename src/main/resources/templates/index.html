@@ -8,6 +8,7 @@
 </head>
 <body>
 <header th:replace="~{fragments/navbar :: navbar('home')}"></header>
+
 <main>
     <section class="hero" aria-labelledby="hero-title">
         <div class="hero-content">
@@ -19,6 +20,11 @@
             </div>
         </div>
     </section>
+
+    <div th:if="${errorMessage}" class="home-error-message" role="alert">
+        <span th:text="${errorMessage}"></span>
+    </div>
+
     <section class="features" aria-label="Cosa puoi fare con WeFit">
         <article class="feature-card">
             <div class="feature-icon" aria-hidden="true">

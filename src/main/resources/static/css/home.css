@@ -85,3 +85,17 @@ a:focus-visible, summary:focus-visible, button:focus-visible { outline: 3px soli
     .hero p { font-size: 17px; }
     .features { grid-template-columns: 1fr; padding: 26px 22px; gap: 18px; }
 }
+.home-error-message {
+    max-width: 1100px;
+    margin: 25px auto 0;
+    padding: 17px 24px;
+
+    background-color: #fff3f1;
+    border: 1px solid #f2d0cc;
+    border-left: 4px solid #dd6464;
+    border-radius: 8px;
+
+    color: #a33c3c;
+    font-size: 15px;
+    font-weight: 600;
+}
