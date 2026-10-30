@@ -1,63 +1,107 @@
 <!DOCTYPE html>
 <html lang="it" xmlns:th="http://www.thymeleaf.org">
 <body>
-<!-- Frammento renderizzato dal mapping ESISTENTE /esercizi?sezione=miei -->
+<!-- Frammento per /area-personale/esercizi e /admin/esercizi. -->
 <div th:fragment="mieiContent" class="private-list-page">
     <div class="private-list-container">
-        <div class="private-breadcrumb"><a th:href="@{/esercizi(sezione='area')}" href="/esercizi?sezione=area">Area privata</a><span>›</span>I miei esercizi</div>
+        <div class="private-breadcrumb"><a th:href="${utente.role == 'ADMIN'} ? @{/admin} : @{/area-personale}"
+                                           th:text="${utente.role == 'ADMIN'} ? 'Area admin' : 'Area personale'">Area
+            personale</a><span>›</span><span th:text="${utente.role == 'ADMIN'} ? 'Esercizi base' : 'I miei esercizi'">I miei esercizi</span>
+        </div>
         <div class="private-list-heading">
             <div>
-                <h1>I miei esercizi</h1>
+                <h1 th:text="${utente.role == 'ADMIN'} ? 'Esercizi base' : 'I miei esercizi'">I miei esercizi</h1>
                 <p th:if="${utente == null}">Accedi o registrati per gestire i tuoi esercizi.</p>
-                <p th:if="${utente != null and utente.role != 'ADMIN'}">Crea e organizza i tuoi esercizi personalizzati.</p>
-                <p th:if="${utente != null and utente.role == 'ADMIN'}">Crea e organizza gli esercizi globali di cui sei autore.</p>
+                <p th:if="${utente != null and utente.role != 'ADMIN'}">Crea e organizza i tuoi esercizi
+                    personalizzati.</p>
+                <p th:if="${utente != null and utente.role == 'ADMIN'}">Crea e organizza gli esercizi globali di cui sei
+                    autore.</p>
             </div>
-            <a th:if="${utente != null}" class="private-create-button" th:href="@{/esercizi/new}" href="/esercizi/new">＋ <span th:text="${utente.role == 'ADMIN' ? 'Crea esercizio globale' : 'Crea esercizio'}">Crea esercizio</span></a>
+            <a th:if="${utente != null}" class="private-create-button" th:href="@{/esercizi/new}" href="/esercizi/new">＋
+                <span th:text="${utente.role == 'ADMIN' ? 'Crea esercizio globale' : 'Crea esercizio'}">Crea esercizio</span></a>
         </div>
 
         <section class="private-guest-card private-guest-compact" th:if="${utente == null}">
             <span class="private-guest-icon" aria-hidden="true">✦</span>
             <div><h2>Accedi alla tua libreria</h2>
-                <p>Per creare, modificare ed eliminare i tuoi esercizi è necessario effettuare l'accesso o registrarsi.</p>
-                <div class="private-guest-buttons"><a class="button button-primary" th:href="@{/login}" href="/login">Accedi</a><a class="button private-secondary-button" th:href="@{/register}" href="/register">Registrati</a></div>
+                <p>Per creare, modificare ed eliminare i tuoi esercizi è necessario effettuare l'accesso o
+                    registrarsi.</p>
+                <div class="private-guest-buttons"><a class="button button-primary" th:href="@{/login}" href="/login">Accedi</a><a
+                        class="button private-secondary-button" th:href="@{/register}" href="/register">Registrati</a>
+                </div>
             </div>
         </section>
 
         <div th:if="${utente != null}">
-            <aside class="private-admin-notice" th:if="${utente.role == 'ADMIN'}" role="note"><strong>Attenzione, hai fatto l'accesso come admin, gli esercizi che andrai a creare qui saranno disponibili per tutti gli utenti.</strong></aside>
+            <aside class="private-admin-notice" th:if="${utente.role == 'ADMIN'}" role="note"><strong>Attenzione, hai
+                fatto l'accesso come admin, gli esercizi che andrai a creare qui saranno disponibili per tutti gli
+                utenti.</strong></aside>
             <div class="private-tools">
-                <div class="private-filter-input"><span aria-hidden="true">⌕</span><label class="visually-hidden" for="my-exercises-search">Cerca tra i tuoi esercizi</label><input id="my-exercises-search" type="search" placeholder="Cerca un esercizio..." autocomplete="off" data-exercise-search></div>
+                <div class="private-filter-input"><span aria-hidden="true">⌕</span><label class="visually-hidden"
+                                                                                          for="my-exercises-search">Cerca
+                    tra i tuoi esercizi</label><input id="my-exercises-search" type="search"
+                                                      placeholder="Cerca un esercizio..." autocomplete="off"
+                                                      data-exercise-search></div>
                 <label class="visually-hidden" for="my-exercises-category">Filtra per gruppo muscolare</label>
-                <select id="my-exercises-category" data-exercise-category><option value="">Tutti i gruppi</option><option th:each="esercizio : ${eserciziUtente}" th:value="${esercizio.categoria}" th:text="${esercizio.categoria}">Petto</option></select>
+                <select id="my-exercises-category" data-exercise-category>
+                    <option value="">Tutti i gruppi</option>
+                    <option th:each="esercizio : ${eserciziUtente}" th:value="${esercizio.categoria}"
+                            th:text="${esercizio.categoria}">Petto
+                    </option>
+                </select>
             </div>
             <div class="private-table-wrap" th:if="${!#lists.isEmpty(eserciziUtente)}">
                 <table class="private-exercise-table">
-                    <thead><tr><th scope="col">Nome</th><th scope="col">Gruppo muscolare</th><th scope="col">Visibilità</th><th scope="col" class="private-actions-head">Azioni</th></tr></thead>
+                    <thead>
+                    <tr>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Gruppo muscolare</th>
+                        <th scope="col">Visibilità</th>
+                        <th scope="col" class="private-actions-head">Azioni</th>
+                    </tr>
+                    </thead>
                     <tbody>
-                    <tr th:each="esercizio : ${eserciziUtente}" data-exercise-row th:attr="data-name=${esercizio.nome},data-category=${esercizio.categoria}">
-                        <td><a class="private-name-link" th:href="@{/esercizi/{id}(id=${esercizio.id})}" th:text="${esercizio.nome}" href="#">Nome esercizio</a></td>
+                    <tr th:each="esercizio : ${eserciziUtente}" data-exercise-row
+                        th:attr="data-name=${esercizio.nome},data-category=${esercizio.categoria}">
+                        <td><a class="private-name-link" th:href="@{/esercizi/{id}(id=${esercizio.id})}"
+                               th:text="${esercizio.nome}" href="#">Nome esercizio</a></td>
                         <td th:text="${esercizio.categoria}">Petto</td>
-                        <td><span class="private-pill" th:classappend="${esercizio.esercizioDefault} ? 'private-pill-global' : 'private-pill-personal'" th:text="${esercizio.esercizioDefault} ? 'Globale' : 'Personale'">Personale</span></td>
+                        <td><span class="private-pill"
+                                  th:classappend="${esercizio.esercizioDefault} ? 'private-pill-global' : 'private-pill-personal'"
+                                  th:text="${esercizio.esercizioDefault} ? 'Globale' : 'Personale'">Personale</span>
+                        </td>
                         <td class="private-row-actions">
-                            <a th:href="@{/esercizi/{id}/edit(id=${esercizio.id})}" href="#" class="private-icon-button" aria-label="Modifica esercizio" th:attr="aria-label=${'Modifica ' + esercizio.nome}" title="Modifica">
-                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L9 17l-4 1 1-4z"/></svg>
+                            <a th:href="@{/esercizi/{id}/edit(id=${esercizio.id})}" href="#" class="private-icon-button"
+                               aria-label="Modifica esercizio" th:attr="aria-label=${'Modifica ' + esercizio.nome}"
+                               title="Modifica">
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L9 17l-4 1 1-4z"/>
+                                </svg>
                             </a>
-                            <form th:action="@{/esercizi/{id}/delete(id=${esercizio.id})}" action="#" method="post" class="private-delete-form" data-delete-form>
-                                <button type="submit" class="private-icon-button private-delete-button" title="Elimina" th:attr="aria-label=${'Elimina ' + esercizio.nome}">
-                                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M10 11v6m4-6v6M6 7l1 14h10l1-14M9 7V4h6v3"/></svg>
+                            <form th:action="@{/esercizi/{id}/delete(id=${esercizio.id})}" action="#" method="post"
+                                  class="private-delete-form" data-delete-form>
+                                <button type="submit" class="private-icon-button private-delete-button" title="Elimina"
+                                        th:attr="aria-label=${'Elimina ' + esercizio.nome}">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                                        <path d="M4 7h16M10 11v6m4-6v6M6 7l1 14h10l1-14M9 7V4h6v3"/>
+                                    </svg>
                                 </button>
                             </form>
                         </td>
                     </tr>
                     </tbody>
                 </table>
-                <div class="private-no-filter-results" data-no-filter-results hidden>Nessun esercizio corrisponde alla ricerca.</div>
+                <div class="private-no-filter-results" data-no-filter-results hidden>Nessun esercizio corrisponde alla
+                    ricerca.
+                </div>
             </div>
             <div class="private-empty-list" th:if="${#lists.isEmpty(eserciziUtente)}">
                 <span class="private-empty-icon" aria-hidden="true">＋</span>
                 <h2>Non hai ancora creato esercizi</h2>
-                <p>Inizia aggiungendo il tuo primo esercizio <span th:text="${utente.role == 'ADMIN' ? 'globale.' : 'personale.'}">personale.</span></p>
-                <a class="button button-primary" th:href="@{/esercizi/new}" href="/esercizi/new">Crea il primo esercizio</a>
+                <p>Inizia aggiungendo il tuo primo esercizio <span
+                        th:text="${utente.role == 'ADMIN' ? 'globale.' : 'personale.'}">personale.</span></p>
+                <a class="button button-primary" th:href="@{/esercizi/new}" href="/esercizi/new">Crea il primo
+                    esercizio</a>
             </div>
         </div>
     </div>

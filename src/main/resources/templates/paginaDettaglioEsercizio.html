@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="it" xmlns:th="http://www.thymeleaf.org">
 
@@ -104,7 +103,7 @@
 
                     <a th:if="${utente != null and esercizio.autore != null and esercizio.autore.id == utente.id}"
                        class="exercise-personal-link"
-                       th:href="@{/esercizi(sezione='miei')}">
+                       th:href="${utente.role == 'ADMIN'} ? @{/admin/esercizi} : @{/area-personale/esercizi}">
                         I miei esercizi →
                     </a>
 

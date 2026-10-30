@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Routine | WeFit</title>
+    <!-- home.css contiene gli stili globali e della navbar già usata sul sito. -->
+    <link rel="stylesheet" href="/css/home.css" th:href="@{/css/home.css}">
+    <link rel="stylesheet" href="/css/routines.css" th:href="@{/css/routines.css}">
+    <script src="/js/routines-elenco.js" th:src="@{/js/routines-elenco.js}" defer></script>
+</head>
+<body>
+<!-- Riutilizziamo la navbar: 'routine' sottolinea la voce corretta. -->
+<header th:replace="~{fragments/navbar :: navbar('routine')}"></header>
+
+<main class="routines-page">
+    <section class="routines-hero" aria-labelledby="routines-title">
+        <div class="routines-hero-inner">
+            <div class="routines-hero-copy">
+                <h1 id="routines-title">Trova il tuo prossimo allenamento.</h1>
+                <p>Esplora le routine della community, trova quella più adatta a te e allenati al tuo ritmo.</p>
+                <div class="routines-hero-actions">
+                    <a class="routines-main-button" href="/routines/new" th:href="@{/routines/new}"
+                       th:if="${utente != null}">
+                        <span aria-hidden="true">+</span> Crea una routine
+                    </a>
+                    <a class="routines-main-button" href="/login" th:href="@{/login}"
+                       th:if="${utente == null}">
+                        Accedi per creare una routine <span aria-hidden="true">→</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="routines-catalogue" aria-labelledby="catalogue-title">
+        <div class="routines-section-heading">
+            <div>
+                <p class="routines-section-kicker">SCOPRI E ALLENATI</p>
+                <h2 id="catalogue-title">Tutte le routine</h2>
+                <p class="routines-subtitle">Sfoglia gli allenamenti creati dagli utenti WeFit.</p>
+            </div>
+            <span class="routines-total-count" aria-live="polite">
+                    <strong data-visible-count th:text="${#lists.size(routines)}">0</strong>
+                    <span data-count-label>routine disponibili</span>
+                </span>
+        </div>
+
+        <div class="routines-toolbar" th:if="${!#lists.isEmpty(routines)}">
+            <div class="routines-search-field">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="10.5" cy="10.5" r="6.5"></circle>
+                    <path d="m16 16 5 5"></path>
+                </svg>
+                <label for="routine-filter" class="visually-hidden">Cerca per nome della routine o autore</label>
+                <input id="routine-filter" type="search" placeholder="Cerca una routine o un autore..."
+                       autocomplete="off" data-routine-filter
+                       th:value="${param.q != null ? param.q[0] : ''}">
+            </div>
+            <button class="routines-reset-button" type="button" data-clear-filter hidden>Rimuovi filtro</button>
+        </div>
+
+        <div class="routines-grid" th:if="${!#lists.isEmpty(routines)}">
+            <article class="routine-card" th:each="routine : ${routines}"
+                     th:attr="data-name=${routine.nome},data-author=${routine.autore.username}">
+                <div class="routine-card-top">
+                        <span class="routine-card-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M3 12h4l2.5-5 4.5 10 2.5-5H21"></path>
+                            </svg>
+                        </span>
+                    <span class="routine-card-tag">ROUTINE</span>
+                </div>
+
+                <h3 th:text="${routine.nome}">Allenamento completo</h3>
+                <p class="routine-card-description"
+                   th:text="${#strings.isEmpty(routine.descrizione) ? 'Una routine da scoprire: apri i dettagli per saperne di più.' : routine.descrizione}">
+                    Una routine da scoprire: apri i dettagli per saperne di più.
+                </p>
+
+                <div class="routine-card-meta">
+                        <span class="routine-author">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"></circle><path
+                                    d="M5.5 20c0-3.6 2.4-6 6.5-6s6.5 2.4 6.5 6"></path></svg>
+                            <span th:text="${routine.autore.username}">utente</span>
+                        </span>
+                    <span class="routine-exercises">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path
+                                    d="M3 9v6m3-9v12m3-9v6m6-6v6m3-9v12m3-9v6M3 12h18"></path></svg>
+                            <span th:text="${#lists.size(routine.eserciziDellaRoutine)}">0</span>
+                            esercizi
+                        </span>
+                </div>
+                <div class="routine-bookmark-row"
+                     th:if="${utente != null and utente.role != 'ADMIN' and utente.id != routine.autore.id}">
+                    <form method="post" th:action="@{/routines/{id}/bookmark(id=${routine.id})}">
+                        <input type="hidden" name="origine" value="catalogo">
+                        <button type="submit" class="routine-bookmark-button"
+                                th:classappend="${bookmarkedIds.contains(routine.id)} ? ' is-saved' : ''"
+                                th:text="${bookmarkedIds.contains(routine.id)} ? '✓ Salvata · Rimuovi' : '＋ Salva routine'">
+                            ＋ Salva routine
+                        </button>
+                    </form>
+                </div>
+                <div class="routine-bookmark-row" th:if="${utente == null}">
+                    <a class="routine-bookmark-button" th:href="@{/login}">Accedi per salvarla</a>
+                </div>
+                <a class="routine-card-link" href="/routines/1" th:href="@{/routines/{id}(id=${routine.id})}">
+                    Visualizza routine <span aria-hidden="true">→</span>
+                </a>
+            </article>
+        </div>
+
+        <!-- Nessuna routine nel database. -->
+        <div class="routines-empty-state" th:if="${#lists.isEmpty(routines)}">
+            <div class="routines-empty-icon" aria-hidden="true">＋</div>
+            <h3>Non ci sono ancora routine</h3>
+            <p>Le routine create dalla community compariranno qui.</p>
+            <a href="/routines/new" th:href="@{/routines/new}"
+               th:if="${utente != null}">
+                Crea la prima routine →
+            </a>
+        </div>
+
+        <!-- Nessun risultato per il filtro lato browser. -->
+        <div class="routines-empty-state" data-no-results hidden>
+            <div class="routines-empty-icon" aria-hidden="true">⌕</div>
+            <h3>Nessuna routine trovata</h3>
+            <p>Prova con un altro nome o cerca un autore diverso.</p>
+        </div>
+    </section>
+</main>
+</body>
+</html>

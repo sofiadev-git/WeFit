@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dettagli della routine | WeFit</title>
+    <link rel="stylesheet" href="/css/home.css" th:href="@{/css/home.css}">
+    <link rel="stylesheet" href="/css/routine-workflow.css" th:href="@{/css/routine-workflow.css}">
+
+</head>
+<body>
+<header th:replace="~{fragments/navbar :: navbar('routine')}"></header>
+
+<!-- /*!!!!!!!!!!!!!!!!!!!*/ Il DTO non ha id: la modalità modifica dipende da routineId. -->
+<main class="wf-flow" th:with="isEdit=${routineId != null}">
+    <div class="wf-shell">
+        <div class="wf-topline">
+            <a class="wf-back" th:href="@{/routines}" href="/routines">← Tutte le routine</a>
+            <span class="wf-overline">WEFIT / ROUTINE</span>
+        </div>
+
+        <ol class="wf-stepper" aria-label="Fasi di creazione della routine" th:unless="${isEdit}">
+            <li class="is-active" aria-current="step"><span class="wf-step-number">1</span> Dettagli</li>
+            <li><span class="wf-step-number">2</span> Aggiungi esercizi</li>
+            <li><span class="wf-step-number">3</span> Riepilogo</li>
+        </ol>
+
+        <div class="wf-page-header">
+            <div>
+                <p class="wf-eyebrow" th:text="${isEdit} ? 'MODIFICA ROUTINE' : 'PASSAGGIO 1 DI 3'">PASSAGGIO 1 DI 3</p>
+                <h1 th:text="${isEdit} ? 'Modifica la routine' : 'Crea una nuova routine'">Crea una nuova routine</h1>
+                <p th:text="${isEdit} ? 'Aggiorna il nome e la descrizione senza perdere gli esercizi già inseriti.' : 'Cominciamo dalle informazioni di base. Gli esercizi verranno aggiunti nel passaggio successivo.'">
+                    Cominciamo dalle informazioni di base.</p>
+            </div>
+        </div>
+
+        <div class="wf-form-layout">
+            <section class="wf-card" aria-labelledby="wf-routine-form-title">
+                <div class="wf-card-head">
+                    <div>
+                        <h2 id="wf-routine-form-title">Informazioni della routine</h2>
+                        <p>Compila entrambi i campi per proseguire.</p>
+                    </div>
+                    <span class="wf-pill">Passaggio 1</span>
+                </div>
+                <!-- /*!!!!!!!!!!!!!!!!!!!*/ L'ID è nell'URL, non viene inviato nel DTO. -->
+                <form method="post" th:object="${routine}"
+                      th:action="${isEdit} ? @{/routines/{id}(id=${routineId})} : @{/routines}">
+                    <div class="wf-card-body">
+                        <div class="wf-alert" role="alert" th:if="${#fields.hasGlobalErrors()}">
+                            <p th:each="errore : ${#fields.globalErrors()}" th:text="${errore}">Errore di
+                                validazione</p>
+                        </div>
+                        <div class="wf-field">
+                            <label for="wf-routine-name">Nome della routine <span class="wf-required"
+                                                                                  aria-hidden="true">*</span></label>
+                            <input id="wf-routine-name" type="text" th:field="*{nome}" required maxlength="160"
+                                   autocomplete="off" placeholder="Es. Total body del lunedì"
+                                   th:classappend="${#fields.hasErrors('nome')} ? 'wf-invalid' : ''"
+                                   th:attr="aria-invalid=${#fields.hasErrors('nome')}">
+                            <span class="wf-error" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}">Nome obbligatorio</span>
+                        </div>
+                        <div class="wf-field">
+                            <!-- /*!!!!!!!!!!!!!!!!!!!*/ @NotBlank sul DTO: descrizione obbligatoria. -->
+                            <label for="wf-routine-description">Descrizione <span class="wf-required"
+                                                                                  aria-hidden="true">*</span></label>
+                            <textarea id="wf-routine-description" th:field="*{descrizione}" rows="5" required
+                                      placeholder="Descrivi l'obiettivo, il livello e il tipo di allenamento..."
+                                      th:classappend="${#fields.hasErrors('descrizione')} ? 'wf-invalid' : ''"
+                                      th:attr="aria-invalid=${#fields.hasErrors('descrizione')}"></textarea>
+                            <span class="wf-error" th:if="${#fields.hasErrors('descrizione')}"
+                                  th:errors="*{descrizione}">Descrizione obbligatoria</span>
+                            <span class="wf-help">Queste informazioni saranno visibili nella pagina della routine.</span>
+                        </div>
+                    </div>
+                    <div class="wf-card-foot">
+                        <a class="wf-btn" th:href="${isEdit} ? @{/routines/{id}(id=${routineId})} : @{/routines}"
+                           href="/routines">Annulla</a>
+                        <button class="wf-btn wf-btn--primary" type="submit"
+                                th:text="${isEdit} ? 'Salva modifiche' : 'Continua: scegli esercizi →'">Continua: scegli
+                            esercizi →
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <aside class="wf-card wf-aside-note">
+                <h3 th:text="${isEdit} ? 'Cosa puoi modificare?' : 'Come funziona?'">Come funziona?</h3>
+                <p th:text="${isEdit} ? 'Le modifiche al titolo e alla descrizione non cambiano gli esercizi associati.' : 'Prima salvi la routine, poi scegli gli esercizi dal catalogo. Puoi sempre tornare a completarla in seguito.'">
+                    Prima salvi la routine, poi scegli gli esercizi.</p>
+                <ul class="wf-hint-stack" th:unless="${isEdit}">
+                    <li>Dai un nome chiaro al tuo allenamento.</li>
+                    <li>Scegli gli esercizi dal catalogo con i filtri.</li>
+                    <li>Imposta serie e ripetizioni per ciascun esercizio.</li>
+                </ul>
+                <a class="wf-text-link" th:if="${isEdit}" th:href="@{/routines/{id}/esercizi(id=${routineId})}">Gestisci
+                    gli esercizi →</a>
+            </aside>
+        </div>
+    </div>
+</main>
+</body>
+</html>

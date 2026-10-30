@@ -3,49 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${param.sezione != null and param.sezione[0] == 'area' ? 'Area privata | WeFit' : (param.sezione != null and param.sezione[0] == 'miei' ? 'I miei esercizi | WeFit' : 'Esercizi | WeFit')}">Esercizi | WeFit</title>
-    <link rel="stylesheet" th:href="@{/css/home.css}" href="/css/home.css">
-    <link rel="stylesheet" th:href="@{/css/area-privata.css}" href="/css/area-privata.css">
+    <title>Esercizi | WeFit</title>
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link rel="stylesheet" th:href="@{/css/area-privata.css}">
+    <script th:src="@{/js/esercizi-elenco.js}" defer></script>
 </head>
-<body th:with="vistaArea=${param.sezione != null and param.sezione[0] == 'area'},vistaMiei=${param.sezione != null and param.sezione[0] == 'miei'}">
-    <th:block th:if="${vistaArea or vistaMiei}">
-        <header th:replace="~{fragments/navbar :: navbar('area')}"></header>
-    </th:block>
-    <th:block th:unless="${vistaArea or vistaMiei}">
-        <header th:replace="~{fragments/navbar :: navbar('esercizi')}"></header>
-    </th:block>
-
-    <!-- La scelta di vista dipende solo dal parametro GET, e riutilizza il controller attuale. -->
-    <th:block th:if="${vistaArea}"><main th:replace="~{areaPrivata :: areaContent}"></main></th:block>
-    <th:block th:if="${vistaMiei}"><main th:replace="~{mieiEsercizi :: mieiContent}"></main></th:block>
-
-    <main class="private-list-page" th:unless="${vistaArea or vistaMiei}">
-        <div class="private-list-container">
-            <div class="private-list-heading">
-                <div><h1>Esercizi</h1><p>Esplora gli esercizi globali disponibili per tutti, creati dagli amministratori WeFit.</p></div>
-            </div>
-            <div class="private-tools">
-                <div class="private-filter-input"><span aria-hidden="true">⌕</span><label class="visually-hidden" for="default-exercises-search">Cerca esercizi</label><input id="default-exercises-search" type="search" placeholder="Cerca un esercizio..." data-exercise-search></div>
-                <label class="visually-hidden" for="default-exercises-category">Filtra per gruppo muscolare</label>
-                <select id="default-exercises-category" data-exercise-category><option value="">Tutti i gruppi</option><option th:each="esercizio : ${eserciziDefault}" th:value="${esercizio.categoria}" th:text="${esercizio.categoria}">Petto</option></select>
-            </div>
-            <div class="private-table-wrap" th:if="${!#lists.isEmpty(eserciziDefault)}">
-                <table class="private-exercise-table">
-                    <thead><tr><th scope="col">Nome</th><th scope="col">Gruppo muscolare</th><th scope="col">Visibilità</th><th scope="col">Dettagli</th></tr></thead>
-                    <tbody>
-                        <tr th:each="esercizio : ${eserciziDefault}" data-exercise-row th:attr="data-name=${esercizio.nome},data-category=${esercizio.categoria}">
-                            <td><a class="private-name-link" th:text="${esercizio.nome}" th:href="@{/esercizi/{id}(id=${esercizio.id})}">Panca piana</a></td>
-                            <td th:text="${esercizio.categoria}">Petto</td>
-                            <td><span class="private-pill private-pill-global">Globale</span></td>
-                            <td><a class="private-table-view" th:href="@{/esercizi/{id}(id=${esercizio.id})}">Visualizza <span aria-hidden="true">→</span></a></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="private-no-filter-results" data-no-filter-results hidden>Nessun esercizio corrisponde alla ricerca.</div>
-            </div>
-            <div class="private-empty-list" th:if="${#lists.isEmpty(eserciziDefault)}"><h2>Nessun esercizio disponibile</h2><p>Gli esercizi globali saranno mostrati qui non appena verranno creati.</p></div>
+<body>
+<header th:replace="~{fragments/navbar :: navbar('esercizi')}"></header>
+<main class="private-list-page">
+    <div class="private-list-container">
+        <div class="private-list-heading">
+            <div><h1>Esercizi</h1>
+                <p>Esplora gli esercizi globali disponibili per tutti, creati dagli amministratori WeFit.</p></div>
         </div>
-    </main>
-    <script th:src="@{/js/esercizi-elenco.js}" src="/js/esercizi-elenco.js" defer></script>
+        <div class="private-tools">
+            <div class="private-filter-input"><span aria-hidden="true">⌕</span><label class="visually-hidden"
+                                                                                      for="default-exercises-search">Cerca
+                esercizi</label><input id="default-exercises-search" type="search" placeholder="Cerca un esercizio..."
+                                       data-exercise-search></div>
+            <label class="visually-hidden" for="default-exercises-category">Filtra per gruppo muscolare</label>
+            <select id="default-exercises-category" data-exercise-category>
+                <option value="">Tutti i gruppi</option>
+                <option th:each="esercizio : ${eserciziDefault}" th:value="${esercizio.categoria}"
+                        th:text="${esercizio.categoria}">Petto
+                </option>
+            </select>
+        </div>
+        <div class="private-table-wrap" th:if="${!#lists.isEmpty(eserciziDefault)}">
+            <table class="private-exercise-table">
+                <thead>
+                <tr>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Gruppo muscolare</th>
+                    <th scope="col">Visibilità</th>
+                    <th scope="col">Dettagli</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="esercizio : ${eserciziDefault}" data-exercise-row
+                    th:attr="data-name=${esercizio.nome},data-category=${esercizio.categoria}">
+                    <td><a class="private-name-link" th:text="${esercizio.nome}"
+                           th:href="@{/esercizi/{id}(id=${esercizio.id})}">Panca piana</a></td>
+                    <td th:text="${esercizio.categoria}">Petto</td>
+                    <td><span class="private-pill private-pill-global">Globale</span></td>
+                    <td><a class="private-table-view" th:href="@{/esercizi/{id}(id=${esercizio.id})}">Visualizza <span
+                            aria-hidden="true">→</span></a></td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="private-no-filter-results" data-no-filter-results hidden>Nessun esercizio corrisponde alla
+                ricerca.
+            </div>
+        </div>
+        <div class="private-empty-list" th:if="${#lists.isEmpty(eserciziDefault)}"><h2>Nessun esercizio disponibile</h2>
+            <p>Gli esercizi globali saranno mostrati qui non appena verranno creati.</p></div>
+    </div>
+</main>
 </body>
 </html>

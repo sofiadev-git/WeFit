@@ -1,4 +1,3 @@
-
 document.querySelectorAll(".private-list-page").forEach(pagina => {
 
     const ricerca = pagina.querySelector("[data-exercise-search]");

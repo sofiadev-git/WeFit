@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seleziona esercizi | WeFit</title>
+    <link rel="stylesheet" href="/css/home.css" th:href="@{/css/home.css}">
+    <link rel="stylesheet" href="/css/routine-workflow.css" th:href="@{/css/routine-workflow.css}">
+
+    <script src="/js/routine-selezione.js" th:src="@{/js/routine-selezione.js}" defer></script>
+
+</head>
+<body>
+<header th:replace="~{fragments/navbar :: navbar('routine')}"></header>
+
+<main class="wf-flow">
+    <div class="wf-shell">
+        <div class="wf-topline">
+            <a class="wf-back" th:href="@{/routines/{id}(id=${routine.id})}" href="/routines/1">← Torna alla routine</a>
+            <span class="wf-overline">WEFIT / CREA ROUTINE</span>
+        </div>
+
+        <ol class="wf-stepper" aria-label="Fasi di creazione della routine">
+            <li class="is-done"><span class="wf-step-number">✓</span> Dettagli</li>
+            <li class="is-active" aria-current="step"><span class="wf-step-number">2</span> Aggiungi esercizi</li>
+            <li><span class="wf-step-number">3</span> Riepilogo</li>
+        </ol>
+
+        <div class="wf-page-header">
+            <div>
+                <p class="wf-eyebrow">PASSAGGIO 2 DI 3</p>
+                <h1>Aggiungi esercizi</h1>
+                <p>Trova gli esercizi che preferisci e premi <strong>+</strong> per impostare serie e ripetizioni.</p>
+            </div>
+            <a class="wf-btn" th:href="@{/routines/{id}/edit(id=${routine.id})}">Modifica dettagli</a>
+        </div>
+
+        <div class="wf-split">
+            <section class="wf-card" aria-labelledby="wf-catalog-title" data-wf-catalog>
+                <div class="wf-card-head">
+                    <div>
+                        <h2 id="wf-catalog-title">Catalogo esercizi</h2>
+                        <p>Predefiniti e personalizzati, tutti in un unico elenco.</p>
+                    </div>
+                    <span class="wf-counter" data-wf-count th:text="|${#lists.size(eserciziDisponibili)} esercizi|">0 esercizi</span>
+                </div>
+                <div class="wf-catalog-tools">
+                    <div class="wf-search">
+                        <label class="visually-hidden" for="wf-search-exercises">Cerca esercizi</label>
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <circle cx="10.5" cy="10.5" r="6.5"/>
+                            <path d="m16 16 5 5"/>
+                        </svg>
+                        <input id="wf-search-exercises" type="search" placeholder="Cerca per nome o categoria..."
+                               autocomplete="off" data-wf-search>
+                    </div>
+                    <div class="wf-filter" role="group" aria-label="Filtra esercizi">
+                        <button type="button" data-wf-filter="tutti" aria-pressed="true">Tutti</button>
+                        <button type="button" data-wf-filter="personale" aria-pressed="false">Personalizzati</button>
+                        <button type="button" data-wf-filter="default" aria-pressed="false">Predefiniti</button>
+                    </div>
+                </div>
+
+                <!-- /*!!!!!!!!!!!!!!!!!!!*/ Una sola lista ricevuta dal service; i filtri sono lato browser. -->
+                <ul class="wf-catalog-list" th:unless="${#lists.isEmpty(eserciziDisponibili)}">
+                    <li class="wf-catalog-item" th:each="esercizio : ${eserciziDisponibili}" data-wf-exercise
+                        th:attr="data-wf-name=${esercizio.nome},data-wf-category=${esercizio.categoria},data-wf-kind=${esercizio.esercizioDefault ? 'default' : 'personale'}">
+                        <span class="wf-catalog-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path
+                                d="M3 9v6M6 7v10M9 9v6m6-6v6m3-8v10m3-8v6M3 12h18"/></svg></span>
+                        <span class="wf-catalog-copy">
+                            <strong th:text="${esercizio.nome}">Panca piana</strong>
+                            <small th:text="${esercizio.categoria}">Petto</small>
+                        </span>
+                        <span class="wf-pill" th:classappend="${!esercizio.esercizioDefault} ? 'wf-pill--personal' : ''"
+                              th:text="${esercizio.esercizioDefault} ? 'Predefinito' : 'Personale'">Predefinito</span>
+                        <!-- /*!!!!!!!!!!!!!!!!!!!*/ Il pulsante + apre la GET con esercizioId preselezionato. -->
+                        <a class="wf-btn wf-btn--small"
+                           th:href="@{/routines/{id}/esercizi/new(id=${routine.id},esercizioId=${esercizio.id})}"
+                           th:attr="aria-label=|Aggiungi ${esercizio.nome} alla routine|"
+                           href="/routines/1/esercizi/new?esercizioId=1">+ Aggiungi</a>
+                    </li>
+                </ul>
+                <div class="wf-no-results" th:if="${#lists.isEmpty(eserciziDisponibili)}">
+                    <strong>Non ci sono ancora esercizi disponibili</strong>
+                    Crea un esercizio personale o chiedi all'amministratore di aggiungerne uno predefinito.
+                </div>
+                <div class="wf-no-results wf-hidden" data-wf-empty hidden>
+                    <strong>Nessun esercizio trovato</strong>
+                    Prova un termine diverso o cambia filtro.
+                </div>
+                <div class="wf-card-foot">
+                    <a class="wf-text-link" th:href="@{/esercizi/new}">Crea un esercizio personale →</a>
+                </div>
+            </section>
+
+            <aside class="wf-card wf-side-summary" aria-labelledby="wf-routine-summary">
+                <div class="wf-card-head">
+                    <div>
+                        <p class="wf-eyebrow">LA TUA ROUTINE</p>
+                        <h2 id="wf-routine-summary" th:text="${routine.nome}">Allenamento completo</h2>
+                    </div>
+                    <!-- /*!!!!!!!!!!!!!!!!!!!*/ Riutilizziamo la relazione già presente in Routine. -->
+                    <span class="wf-stat"
+                          th:text="|${#lists.size(routine.eserciziDellaRoutine)} esercizi|">0 esercizi</span>
+                </div>
+                <div class="wf-card-body">
+                    <div class="wf-side-empty" th:if="${#lists.isEmpty(routine.eserciziDellaRoutine)}">
+                        <div class="wf-side-empty-icon" aria-hidden="true">＋</div>
+                        <strong>Nessun esercizio aggiunto</strong>
+                        Premi + accanto a un esercizio per aggiungerlo alla tua routine.
+                    </div>
+                    <ol class="wf-side-list" th:unless="${#lists.isEmpty(routine.eserciziDellaRoutine)}">
+                        <li th:each="er, stato : ${routine.eserciziDellaRoutine}">
+                            <span class="wf-side-number" th:text="${stato.count}">1</span>
+                            <div class="wf-catalog-copy">
+                                <strong th:text="${er.esercizio.nome}">Panca piana</strong>
+                                <small th:text="|${er.numeroSet} serie × ${er.ripetizioni} ripetizioni|">3 serie × 10
+                                    ripetizioni</small>
+                            </div>
+                            <a class="wf-text-link"
+                               th:href="@{/routines/{id}/esercizi/{esId}/edit(id=${routine.id},esId=${er.id})}">Modifica</a>
+                        </li>
+                    </ol>
+                </div>
+                <div class="wf-card-foot">
+                    <a class="wf-btn wf-btn--primary" th:href="@{/routines/{id}/esercizi(id=${routine.id})}">Vai al
+                        riepilogo →</a>
+                </div>
+            </aside>
+        </div>
+    </div>
+</main>
+</body>
+</html>

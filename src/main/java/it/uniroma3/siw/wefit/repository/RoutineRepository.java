@@ -7,12 +7,19 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Set;
 
 public interface RoutineRepository extends JpaRepository<Routine,Long> {
 
     List<Routine> findByAutore_Id(Long autoreId);
 
-    Routine findRoutineByAutore_Id(Long autoreId,Long routineId);
+    @Query("select r from Utente u join u.bookmarkedRoutines r where u.id = :utenteId and r.autore.id <> :utenteId order by r.nome")
+    List<Routine> findBookmarkedRoutinesOfOtherAuthors(@Param("utenteId") Long utenteId);
+
+    @Query("select r.id from Utente u join u.bookmarkedRoutines r where u.id = :utenteId and r.autore.id <> :utenteId")
+    Set<Long> findBookmarkedRoutineIds(@Param("utenteId") Long utenteId);
+
+    Routine findRoutineByAutore_IdAndId(Long autoreId, Long routineId);
 
     @Modifying /*non legge dati ma li modifica (elimina)*/
     @Query(value = "DELETE FROM user_bookmarked_routines WHERE routine_id = :routineId",nativeQuery = true)

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configura esercizio | WeFit</title>
+    <link rel="stylesheet" href="/css/home.css" th:href="@{/css/home.css}">
+    <link rel="stylesheet" href="/css/routine-workflow.css" th:href="@{/css/routine-workflow.css}">
+    <script src="/js/routine-form-esercizio.js" th:src="@{/js/routine-form-esercizio.js}" defer></script>
+</head>
+<body>
+<header th:replace="~{fragments/navbar :: navbar('routine')}"></header>
+
+<main class="wf-flow" th:with="isEdit=${modifica == true},hasExercises=${eserciziDisponibili != null and !#lists.isEmpty(eserciziDisponibili)}">
+    <div class="wf-shell">
+        <div class="wf-topline">
+            <a class="wf-back" th:href="@{/routines/{id}/esercizi/select(id=${routineId})}" href="/routines/1/esercizi/select">← Torna alla scelta esercizi</a>
+            <span class="wf-overline">WEFIT / ESERCIZI</span>
+        </div>
+
+        <ol class="wf-stepper" aria-label="Fasi di creazione della routine">
+            <li class="is-done"><span class="wf-step-number">✓</span> Dettagli</li>
+            <li class="is-active" aria-current="step"><span class="wf-step-number">2</span> Aggiungi esercizi</li>
+            <li><span class="wf-step-number">3</span> Riepilogo</li>
+        </ol>
+
+        <div class="wf-page-header">
+            <div>
+                <p class="wf-eyebrow" th:text="${isEdit} ? 'MODIFICA ESERCIZIO' : 'PASSAGGIO 2 DI 3'">PASSAGGIO 2 DI 3</p>
+                <h1 th:text="${isEdit} ? 'Modifica esercizio' : 'Configura il tuo esercizio'">Configura il tuo esercizio</h1>
+                <p th:text="${isEdit} ? 'Puoi cambiare esercizio, serie e ripetizioni.' : 'L’esercizio scelto è già selezionato. Imposta i parametri o scegline un altro.'">Imposta serie e ripetizioni.</p>
+            </div>
+        </div>
+
+        <div class="wf-form-layout">
+            <section class="wf-card" aria-labelledby="wf-exercise-form-title">
+                <div class="wf-card-head">
+                    <div>
+                        <h2 id="wf-exercise-form-title" th:text="${isEdit} ? 'Aggiorna i parametri' : 'Aggiungi alla routine'">Aggiungi alla routine</h2>
+                        <p>Seleziona un esercizio e specifica come svolgerlo.</p>
+                    </div>
+                    <span class="wf-pill">Passaggio 2</span>
+                </div>
+                <!-- /*!!!!!!!!!!!!!!!!!!!*/ Stesso form e stesso DTO per creazione e modifica. -->
+                <form method="post" th:object="${esercizioRoutine}" th:action="${isEdit} ? @{/routines/{id}/esercizi/{esId}(id=${routineId},esId=${esId})} : @{/routines/{id}/esercizi(id=${routineId})}">
+                    <div class="wf-card-body">
+                        <div class="wf-alert" role="alert" th:if="${#fields.hasGlobalErrors()}">
+                            <p th:each="errore : ${#fields.globalErrors()}" th:text="${errore}">Errore di validazione</p>
+                        </div>
+
+                        <div class="wf-current-exercise" aria-live="polite">
+                            <span class="wf-catalog-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9v6M6 7v10M9 9v6m6-6v6m3-8v10m3-8v6M3 12h18"/></svg></span>
+                            <div>
+                                <strong data-wf-selected-name th:text="${esercizioSelezionato != null ? esercizioSelezionato.nome : 'Nessun esercizio selezionato'}">Panca piana</strong>
+                                <small data-wf-selected-category th:text="${esercizioSelezionato != null ? esercizioSelezionato.categoria : 'Scegli un esercizio qui sotto'}">Petto</small>
+                            </div>
+                        </div>
+
+                        <div class="wf-field">
+                            <label for="wf-exercise-choice">Esercizio <span class="wf-required" aria-hidden="true">*</span></label>
+                            <!-- /*!!!!!!!!!!!!!!!!!!!*/ La tendina usa il DTO, non una proprietà JPA. -->
+                            <select id="wf-exercise-choice" th:field="*{esercizioId}" required data-wf-exercise-select th:classappend="${#fields.hasErrors('esercizioId')} ? 'wf-invalid' : ''" th:attr="aria-invalid=${#fields.hasErrors('esercizioId')}">
+                                <option value="">Scegli un esercizio...</option>
+                                <option th:each="esercizio : ${eserciziDisponibili}" th:value="${esercizio.id}" th:text="${esercizio.nome + ' · ' + esercizio.categoria + (esercizio.esercizioDefault ? ' · Predefinito' : ' · Personale')}" th:attr="data-wf-name=${esercizio.nome},data-wf-category=${esercizio.categoria},data-wf-kind=${esercizio.esercizioDefault ? 'Predefinito' : 'Personale'}">Panca piana · Petto · Predefinito</option>
+                            </select>
+                            <span class="wf-error" th:if="${#fields.hasErrors('esercizioId')}" th:errors="*{esercizioId}">Seleziona un esercizio</span>
+                            <span class="wf-help">Puoi sostituire l'esercizio senza tornare al catalogo.</span>
+                        </div>
+
+                        <div class="wf-form-grid">
+                            <div class="wf-field">
+                                <label for="wf-exercise-sets">Numero di serie <span class="wf-required" aria-hidden="true">*</span></label>
+                                <!-- /*!!!!!!!!!!!!!!!!!!!*/ Il DTO attuale consente da 1 a 20 serie. -->
+                                <input id="wf-exercise-sets" type="number" min="1" max="20" step="1" required placeholder="Es. 3" th:field="*{numeroSet}" th:classappend="${#fields.hasErrors('numeroSet')} ? 'wf-invalid' : ''" th:attr="aria-invalid=${#fields.hasErrors('numeroSet')}">
+                                <span class="wf-error" th:if="${#fields.hasErrors('numeroSet')}" th:errors="*{numeroSet}">Numero di serie non valido</span>
+                            </div>
+                            <div class="wf-field">
+                                <label for="wf-exercise-repetitions">Ripetizioni per serie <span class="wf-required" aria-hidden="true">*</span></label>
+                                <input id="wf-exercise-repetitions" type="number" min="1" max="1000" step="1" required placeholder="Es. 10" th:field="*{ripetizioni}" th:classappend="${#fields.hasErrors('ripetizioni')} ? 'wf-invalid' : ''" th:attr="aria-invalid=${#fields.hasErrors('ripetizioni')}">
+                                <span class="wf-error" th:if="${#fields.hasErrors('ripetizioni')}" th:errors="*{ripetizioni}">Numero di ripetizioni non valido</span>
+                            </div>
+                        </div>
+                        <div class="wf-alert" th:if="${!hasExercises}" role="alert">
+                            <p>Non sono disponibili esercizi selezionabili. Torna al catalogo e riprova.</p>
+                        </div>
+                    </div>
+                    <div class="wf-card-foot">
+                        <a class="wf-btn" th:href="${isEdit} ? @{/routines/{id}/esercizi(id=${routineId})} : @{/routines/{id}/esercizi/select(id=${routineId})}">Annulla</a>
+                        <button type="submit" class="wf-btn wf-btn--primary" th:disabled="${!hasExercises}" th:text="${isEdit} ? 'Salva modifiche' : 'Aggiungi esercizio →'">Aggiungi esercizio →</button>
+                    </div>
+                </form>
+            </section>
+
+            <aside class="wf-card wf-aside-note">
+                <p class="wf-eyebrow">LA TUA ROUTINE</p>
+                <h3 th:text="${routine.nome}">La tua routine</h3>
+                <p th:text="${isEdit} ? 'Stai modificando un elemento già salvato. L’esercizio e i parametri selezionati sostituiranno quelli precedenti.' : 'Dopo il salvataggio tornerai al catalogo, dove potrai aggiungere altri esercizi.'">Dopo il salvataggio tornerai al catalogo.</p>
+                <ul class="wf-hint-stack">
+                    <li>Il nome dell'esercizio può essere cambiato tramite il menu.</li>
+                    <li>Le serie e le ripetizioni sono specifiche per questa routine.</li>
+                    <li>Puoi modificare di nuovo tutto in seguito.</li>
+                </ul>
+            </aside>
+        </div>
+    </div>
+</main>
+</body>
+</html>

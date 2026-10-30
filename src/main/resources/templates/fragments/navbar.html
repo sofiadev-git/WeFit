@@ -10,9 +10,9 @@
             <a th:href="@{/}" href="/" th:classappend="${attiva == 'home' ? 'active' : ''}" th:attr="aria-current=${attiva == 'home' ? 'page' : null}">Home</a>
             <a th:href="@{/routines}" href="/routines" th:classappend="${attiva == 'routine' ? 'active' : ''}" th:attr="aria-current=${attiva == 'routine' ? 'page' : null}">Routine</a>
             <a th:href="@{/esercizi}" href="/esercizi" th:classappend="${attiva == 'esercizi' ? 'active' : ''}" th:attr="aria-current=${attiva == 'esercizi' ? 'page' : null}">Esercizi</a>
-            <!-- Fino a quando non esiste un controller per /area-privata usiamo GET /esercizi?sezione=area -->
-            <a th:href="@{/esercizi(sezione='area')}" href="/esercizi?sezione=area"
-               th:classappend="${attiva == 'area' ? 'active' : ''}" th:attr="aria-current=${attiva == 'area' ? 'page' : null}">Area riservata</a>
+            <a th:href="${utente != null and utente.role == 'ADMIN'} ? @{/admin} : @{/area-personale}"
+               th:text="${utente != null and utente.role == 'ADMIN'} ? 'Area admin' : 'Area personale'"
+               th:classappend="${attiva == 'area' ? 'active' : ''}" th:attr="aria-current=${attiva == 'area' ? 'page' : null}">Area personale</a>
         </div>
         <form class="nav-search" th:action="@{/routines}" action="/routines" method="get" role="search">
             <label class="visually-hidden" for="routine-search-nav">Cerca una routine</label>
@@ -27,7 +27,8 @@
             <details class="account-menu" th:if="${autenticato}">
                 <summary><span th:text="${nomeAccount}">Utente</span></summary>
                 <div class="account-dropdown">
-                    <a class="private-account-link" th:href="@{/esercizi(sezione='area')}" href="/esercizi?sezione=area">Area riservata</a>
+                    <a class="private-account-link" th:href="${utente != null and utente.role == 'ADMIN'} ? @{/admin} : @{/area-personale}"
+                       th:text="${utente != null and utente.role == 'ADMIN'} ? 'Area admin' : 'Area personale'">Area personale</a>
                     <form th:action="@{/logout}" action="/logout" method="post"><button type="submit">Esci</button></form>
                 </div>
             </details>

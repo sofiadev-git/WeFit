@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${utente.role == 'ADMIN' ? 'Routine admin | WeFit' : 'Le mie routine | WeFit'}">Le mie routine |
+        WeFit</title>
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link rel="stylesheet" th:href="@{/css/area-privata.css}">
+    <script th:src="@{/js/mie-routine.js}" defer></script>
+</head>
+<body th:with="isAdmin=${utente.role == 'ADMIN'}">
+<header th:replace="~{fragments/navbar :: navbar('area')}"></header>
+<main class="private-list-page">
+    <div class="private-list-container">
+        <nav class="private-breadcrumb" aria-label="Percorso">
+            <a th:href="${isAdmin} ? @{/admin} : @{/area-personale}"
+               th:text="${isAdmin} ? 'Area admin' : 'Area personale'">Area personale</a>
+            <span aria-hidden="true">›</span>
+            <span th:text="${isAdmin} ? 'Routine admin' : 'Le mie routine'">Le mie routine</span>
+        </nav>
+        <div class="private-list-heading">
+            <div>
+                <h1 th:text="${isAdmin} ? 'Routine admin' : 'Le mie routine'">Le mie routine</h1>
+                <p th:text="${isAdmin} ? 'Gestisci le routine create dall’amministratore e disponibili nel catalogo pubblico.' : 'Qui trovi soltanto le routine che hai creato tu.'">
+                    Qui trovi le tue routine.</p>
+            </div>
+            <a class="private-create-button" th:href="@{/routines/new}">＋ Crea nuova routine</a>
+        </div>
+        <div class="private-tools" th:if="${!#lists.isEmpty(routines)}">
+            <div class="private-filter-input">
+                <span aria-hidden="true">⌕</span>
+                <label class="visually-hidden" for="my-routines-search">Cerca tra le tue routine</label>
+                <input id="my-routines-search" type="search" placeholder="Cerca tra le tue routine..."
+                       autocomplete="off" data-my-routines-search>
+            </div>
+        </div>
+        <div class="private-table-wrap" th:if="${!#lists.isEmpty(routines)}">
+            <table class="private-exercise-table private-routine-table">
+                <thead>
+                <tr>
+                    <th scope="col">Routine</th>
+                    <th scope="col">Descrizione</th>
+                    <th scope="col">Gestione</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="routine : ${routines}" data-my-routine-row
+                    th:attr="data-name=${routine.nome},data-description=${routine.descrizione}">
+                    <td><a class="private-name-link" th:href="@{/routines/{id}(id=${routine.id})}"
+                           th:text="${routine.nome}">Allenamento completo</a></td>
+                    <td class="private-routine-description"
+                        th:text="${#strings.isEmpty(routine.descrizione) ? 'Nessuna descrizione' : routine.descrizione}">
+                        Descrizione
+                    </td>
+                    <td>
+                        <div class="private-routine-actions">
+                            <a class="private-action-link" th:href="@{/routines/{id}(id=${routine.id})}">Visualizza</a>
+                            <a class="private-action-link"
+                               th:href="@{/routines/{id}/edit(id=${routine.id})}">Modifica</a>
+                            <a class="private-action-link"
+                               th:href="@{/routines/{id}/esercizi/select(id=${routine.id})}">Esercizi</a>
+                            <form method="post" th:action="@{/routines/{id}/delete(id=${routine.id})}"
+                                  onsubmit="return confirm('Eliminare questa routine e tutti i suoi esercizi associati?');">
+                                <button class="private-action-delete" type="submit">Elimina</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="private-no-filter-results" data-my-routines-empty-filter hidden>Nessuna routine corrisponde alla
+                ricerca.
+            </div>
+        </div>
+        <div class="private-empty-list" th:if="${#lists.isEmpty(routines)}">
+            <span class="private-empty-icon" aria-hidden="true">＋</span>
+            <h2>Non hai ancora creato routine</h2>
+            <p>Dai un nome al tuo allenamento e scegli gli esercizi dal catalogo.</p>
+            <a class="button button-primary" th:href="@{/routines/new}">Crea la prima routine</a>
+        </div>
+    </div>
+</main>
+</body>
+</html>

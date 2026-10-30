@@ -53,21 +53,24 @@ public class EsercizioRoutineService {
     }
 
     @Transactional
-    public EsercizioRoutine updateEsercizioRoutine(Long routineId, Long id, EsercizioRoutine esercizioRoutine, Utente utente){
-        Routine r = routineService.getRoutine(routineId);
-        EsercizioRoutine e = getEsercizioRoutine(routineId,id);
-        checkAutore(e,utente);
-        e.setEsercizio(esercizioRoutine.getEsercizio());
-        e.setRipetizioni(esercizioRoutine.getRipetizioni());
-        e.setNumeroSet(esercizioRoutine.getNumeroSet());
-        return esercizioRoutineRepository.save(e);
+    public EsercizioRoutine updateEsercizioRoutine(Long routineId, Long associazioneId, Long nuovoEsercizioId, EsercizioRoutine nuoviValori, Utente utente) {
+        EsercizioRoutine er = getEsercizioRoutine(routineId, associazioneId);
+        checkAutore(er, utente);
+
+        Esercizio esercizio = esercizioService.getEsercizioDefaultOrAutore(nuovoEsercizioId, utente);
+
+        er.setEsercizio(esercizio);
+        er.setNumeroSet(nuoviValori.getNumeroSet());
+        er.setRipetizioni(nuoviValori.getRipetizioni());
+
+        return esercizioRoutineRepository.save(er);
     }
 
     @Transactional
-    public void deleteEsercizioRoutine(Long id, Utente utente){
-        EsercizioRoutine esercizioRoutine = getEsercizioRoutineGlobal(id);
-        checkAutore(esercizioRoutine,utente);
-        esercizioRoutineRepository.deleteById(id);
+    public void deleteEsercizioRoutine(Long routineId, Long associazioneId, Utente utente) {
+        EsercizioRoutine er = getEsercizioRoutine(routineId, associazioneId);
+        checkAutore(er, utente);
+        esercizioRoutineRepository.delete(er);
     }
 
     private void checkAutore(EsercizioRoutine esercizioRoutine, Utente utente){

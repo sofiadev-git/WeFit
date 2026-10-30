@@ -18,7 +18,7 @@ public class RoutineRestController {
     @Autowired
     private UtenteService utenteService;
 
-    @PostMapping("/{id}")
+    @GetMapping("/{id}")
     public RoutineDetailsDto getRoutine(@PathVariable Long id, Authentication authentication){
         Utente utente = getUtenteCorrente(authentication);
         return routineService.getRoutineDetails(id,utente);

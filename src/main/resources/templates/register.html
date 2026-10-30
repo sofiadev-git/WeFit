@@ -2,13 +2,13 @@
 <html lang="it" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Registrati | WeFit</title>
+    <title>Registrati | WeFit</title>
 
-  <link rel="stylesheet" href="../static/css/home.css" th:href="@{/css/home.css}">
-  <link rel="stylesheet" href="../static/css/accesso.css" th:href="@{/css/accesso.css}">
+    <link rel="stylesheet" href="../static/css/home.css" th:href="@{/css/home.css}">
+    <link rel="stylesheet" href="../static/css/accesso.css" th:href="@{/css/accesso.css}">
 </head>
 
 <body class="auth-body">
@@ -17,65 +17,65 @@
 
 <main class="auth-page">
 
-  <section class="auth-card">
+    <section class="auth-card">
 
-    <div class="auth-heading">
-      <h1>Registrati</h1>
-      <p>Crea il tuo account e inizia ad allenarti con WeFit.</p>
-    </div>
+        <div class="auth-heading">
+            <h1>Registrati</h1>
+            <p>Crea il tuo account e inizia ad allenarti con WeFit.</p>
+        </div>
 
-    <form class="auth-form"
-          th:action="@{/register}"
-          method="post"
-          th:object="${credenziali}">
+        <form class="auth-form"
+              th:action="@{/register}"
+              method="post"
+              th:object="${credenziali}">
 
-      <!-- Errori generali inseriti tramite bindingResult.reject(...) -->
-      <div class="form-message error" th:if="${#fields.hasGlobalErrors()}">
-        <p th:each="errore : ${#fields.globalErrors()}" th:text="${errore}"></p>
-      </div>
+            <!-- Errori generali inseriti tramite bindingResult.reject(...) -->
+            <div class="form-message error" th:if="${#fields.hasGlobalErrors()}">
+                <p th:each="errore : ${#fields.globalErrors()}" th:text="${errore}"></p>
+            </div>
 
-      <div class="form-field">
-        <label for="username">Nome utente</label>
+            <div class="form-field">
+                <label for="username">Nome utente</label>
 
-        <input id="username"
-               type="text"
-               th:field="*{username}"
-               placeholder="Scegli un nome utente"
-               autocomplete="username"
-               required>
+                <input id="username"
+                       type="text"
+                       th:field="*{username}"
+                       placeholder="Scegli un nome utente"
+                       autocomplete="username"
+                       required>
 
-        <span class="field-error"
-              th:if="${#fields.hasErrors('username')}"
-              th:errors="*{username}">
+                <span class="field-error"
+                      th:if="${#fields.hasErrors('username')}"
+                      th:errors="*{username}">
                 </span>
-      </div>
+            </div>
 
-      <div class="form-field">
-        <label for="password">Password</label>
+            <div class="form-field">
+                <label for="password">Password</label>
 
-        <input id="password"
-               type="password"
-               th:field="*{password}"
-               placeholder="Scegli una password"
-               autocomplete="new-password"
-               required>
+                <input id="password"
+                       type="password"
+                       th:field="*{password}"
+                       placeholder="Scegli una password"
+                       autocomplete="new-password"
+                       required>
 
-        <span class="field-error"
-              th:if="${#fields.hasErrors('password')}"
-              th:errors="*{password}">
+                <span class="field-error"
+                      th:if="${#fields.hasErrors('password')}"
+                      th:errors="*{password}">
                 </span>
-      </div>
+            </div>
 
-      <button class="button button-primary auth-submit" type="submit">Registrati</button>
+            <button class="button button-primary auth-submit" type="submit">Registrati</button>
 
-    </form>
+        </form>
 
-    <p class="auth-switch">
-      Hai già un account?
-      <a href="/login" th:href="@{/login}">Accedi</a>
-    </p>
+        <p class="auth-switch">
+            Hai già un account?
+            <a href="/login" th:href="@{/login}">Accedi</a>
+        </p>
 
-  </section>
+    </section>
 
 </main>
 

@@ -41,14 +41,15 @@ public class RoutineService {
 
     @Transactional(readOnly = true)
     public Routine getRoutineUtente(Utente utente, Long id){
-        return routineRepository.findRoutineByAutore_Id(utente.getId(), id);
+        return routineRepository.findRoutineByAutore_IdAndId(utente.getId(), id);
     }
 
     @Transactional(readOnly = true)
     public RoutineDetailsDto getRoutineDetails(Long id, Utente utenteCorrente) {
         /*L'utente serve per mostrare se per quell'utente la routine è bookmarked o meno*/
         Routine routine = getRoutine(id);
-        boolean bookmarked = utenteCorrente != null && utenteCorrente.getBookmarkedRoutines().contains(routine);
+        boolean bookmarked = utenteCorrente != null && !routine.getAutore().getId().equals(utenteCorrente.getId())
+                && routineRepository.findBookmarkedRoutineIds(utenteCorrente.getId()).contains(routine.getId());
         List<EsercizioDellaDto> esercizi = new ArrayList<>();
         for (EsercizioRoutine er : routine.getEserciziDellaRoutine()) {
             esercizi.add(new EsercizioDellaDto(
@@ -101,35 +102,43 @@ public class RoutineService {
         }
     }
 
-    /* Metodi per gestire i bookmark*/
-
+    /* Le routine dell'autore non possono essere salvate nei propri bookmark. */
     @Transactional
-    public RoutineDetailsDto toggleBookmark(long id, Utente utente){
-        Routine routine= getRoutine(id);
-        /*se premo ed era salvato lo rimuove e restituisce true, altrimenti da false se non lo trova*/
-        if(utente.getBookmarkedRoutines().remove(routine)){
-            /*lo ha eliminato, non serve fare nulla*/
+    public RoutineDetailsDto toggleBookmark(long id, Utente utente) {
+        if (utente == null) {
+            throw new NotAllowedException("Accedi per salvare una routine.");
         }
-        else{
-            /* L'utente non lo ha già salvato, lo salva adesso*/
-            utente.getBookmarkedRoutines().add(routine);
+        if (Utente.ADMIN_ROLE.equals(utente.getRole())) {
+            throw new NotAllowedException("I bookmark sono disponibili nell'area personale degli utenti.");
         }
 
-        /*
-        * E' equivalente a:
-        * if (utente.getBookmarkedRoutines().contains(routine)) {
-        *   utente.getBookmarkedRoutines().remove(routine);
-        * }
-        * else {
-        *   utente.getBookmarkedRoutines().add(routine);}*/
-        utenteRepository.save(utente); // un Utente salvo i bookmark di quell'utente
+        Routine routine = getRoutine(id);
+        if (routine.getAutore().getId().equals(utente.getId())) {
+            throw new NotAllowedException("Non puoi salvare una routine di cui sei autore.");
+        }
 
-        return getRoutineDetails(id,utente);
+        Utente utenteGestito = utenteRepository.findById(utente.getId())
+                .orElseThrow(() -> new NotFoundException("Utente non trovato"));
+        if (!utenteGestito.getBookmarkedRoutines().remove(routine)) {
+            utenteGestito.getBookmarkedRoutines().add(routine);
+        }
+        utenteRepository.save(utenteGestito);
+        return getRoutineDetails(id, utenteGestito);
     }
 
-    /* Pagina bookmark utente*/
     @Transactional(readOnly = true)
-    public Set<Routine> getBookmarkedRoutines(Utente utente) {
-        return utente.getBookmarkedRoutines();
+    public List<Routine> getBookmarkedRoutines(Utente utente) {
+        if (utente == null) {
+            throw new NotAllowedException("Utente non autenticato");
+        }
+        return routineRepository.findBookmarkedRoutinesOfOtherAuthors(utente.getId());
+    }
+
+    @Transactional(readOnly = true)
+    public Set<Long> getBookmarkedRoutineIds(Utente utente) {
+        if (utente == null) {
+            return Set.of();
+        }
+        return routineRepository.findBookmarkedRoutineIds(utente.getId());
     }
 }

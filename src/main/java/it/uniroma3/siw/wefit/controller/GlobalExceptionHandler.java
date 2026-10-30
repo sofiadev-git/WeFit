@@ -6,7 +6,7 @@ import it.uniroma3.siw.wefit.exception.NotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
+/* gli errori 404 e 403 generati dalle eccezioni riportano alla pagina principale con un messaggio di errore personalizzato.*/
 @ControllerAdvice
 public class GlobalExceptionHandler {
 

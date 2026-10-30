@@ -1,5 +1,6 @@
 package it.uniroma3.siw.wefit.controller;
 
+import it.uniroma3.siw.wefit.dto.EsercizioFormDto;
 import it.uniroma3.siw.wefit.model.Esercizio;
 import it.uniroma3.siw.wefit.model.Utente;
 import it.uniroma3.siw.wefit.service.EsercizioService;
@@ -44,18 +45,22 @@ public class EsercizioController {
     @GetMapping("/esercizi/new")
     public String compilaNuovoEsercizio(Authentication authentication,Model model){
         Utente utente = getUtenteCorrente(authentication);
-        model.addAttribute("utente", utente); /* per poter stampare un messaggio per l'admin*/
-        model.addAttribute("esercizio", new Esercizio());
+        model.addAttribute("utente", utente);
+        model.addAttribute("esercizio",new EsercizioFormDto("","",""));
         return "formEsercizio";
     }
 
     @PostMapping("/esercizi")
-    public String creaEsercizio(@Valid @ModelAttribute("esercizio") Esercizio esercizio, BindingResult bindingResult, Authentication authentication, Model model){
+    public String creaEsercizio(@Valid @ModelAttribute("esercizio") EsercizioFormDto dto, BindingResult bindingResult, Authentication authentication, Model model){
         Utente utente = getUtenteCorrente(authentication);
         if(bindingResult.hasErrors()){
             model.addAttribute("utente", utente);
             return "formEsercizio";
         }
+        Esercizio esercizio = new Esercizio();
+        esercizio.setNome(dto.nome());
+        esercizio.setDescrizione(dto.descrizione());
+        esercizio.setCategoria(dto.categoria());
         Esercizio e= esercizioService.createEsercizio(esercizio,utente);
         return "redirect:/esercizi/" + e.getId();
     }
@@ -63,18 +68,28 @@ public class EsercizioController {
     @GetMapping("/esercizi/{id}/edit")
     public String modificaEsercizio(@PathVariable Long id, Authentication authentication,Model model){
         Utente utente = getUtenteCorrente(authentication);
+        Esercizio esercizio = esercizioService.getEsercizioAutore(id,utente);
         model.addAttribute("utente", utente);
-        model.addAttribute("esercizio", esercizioService.getEsercizioAutore(id,utente));
+        model.addAttribute("esercizio", new EsercizioFormDto(esercizio.getNome(),esercizio.getDescrizione(),esercizio.getCategoria()));
+        model.addAttribute("esercizioId",id);
+        model.addAttribute("isDefault", esercizio.isEsercizioDefault());
         return "formModificaEsercizio";
     }
 
     @PostMapping("/esercizi/{id}")
-    public String aggiornaEsercizio(@PathVariable Long id, @Valid @ModelAttribute("esercizio") Esercizio esercizio, Authentication authentication, BindingResult bindingResult,Model model){ // "esercizio ha ora i nuovi valori
+    public String aggiornaEsercizio(@PathVariable Long id, @Valid @ModelAttribute("esercizio") EsercizioFormDto dto, BindingResult bindingResult, Authentication authentication,Model model){ // "esercizio ha ora i nuovi valori
         Utente utente = getUtenteCorrente(authentication);
+        model.addAttribute("esercizioId", id);
         if(bindingResult.hasErrors()){
+            Esercizio esercizioOriginale = esercizioService.getEsercizioAutore(id,utente);
+            model.addAttribute("isDefault", esercizioOriginale.isEsercizioDefault());
             model.addAttribute("utente", utente);
             return "formModificaEsercizio";
         }
+        Esercizio esercizio = new Esercizio();
+        esercizio.setNome(dto.nome());
+        esercizio.setDescrizione(dto.descrizione());
+        esercizio.setCategoria(dto.categoria());
         Esercizio e = esercizioService.updateEsercizio(esercizio,id, utente);
         return "redirect:/esercizi/" + e.getId();
     }

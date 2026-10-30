@@ -28,7 +28,7 @@ public class EsercizioRoutine {
 
     @NotNull
     @Min(1)
-    @Max(10)
+    @Max(20)
     @Column(nullable = false)
     private Integer numeroSet;
 

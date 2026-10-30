@@ -2,6 +2,8 @@ package it.uniroma3.siw.wefit.repository;
 
 import it.uniroma3.siw.wefit.model.Esercizio;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -15,4 +17,10 @@ public interface EsercizioRepository extends JpaRepository<Esercizio,Long> {
     List<Esercizio> findByAutore_Id(Long utenteId);
 
     List<Esercizio> findByEsercizioDefaultTrue();
+    @Query("""
+            SELECT e FROM Esercizio e
+            WHERE e.esercizioDefault = true OR e.autore.id = :utenteId
+            ORDER BY e.nome ASC
+            """)
+    List<Esercizio> findEserciziDisponibili(@Param("utenteId") Long utenteId);
 }

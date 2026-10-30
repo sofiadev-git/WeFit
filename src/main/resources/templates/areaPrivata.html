@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="it" xmlns:th="http://www.thymeleaf.org">
 <body>
-<!-- Frammento renderizzato dal mapping ESISTENTE /esercizi?sezione=area -->
+<!-- Dashboard condivisa tra area personale e area admin. -->
 <div th:fragment="areaContent" class="private-dashboard">
     <section class="private-hero">
         <div class="private-hero-inner">
-            <h1>Area riservata</h1>
-            <p>Gestisci rapidamente i tuoi contenuti personali.</p>
+            <h1 th:text="${utente.role == 'ADMIN'} ? 'Area admin' : 'Area personale'">Area personale</h1>
+            <p th:text="${utente.role == 'ADMIN'} ? 'Gestisci gli esercizi base e le routine create dall’amministratore.' : 'Crea le tue routine, gestisci gli esercizi e ritrova gli allenamenti salvati.'">
+                Gestisci i tuoi allenamenti.</p>
         </div>
     </section>
 
@@ -25,7 +26,8 @@
         </section>
 
         <aside class="private-admin-notice" th:if="${utente != null and utente.role == 'ADMIN'}" role="note">
-            <strong>Attenzione, hai fatto l'accesso come admin, gli esercizi che andrai a creare qui saranno disponibili per tutti gli utenti.</strong>
+            <strong>Attenzione, hai fatto l'accesso come admin, gli esercizi che andrai a creare qui saranno disponibili
+                per tutti gli utenti.</strong>
         </aside>
 
         <section class="private-grid" th:if="${utente != null}" aria-label="Funzioni dell'area privata">
@@ -33,19 +35,34 @@
                 <span class="private-card-icon" aria-hidden="true">
                     <svg viewBox="0 0 24 24"><path d="M3 9v6m3-9v12m3-9v6m6-6v6m3-9v12m3-9v6M6 12h12"/></svg>
                 </span>
-                <h2>I miei esercizi</h2>
-                <p th:text="${utente.role == 'ADMIN' ? 'Visualizza e gestisci gli esercizi globali che hai creato. Mantieni sempre aggiornato il catalogo WeFit.' : 'Visualizza, gestisci e modifica i tuoi esercizi personali. Mantieni la tua libreria sempre aggiornata.'}">Visualizza e gestisci i tuoi esercizi.</p>
-                <a class="private-card-button" th:href="@{/esercizi(sezione='miei')}" href="/esercizi?sezione=miei">
+                <h2 th:text="${utente.role == 'ADMIN'} ? 'Esercizi base' : 'I miei esercizi'">I miei esercizi</h2>
+                <p th:text="${utente.role == 'ADMIN' ? 'Visualizza e gestisci gli esercizi globali che hai creato. Mantieni sempre aggiornato il catalogo WeFit.' : 'Visualizza, gestisci e modifica i tuoi esercizi personali. Mantieni la tua libreria sempre aggiornata.'}">
+                    Visualizza e gestisci i tuoi esercizi.</p>
+                <a class="private-card-button"
+                   th:href="${utente.role == 'ADMIN'} ? @{/admin/esercizi} : @{/area-personale/esercizi}">
                     Apri esercizi <span aria-hidden="true">→</span>
                 </a>
             </article>
             <article class="private-action-card">
                 <span class="private-card-icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 9h6M9 13h6M9 17h4"/></svg>
+                    <svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path
+                            d="M9 9h6M9 13h6M9 17h4"/></svg>
                 </span>
-                <h2>Le mie routine</h2>
-                <p>Accedi alle tue routine di allenamento, modificale o crea nuove combinazioni per raggiungere i tuoi obiettivi.</p>
-                <span class="private-card-button private-card-button-disabled" aria-disabled="true">Prossimamente <span aria-hidden="true">→</span></span>
+                <h2 th:text="${utente.role == 'ADMIN'} ? 'Routine admin' : 'Le mie routine'">Le mie routine</h2>
+                <p>Accedi alle tue routine di allenamento, modificale o crea nuove combinazioni per raggiungere i tuoi
+                    obiettivi.</p>
+                <a class="private-card-button"
+                   th:href="${utente.role == 'ADMIN'} ? @{/admin/routines} : @{/area-personale/routines}">Apri routine
+                    <span aria-hidden="true">→</span></a>
+            </article>
+            <article class="private-action-card" th:if="${utente.role != 'ADMIN'}">
+                <span class="private-card-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M6 4h12v17l-6-4-6 4V4z"/></svg>
+                </span>
+                <h2>Routine salvate</h2>
+                <p>Ritrova gli allenamenti creati dagli altri utenti che hai aggiunto ai tuoi preferiti.</p>
+                <a class="private-card-button" th:href="@{/area-personale/salvate}">Apri salvate <span
+                        aria-hidden="true">→</span></a>
             </article>
         </section>
     </div>

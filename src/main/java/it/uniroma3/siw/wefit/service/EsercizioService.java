@@ -30,6 +30,15 @@ public class EsercizioService {
         return esercizioRepository.findByEsercizioDefaultTrue();
     }
 
+    /*usato nel form per mostrare tutti gli esercizi selezionabili*/
+    @Transactional(readOnly = true)
+    public List<Esercizio> getEserciziDisponibili(Utente utente){
+        if(utente == null){
+            throw  new NotAllowedException("Utente non autenticato");//
+        }
+        return esercizioRepository.findEserciziDisponibili(utente.getId());
+    }
+
     @Transactional(readOnly = true)
     public Esercizio getEsercizioDefaultOrAutore(Long id, Utente utente){
         Esercizio esercizio = esercizioRepository.findById(id).orElseThrow(()-> new NotFoundException("esercizio non trovato"));
