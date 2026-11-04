@@ -5,15 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${routine.nome} + ' | WeFit'">Dettaglio routine | WeFit</title>
     <link rel="stylesheet" href="/css/home.css" th:href="@{/css/home.css}">
-    <link rel="stylesheet" href="/css/routine-workflow.css" th:href="@{/css/routine-workflow.css}">
-
+    <link rel="stylesheet" href="/css/routine-workflow.css" th:href="@{/css/routine-workflow.css}"> <!-- /*!!!!!!!!!!!!!!!!!!!*/ -->
 </head>
 <body>
 <header th:replace="~{fragments/navbar :: navbar('routine')}"></header>
 
 <!-- /*!!!!!!!!!!!!!!!!!!!*/ Il dettaglio è usato sia da /routines/{id} sia da /routines/{id}/esercizi. -->
-<main class="wf-flow"
-      th:with="puoModificare=${utente != null and routine.autore != null and utente.id == routine.autore.id},listaEsercizi=${esercizi != null ? esercizi : routine.eserciziDellaRoutine}">
+<main class="wf-flow" th:with="puoModificare=${utente != null and routine.autore != null and utente.id == routine.autore.id},listaEsercizi=${esercizi != null ? esercizi : routine.eserciziDellaRoutine}">
     <div class="wf-shell">
         <div class="wf-topline">
             <a class="wf-back" th:href="@{/routines}" href="/routines">← Tutte le routine</a>
@@ -28,11 +26,9 @@
 
         <section class="wf-detail-intro" aria-labelledby="wf-routine-title">
             <div>
-                <p class="wf-eyebrow" th:text="${puoModificare} ? 'IL TUO ALLENAMENTO' : 'ROUTINE DELLA COMMUNITY'">
-                    ROUTINE DELLA COMMUNITY</p>
+                <p class="wf-eyebrow" th:text="${puoModificare} ? 'IL TUO ALLENAMENTO' : 'ROUTINE DELLA COMMUNITY'">ROUTINE DELLA COMMUNITY</p>
                 <h1 id="wf-routine-title" th:text="${routine.nome}">Allenamento completo</h1>
-                <p th:text="${#strings.isEmpty(routine.descrizione) ? 'Questa routine non ha ancora una descrizione.' : routine.descrizione}">
-                    Descrizione della routine.</p>
+                <p th:text="${#strings.isEmpty(routine.descrizione) ? 'Questa routine non ha ancora una descrizione.' : routine.descrizione}">Descrizione della routine.</p>
                 <div class="wf-detail-meta">
                     <span>Creata da <strong th:text="${routine.autore.username}">Autore</strong></span>
                     <span th:text="|${#lists.size(listaEsercizi)} esercizi nella routine|">0 esercizi nella routine</span>
@@ -41,11 +37,8 @@
             <div class="wf-detail-actions" th:if="${utente != null and utente.role != 'ADMIN' and !puoModificare}">
                 <form method="post" th:action="@{/routines/{id}/bookmark(id=${routine.id})}">
                     <input type="hidden" name="origine" value="dettaglio">
-                    <button type="submit" class="wf-btn wf-btn--primary"
-                            th:classappend="${bookmarkedIds.contains(routine.id)} ? ' wf-btn--saved' : ''"
-                            th:text="${bookmarkedIds.contains(routine.id)} ? '✓ Rimuovi dai salvati' : '＋ Salva routine'">
-                        Salva routine
-                    </button>
+                    <button type="submit" class="wf-btn wf-btn--primary" th:classappend="${bookmarkedIds.contains(routine.id)} ? ' wf-btn--saved' : ''"
+                            th:text="${bookmarkedIds.contains(routine.id)} ? '✓ Rimuovi dai salvati' : '＋ Salva routine'">Salva routine</button>
                 </form>
             </div>
             <div class="wf-detail-actions" th:if="${utente == null}">
@@ -54,10 +47,14 @@
             <div class="wf-detail-actions" th:if="${puoModificare}">
                 <a class="wf-btn" th:href="@{/routines/{id}/edit(id=${routine.id})}">Modifica dettagli</a>
                 <!-- /*!!!!!!!!!!!!!!!!!!!*/ Per aggiungere esercizi si torna al catalogo con i filtri. -->
-                <a class="wf-btn wf-btn--primary" th:href="@{/routines/{id}/esercizi/select(id=${routine.id})}">+
-                    Aggiungi esercizi</a>
+                <a class="wf-btn wf-btn--primary" th:href="@{/routines/{id}/esercizi/select(id=${routine.id})}">+ Aggiungi esercizi</a>
             </div>
         </section>
+
+        <div class="wf-card" th:if="${!#lists.isEmpty(listaEsercizi)}" style="margin-bottom:20px; padding:24px; display:flex; align-items:center; justify-content:space-between; gap:18px;">
+            <div><h2 style="margin:0 0 6px;">Visualizza la routine</h2><p style="margin:0; color:#657b89;">Consulta gli esercizi, le serie e le ripetizioni nella nuova pagina React.</p></div>
+            <a class="wf-btn wf-btn--primary" th:href="|http://localhost:5173/routines/${routine.id}|" style="white-space:nowrap;">Apri in React</a>
+        </div>
 
         <section class="wf-card" aria-labelledby="wf-routine-exercises">
             <div class="wf-card-head">
@@ -71,31 +68,21 @@
             <div class="wf-side-empty" th:if="${#lists.isEmpty(listaEsercizi)}">
                 <div class="wf-side-empty-icon" aria-hidden="true">＋</div>
                 <strong>Questa routine non contiene ancora esercizi</strong>
-                <p th:text="${puoModificare ? 'Apri il catalogo per scegliere il primo esercizio.' : 'L’autore non ha ancora aggiunto esercizi.'}">
-                    Non ci sono esercizi.</p>
-                <a class="wf-btn wf-btn--primary" th:if="${puoModificare}"
-                   th:href="@{/routines/{id}/esercizi/select(id=${routine.id})}">Esplora il catalogo →</a>
+                <p th:text="${puoModificare ? 'Apri il catalogo per scegliere il primo esercizio.' : 'L’autore non ha ancora aggiunto esercizi.'}">Non ci sono esercizi.</p>
+                <a class="wf-btn wf-btn--primary" th:if="${puoModificare}" th:href="@{/routines/{id}/esercizi/select(id=${routine.id})}">Esplora il catalogo →</a>
             </div>
 
             <ol class="wf-detail-list" th:unless="${#lists.isEmpty(listaEsercizi)}">
                 <li class="wf-detail-item" th:each="er,stato : ${listaEsercizi}">
                     <span class="wf-side-number" th:text="${stato.count}">1</span>
-                    <span class="wf-catalog-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24"
-                                                                          fill="none" stroke="currentColor"
-                                                                          stroke-width="2"><path
-                            d="M3 9v6M6 7v10M9 9v6m6-6v6m3-8v10m3-8v6M3 12h18"/></svg></span>
+                    <span class="wf-catalog-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9v6M6 7v10M9 9v6m6-6v6m3-8v10m3-8v6M3 12h18"/></svg></span>
                     <div class="wf-detail-copy">
                         <h3 th:text="${er.esercizio.nome}">Panca piana</h3>
-                        <p><span th:text="${er.esercizio.categoria}">Petto</span> · <span
-                                th:text="|${er.numeroSet} serie × ${er.ripetizioni} ripetizioni|">3 serie × 10 ripetizioni</span>
-                        </p>
+                        <p><span th:text="${er.esercizio.categoria}">Petto</span> · <span th:text="|${er.numeroSet} serie × ${er.ripetizioni} ripetizioni|">3 serie × 10 ripetizioni</span></p>
                     </div>
                     <div class="wf-detail-item-actions" th:if="${puoModificare}">
-                        <a class="wf-btn wf-btn--small"
-                           th:href="@{/routines/{id}/esercizi/{esId}/edit(id=${routine.id},esId=${er.id})}">Modifica</a>
-                        <form method="post"
-                              th:action="@{/routines/{id}/esercizi/{esId}/delete(id=${routine.id},esId=${er.id})}"
-                              onsubmit="return confirm('Vuoi rimuovere questo esercizio dalla routine?');">
+                        <a class="wf-btn wf-btn--small" th:href="@{/routines/{id}/esercizi/{esId}/edit(id=${routine.id},esId=${er.id})}">Modifica</a>
+                        <form method="post" th:action="@{/routines/{id}/esercizi/{esId}/delete(id=${routine.id},esId=${er.id})}" onsubmit="return confirm('Vuoi rimuovere questo esercizio dalla routine?');">
                             <button class="wf-btn wf-btn--small" type="submit">Rimuovi</button>
                         </form>
                     </div>
@@ -103,8 +90,7 @@
             </ol>
             <div class="wf-card-foot">
                 <a class="wf-btn" th:href="@{/routines}">Tutte le routine</a>
-                <a class="wf-btn wf-btn--primary" th:if="${puoModificare}"
-                   th:href="@{/routines/{id}/esercizi/select(id=${routine.id})}">Aggiungi altri esercizi →</a>
+                <a class="wf-btn wf-btn--primary" th:if="${puoModificare}" th:href="@{/routines/{id}/esercizi/select(id=${routine.id})}">Aggiungi altri esercizi →</a>
             </div>
         </section>
     </div>

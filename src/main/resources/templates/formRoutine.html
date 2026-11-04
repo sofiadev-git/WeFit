@@ -11,7 +11,7 @@
 <body>
 <header th:replace="~{fragments/navbar :: navbar('routine')}"></header>
 
-<!-- /*!!!!!!!!!!!!!!!!!!!*/ Il DTO non ha id: la modalità modifica dipende da routineId. -->
+
 <main class="wf-flow" th:with="isEdit=${routineId != null}">
     <div class="wf-shell">
         <div class="wf-topline">
@@ -19,7 +19,7 @@
             <span class="wf-overline">WEFIT / ROUTINE</span>
         </div>
 
-        <ol class="wf-stepper" aria-label="Fasi di creazione della routine" th:unless="${isEdit}">
+        <ol class="wf-stepper" aria-label="Fasi di creazione della routine" >
             <li class="is-active" aria-current="step"><span class="wf-step-number">1</span> Dettagli</li>
             <li><span class="wf-step-number">2</span> Aggiungi esercizi</li>
             <li><span class="wf-step-number">3</span> Riepilogo</li>
@@ -43,7 +43,7 @@
                     </div>
                     <span class="wf-pill">Passaggio 1</span>
                 </div>
-                <!-- /*!!!!!!!!!!!!!!!!!!!*/ L'ID è nell'URL, non viene inviato nel DTO. -->
+
                 <form method="post" th:object="${routine}"
                       th:action="${isEdit} ? @{/routines/{id}(id=${routineId})} : @{/routines}">
                     <div class="wf-card-body">

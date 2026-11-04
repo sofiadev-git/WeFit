@@ -6,6 +6,9 @@ import it.uniroma3.siw.wefit.model.Esercizio;
 import it.uniroma3.siw.wefit.model.Utente;
 import it.uniroma3.siw.wefit.repository.EsercizioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,10 +27,12 @@ public class EsercizioService {
         } /*al posto di dare null da una lista vuota*/
         return esercizioRepository.findByAutore_Id(utente.getId());
     }
+    private static final int ESERCIZI_PER_PAGINA = 10;
 
     @Transactional(readOnly = true)
-    public List<Esercizio> getEserciziDefault(){
-        return esercizioRepository.findByEsercizioDefaultTrue();
+    public Page<Esercizio> getEserciziDefault(int page) {
+        Pageable pageable = PageRequest.of(page, ESERCIZI_PER_PAGINA);
+        return esercizioRepository.findByEsercizioDefaultTrue(pageable);
     }
 
     /*usato nel form per mostrare tutti gli esercizi selezionabili*/

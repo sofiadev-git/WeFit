@@ -11,10 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class EsercizioController {
@@ -25,11 +22,17 @@ public class EsercizioController {
     UtenteService utenteService;
 
     @GetMapping("/esercizi")
-    public String visualizzaEsercizi(Authentication authentication, Model model){
+    public String visualizzaEsercizi(@RequestParam(defaultValue = "0") int page, Authentication authentication, Model model) {
         Utente utente = getUtenteCorrente(authentication);
-        model.addAttribute("utente", utente); /*passo l'utente perché in base al ruolo cambia la visualizzazione */
+
+        if (page < 0) {
+            page = 0;
+        }
+
+        model.addAttribute("utente", utente);
         model.addAttribute("eserciziUtente", esercizioService.getEserciziUtente(utente));
-        model.addAttribute("eserciziDefault", esercizioService.getEserciziDefault());
+        model.addAttribute("eserciziDefault", esercizioService.getEserciziDefault(page));
+
         return "paginaEsercizi";
     }
 

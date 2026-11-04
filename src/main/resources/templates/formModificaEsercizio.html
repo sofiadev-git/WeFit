@@ -21,10 +21,8 @@
 
     <div class="exercise-layout">
         <section class="exercise-form-card" aria-label="Dati dell'esercizio">
-            <form class="exercise-form" method="post" th:action="@{/esercizi/{id}(id=${esercizio.id})}"
+            <form class="exercise-form" method="post" th:action="@{/esercizi/{id}(id=${esercizioId})}"
                   th:object="${esercizio}">
-                <!-- L'ID serve solo a ripopolare la form in caso di errore. Il backend autorizza in base all'ID dell'URL. -->
-                <input type="hidden" th:field="*{id}">
                 <div class="exercise-global-errors" th:if="${#fields.hasGlobalErrors()}">
                     <p th:each="errore : ${#fields.globalErrors()}" th:text="${errore}"></p>
                 </div>
@@ -75,7 +73,7 @@
             </form>
         </section>
 
-        <aside class="exercise-info" aria-label="Informazioni sull'esercizio" th:if="${esercizio.esercizioDefault}">
+        <aside class="exercise-info" aria-label="Informazioni sull'esercizio" th:if="${isDefault}">
     <span class="exercise-info-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
              stroke-linejoin="round">
@@ -89,7 +87,7 @@
                     loro routine.</p>
             </div>
         </aside>
-        <aside class="exercise-info" aria-label="Informazioni sull'esercizio" th:unless="${esercizio.esercizioDefault}">
+        <aside class="exercise-info" aria-label="Informazioni sull'esercizio" th:unless="${isDefault}">
     <span class="exercise-info-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
              stroke-linejoin="round">

@@ -4,9 +4,11 @@
 <!-- Frammento per /area-personale/esercizi e /admin/esercizi. -->
 <div th:fragment="mieiContent" class="private-list-page">
     <div class="private-list-container">
-        <div class="private-breadcrumb"><a th:href="${utente.role == 'ADMIN'} ? @{/admin} : @{/area-personale}"
-                                           th:text="${utente.role == 'ADMIN'} ? 'Area admin' : 'Area personale'">Area
-            personale</a><span>›</span><span th:text="${utente.role == 'ADMIN'} ? 'Esercizi base' : 'I miei esercizi'">I miei esercizi</span>
+        <div class="private-breadcrumb">
+            <a th:if="${utente != null and utente.role == 'ADMIN'}" th:href="@{/admin}">Area admin</a>
+            <a th:unless="${utente != null and utente.role == 'ADMIN'}" th:href="@{/area-personale}">Area personale</a>
+            <span>›</span>
+            <span th:text="${utente != null and utente.role == 'ADMIN' ? 'Esercizi base' : 'I miei esercizi'}">I miei esercizi</span>
         </div>
         <div class="private-list-heading">
             <div>

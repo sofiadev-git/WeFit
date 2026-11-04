@@ -80,32 +80,27 @@
 
                 <div class="routine-card-meta">
                         <span class="routine-author">
-                            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"></circle><path
-                                    d="M5.5 20c0-3.6 2.4-6 6.5-6s6.5 2.4 6.5 6"></path></svg>
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"></circle><path d="M5.5 20c0-3.6 2.4-6 6.5-6s6.5 2.4 6.5 6"></path></svg>
                             <span th:text="${routine.autore.username}">utente</span>
                         </span>
                     <span class="routine-exercises">
-                            <svg viewBox="0 0 24 24" aria-hidden="true"><path
-                                    d="M3 9v6m3-9v12m3-9v6m6-6v6m3-9v12m3-9v6M3 12h18"></path></svg>
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6m3-9v12m3-9v6m6-6v6m3-9v12m3-9v6M3 12h18"></path></svg>
                             <span th:text="${#lists.size(routine.eserciziDellaRoutine)}">0</span>
                             esercizi
                         </span>
                 </div>
-                <div class="routine-bookmark-row"
-                     th:if="${utente != null and utente.role != 'ADMIN' and utente.id != routine.autore.id}">
+                <div class="routine-bookmark-row" th:if="${utente != null and utente.role != 'ADMIN' and utente.id != routine.autore.id}">
                     <form method="post" th:action="@{/routines/{id}/bookmark(id=${routine.id})}">
                         <input type="hidden" name="origine" value="catalogo">
                         <button type="submit" class="routine-bookmark-button"
                                 th:classappend="${bookmarkedIds.contains(routine.id)} ? ' is-saved' : ''"
-                                th:text="${bookmarkedIds.contains(routine.id)} ? '✓ Salvata · Rimuovi' : '＋ Salva routine'">
-                            ＋ Salva routine
-                        </button>
+                                th:text="${bookmarkedIds.contains(routine.id)} ? '✓ Salvata · Rimuovi' : '＋ Salva routine'">＋ Salva routine</button>
                     </form>
                 </div>
                 <div class="routine-bookmark-row" th:if="${utente == null}">
                     <a class="routine-bookmark-button" th:href="@{/login}">Accedi per salvarla</a>
                 </div>
-                <a class="routine-card-link" href="/routines/1" th:href="@{/routines/{id}(id=${routine.id})}">
+                <a class="routine-card-link" href="http://localhost:5173/routines/1" th:href="|http://localhost:5173/routines/${routine.id}|">
                     Visualizza routine <span aria-hidden="true">→</span>
                 </a>
             </article>
