@@ -49,13 +49,15 @@ public class EsercizioRoutineController {
     }
 
     @GetMapping("/routines/{id}/esercizi/select")
-    public String selezionaEserciziPerRoutine(@PathVariable Long id, Authentication authentication, Model model) {
+    public String selezionaEserciziPerRoutine(@RequestParam(defaultValue = "0") int page, @PathVariable Long id, Authentication authentication, Model model) {
         Utente utente = getUtenteCorrente(authentication);
         Routine routine = getRoutinePropria(id, utente);
-
+        if(page<0){
+            page=0;
+        }
         model.addAttribute("utente", utente);
         model.addAttribute("routine", routine);
-        model.addAttribute("eserciziDisponibili", esercizioService.getEserciziDisponibili(utente));
+        model.addAttribute("eserciziDisponibili", esercizioService.getEserciziDisponibili(utente,page));
 
         return "selezionaEserciziRoutine";
     }

@@ -19,10 +19,10 @@
             <div><h1>Routine salvate</h1><p>Qui trovi soltanto le routine create dagli altri utenti che hai salvato.</p></div>
             <a class="private-create-button" th:href="@{/routines}">Esplora le routine</a>
         </div>
-        <div class="private-tools" th:if="${!#lists.isEmpty(routines)}">
+        <div class="private-tools" th:if="${routines.hasContent()}">
             <div class="private-filter-input"><span aria-hidden="true">⌕</span><label class="visually-hidden" for="saved-search">Cerca routine salvate</label><input id="saved-search" type="search" placeholder="Cerca tra le routine salvate..." data-my-routines-search autocomplete="off"></div>
         </div>
-        <div class="private-table-wrap" th:if="${!#lists.isEmpty(routines)}">
+        <div class="private-table-wrap" th:if="${routines.hasContent()}">
             <table class="private-exercise-table private-routine-table">
                 <thead><tr><th scope="col">Routine</th><th scope="col">Autore</th><th scope="col">Descrizione</th><th scope="col">Azioni</th></tr></thead>
                 <tbody>
@@ -42,7 +42,12 @@
             </table>
             <div class="private-no-filter-results" data-my-routines-empty-filter hidden>Nessuna routine corrisponde alla ricerca.</div>
         </div>
-        <div class="private-empty-list" th:if="${#lists.isEmpty(routines)}">
+        <nav class="private-pagination" th:if="${routines.totalPages > 1}" aria-label="Paginazione routine salvate">
+            <a th:if="${routines.hasPrevious()}" th:href="@{/area-personale/salvate(page=${routines.number - 1})}">← Precedente</a>
+            <span>Pagina <span th:text="${routines.number + 1}">1</span> di <span th:text="${routines.totalPages}">1</span></span>
+            <a th:if="${routines.hasNext()}" th:href="@{/area-personale/salvate(page=${routines.number + 1})}">Successiva →</a>
+        </nav>
+        <div class="private-empty-list" th:if="${routines.totalElements == 0}">
             <span class="private-empty-icon" aria-hidden="true">♡</span>
             <h2>Non hai ancora salvato routine</h2>
             <p>Esplora le routine della community e salva quelle che vorresti provare.</p>

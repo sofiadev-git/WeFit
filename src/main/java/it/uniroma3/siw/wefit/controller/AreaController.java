@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class AreaController {
@@ -29,26 +30,36 @@ public class AreaController {
     }
 
     @GetMapping({"/area-personale/routines", "/admin/routines"})
-    public String mieRoutine(Model model, Authentication authentication) {
+    public String mieRoutine(@RequestParam(defaultValue = "0") int page,Model model, Authentication authentication) {
         Utente utente = utenteService.findUtenteByUsername(authentication.getName());
+        if (page < 0) {
+            page = 0;
+        }
         model.addAttribute("utente", utente);
-        model.addAttribute("routines", routineService.getRoutinesUtente(utente));
+        model.addAttribute("routines", routineService.getRoutinesUtente(utente,page));
         return "paginaMieRoutine";
     }
 
     @GetMapping("/area-personale/salvate")
-    public String routineSalvate(Model model, Authentication authentication) {
+    public String routineSalvate(
+           @RequestParam(defaultValue = "0") int page, Model model, Authentication authentication) {
         Utente utente = utenteService.findUtenteByUsername(authentication.getName());
+        if (page < 0) {
+            page = 0;
+        }
         model.addAttribute("utente", utente);
-        model.addAttribute("routines", routineService.getBookmarkedRoutines(utente));
+        model.addAttribute("routines", routineService.getBookmarkedRoutines(utente,page));
         return "paginaRoutineSalvate";
     }
 
     @GetMapping({"/area-personale/esercizi", "/admin/esercizi"})
-    public String mieiEsercizi(Model model, Authentication authentication) {
+    public String mieiEsercizi(@RequestParam(defaultValue = "0") int page, Model model, Authentication authentication) {
         Utente utente = utenteService.findUtenteByUsername(authentication.getName());
+        if (page < 0) {
+            page = 0;
+        }
         model.addAttribute("utente", utente);
-        model.addAttribute("eserciziUtente", esercizioService.getEserciziUtente(utente));
+        model.addAttribute("eserciziUtente", esercizioService.getEserciziUtente(utente,page));
         return "paginaMieiEsercizi";
     }
 }

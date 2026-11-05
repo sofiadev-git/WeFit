@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,18 +17,19 @@ import java.util.List;
 
 @Service
 public class EsercizioService {
+
+    private static final int ESERCIZI_PER_PAGINA = 3;
+
     @Autowired
     EsercizioRepository esercizioRepository;
 
     /*un utente può visualizzare gli esercizi con EsercizioDefault=true o esercizi di cui è l'autore*/
     @Transactional(readOnly = true)
-    public List<Esercizio> getEserciziUtente(Utente utente){
-        if (utente == null ) {
-            return List.of();
-        } /*al posto di dare null da una lista vuota*/
-        return esercizioRepository.findByAutore_Id(utente.getId());
+    public Page<Esercizio> getEserciziUtente(Utente utente,int page){
+        Pageable pageable = PageRequest.of(page, ESERCIZI_PER_PAGINA);
+        return esercizioRepository.findByAutore_Id(utente.getId(),pageable);
     }
-    private static final int ESERCIZI_PER_PAGINA = 10;
+
 
     @Transactional(readOnly = true)
     public Page<Esercizio> getEserciziDefault(int page) {
@@ -42,6 +44,15 @@ public class EsercizioService {
             throw  new NotAllowedException("Utente non autenticato");//
         }
         return esercizioRepository.findEserciziDisponibili(utente.getId());
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Esercizio> getEserciziDisponibili(Utente utente,int page){
+        if(utente == null){
+            throw  new NotAllowedException("Utente non autenticato");//
+        }
+        Pageable pageable = PageRequest.of(page, ESERCIZI_PER_PAGINA);
+        return esercizioRepository.findEserciziDisponibiliPaginati(utente.getId(),pageable);
     }
 
     @Transactional(readOnly = true)

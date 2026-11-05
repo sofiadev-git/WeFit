@@ -41,12 +41,12 @@
                 <p class="routines-subtitle">Sfoglia gli allenamenti creati dagli utenti WeFit.</p>
             </div>
             <span class="routines-total-count" aria-live="polite">
-                    <strong data-visible-count th:text="${#lists.size(routines)}">0</strong>
-                    <span data-count-label>routine disponibili</span>
+                <strong th:text="${routines.totalElements}">0</strong>
+                <span>routine totali</span>
                 </span>
         </div>
 
-        <div class="routines-toolbar" th:if="${!#lists.isEmpty(routines)}">
+        <div class="routines-toolbar" th:if="${routines.hasContent()}">
             <div class="routines-search-field">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <circle cx="10.5" cy="10.5" r="6.5"></circle>
@@ -60,7 +60,7 @@
             <button class="routines-reset-button" type="button" data-clear-filter hidden>Rimuovi filtro</button>
         </div>
 
-        <div class="routines-grid" th:if="${!#lists.isEmpty(routines)}">
+        <div class="routines-grid" th:if="${routines.hasContent()}">
             <article class="routine-card" th:each="routine : ${routines}"
                      th:attr="data-name=${routine.nome},data-author=${routine.autore.username}">
                 <div class="routine-card-top">
@@ -107,7 +107,7 @@
         </div>
 
         <!-- Nessuna routine nel database. -->
-        <div class="routines-empty-state" th:if="${#lists.isEmpty(routines)}">
+        <div class="routines-empty-state" th:if="${routines.totalElements == 0}">
             <div class="routines-empty-icon" aria-hidden="true">＋</div>
             <h3>Non ci sono ancora routine</h3>
             <p>Le routine create dalla community compariranno qui.</p>
@@ -117,12 +117,27 @@
             </a>
         </div>
 
+        <!-- Pagina oltre l'ultima disponibile. -->
+        <div class="routines-empty-state" th:if="${routines.totalElements > 0 and !routines.hasContent()}">
+            <div class="routines-empty-icon" aria-hidden="true">⌕</div>
+            <h3>Nessuna routine in questa pagina</h3>
+            <p>La pagina richiesta non contiene routine.</p>
+            <a th:href="@{/routines(page=0)}">Torna alla prima pagina →</a>
+        </div>
+
         <!-- Nessun risultato per il filtro lato browser. -->
         <div class="routines-empty-state" data-no-results hidden>
             <div class="routines-empty-icon" aria-hidden="true">⌕</div>
             <h3>Nessuna routine trovata</h3>
             <p>Prova con un altro nome o cerca un autore diverso.</p>
         </div>
+        <nav class="routines-pagination" th:if="${routines.totalPages > 1}" aria-label="Paginazione routine">
+            <a th:if="${routines.hasPrevious()}" th:href="@{/routines(page=${routines.number - 1})}">← Precedente</a>
+
+            <span>Pagina <span th:text="${routines.number + 1}">1</span> di <span th:text="${routines.totalPages}">1</span></span>
+
+            <a th:if="${routines.hasNext()}" th:href="@{/routines(page=${routines.number + 1})}">Successiva →</a>
+        </nav>
     </section>
 </main>
 </body>

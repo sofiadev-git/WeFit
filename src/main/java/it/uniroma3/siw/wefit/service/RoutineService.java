@@ -10,6 +10,9 @@ import it.uniroma3.siw.wefit.model.Utente;
 import it.uniroma3.siw.wefit.repository.RoutineRepository;
 import it.uniroma3.siw.wefit.repository.UtenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,14 +22,18 @@ import java.util.Set;
 
 @Service
 public class RoutineService {
+
+    private static final int ROUTINE_PER_PAGINA = 2;
+
     @Autowired
     RoutineRepository routineRepository;
     @Autowired
     private UtenteRepository utenteRepository;
 
     @Transactional(readOnly = true)
-    public List<Routine> getAllRoutines(){
-        return routineRepository.findAll();
+    public Page<Routine> getAllRoutines(int page){
+        Pageable pageable = PageRequest.of(page,ROUTINE_PER_PAGINA);
+        return routineRepository.findAll(pageable);
     }
 
     @Transactional(readOnly = true)
@@ -35,8 +42,9 @@ public class RoutineService {
     }
 
     @Transactional(readOnly = true)
-    public List<Routine> getRoutinesUtente(Utente utente){
-        return routineRepository.findByAutore_Id(utente.getId());
+    public Page<Routine> getRoutinesUtente(Utente utente,int page){
+        Pageable pageable = PageRequest.of(page,ROUTINE_PER_PAGINA);
+        return routineRepository.findByAutore_Id(utente.getId(),pageable);
     }
 
     @Transactional(readOnly = true)
@@ -127,11 +135,12 @@ public class RoutineService {
     }
 
     @Transactional(readOnly = true)
-    public List<Routine> getBookmarkedRoutines(Utente utente) {
+    public Page<Routine> getBookmarkedRoutines(Utente utente,int page) {
         if (utente == null) {
             throw new NotAllowedException("Utente non autenticato");
         }
-        return routineRepository.findBookmarkedRoutinesOfOtherAuthors(utente.getId());
+        Pageable pageable = PageRequest.of(page,ROUTINE_PER_PAGINA);
+        return routineRepository.findBookmarkedRoutinesOfOtherAuthors(utente.getId(),pageable);
     }
 
     @Transactional(readOnly = true)

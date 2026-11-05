@@ -24,13 +24,10 @@ public class EsercizioController {
     @GetMapping("/esercizi")
     public String visualizzaEsercizi(@RequestParam(defaultValue = "0") int page, Authentication authentication, Model model) {
         Utente utente = getUtenteCorrente(authentication);
-
         if (page < 0) {
             page = 0;
         }
-
         model.addAttribute("utente", utente);
-        model.addAttribute("eserciziUtente", esercizioService.getEserciziUtente(utente));
         model.addAttribute("eserciziDefault", esercizioService.getEserciziDefault(page));
 
         return "paginaEsercizi";

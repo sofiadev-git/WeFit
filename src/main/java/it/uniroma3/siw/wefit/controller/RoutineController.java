@@ -27,10 +27,13 @@ public class RoutineController {
     UtenteService utenteService;
 
     @GetMapping("/routines")
-    public String visualizzaRoutines(Model model, Authentication authentication){
+    public String visualizzaRoutines(@RequestParam(defaultValue = "0") int page,Model model, Authentication authentication){
         Utente utente = getUtenteCorrente(authentication);
+        if (page < 0) {
+            page = 0;
+        }
         model.addAttribute("utente",utente);
-        model.addAttribute("routines", routineService.getAllRoutines());
+        model.addAttribute("routines", routineService.getAllRoutines(page));
         model.addAttribute("bookmarkedIds", routineService.getBookmarkedRoutineIds(utente));
         return "paginaListaRoutines";
     }

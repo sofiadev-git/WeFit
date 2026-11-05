@@ -1,6 +1,8 @@
 package it.uniroma3.siw.wefit.repository;
 
 import it.uniroma3.siw.wefit.model.Routine;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -11,10 +13,10 @@ import java.util.Set;
 
 public interface RoutineRepository extends JpaRepository<Routine,Long> {
 
-    List<Routine> findByAutore_Id(Long autoreId);
+    Page<Routine> findByAutore_Id(Long autoreId, Pageable pageable);
 
     @Query("select r from Utente u join u.bookmarkedRoutines r where u.id = :utenteId and r.autore.id <> :utenteId order by r.nome")
-    List<Routine> findBookmarkedRoutinesOfOtherAuthors(@Param("utenteId") Long utenteId);
+    Page<Routine> findBookmarkedRoutinesOfOtherAuthors(@Param("utenteId") Long utenteId, Pageable pageable);
 
     @Query("select r.id from Utente u join u.bookmarkedRoutines r where u.id = :utenteId and r.autore.id <> :utenteId")
     Set<Long> findBookmarkedRoutineIds(@Param("utenteId") Long utenteId);

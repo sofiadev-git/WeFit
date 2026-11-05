@@ -16,9 +16,16 @@ public interface EsercizioRepository extends JpaRepository<Esercizio,Long> {
     * 2. Esercizi personalizzati, creati dai singoli utenti e visualizzabili/utilizzabili sono da questi.
     *
     * Quindi la lista di esercizi disponibili per un utente è data dagli esercizi default + personalizzati dell'utente.*/
-    List<Esercizio> findByAutore_Id(Long utenteId);
+    Page<Esercizio> findByAutore_Id(Long utenteId, Pageable pageable);
 
     List<Esercizio> findByEsercizioDefaultTrue();
+
+    @Query("""
+            SELECT e FROM Esercizio e
+            WHERE e.esercizioDefault = true OR e.autore.id = :utenteId
+            ORDER BY e.nome ASC
+            """)
+    Page<Esercizio> findEserciziDisponibiliPaginati(@Param("utenteId") Long utenteId, Pageable pageable);
 
     @Query("""
             SELECT e FROM Esercizio e
