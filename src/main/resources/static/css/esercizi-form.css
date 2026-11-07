@@ -21,13 +21,13 @@
     display: inline-flex;
     align-items: center;
     gap: 9px;
-    color: #516372;
+    color: var(--muted);
     font-size: 15px;
     font-weight: 600;
 }
 
 .exercise-back-link:hover {
-    color: #12664a;
+    color: var(--accent);
 }
 
 .exercise-layout {
@@ -38,8 +38,8 @@
 }
 
 .exercise-form-card {
-    background: #fff;
-    border: 1px solid #e0e9ed;
+    background: var(--surface);
+    border: 1px solid var(--line);
     border-radius: 7px;
     padding: 34px 36px;
     box-shadow: 0 6px 24px #2033430c;
@@ -58,17 +58,17 @@
 }
 
 .exercise-field label {
-    color: #202e39;
+    color: var(--text);
     font-weight: 700;
     font-size: 15px;
 }
 
 .exercise-required {
-    color: #c74242;
+    color: #ffb0a3;
 }
 
 .exercise-optional {
-    color: #758592;
+    color: var(--muted);
     font-weight: 400;
 }
 
@@ -76,9 +76,9 @@
 .exercise-field textarea {
     width: 100%;
     font: inherit;
-    color: #182b38;
-    background: #fff;
-    border: 1px solid #cbd8df;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--line);
     border-radius: 6px;
     padding: 14px 16px;
     transition: border-color .15s ease, box-shadow .15s ease;
@@ -96,36 +96,36 @@
 
 .exercise-field input::placeholder,
 .exercise-field textarea::placeholder {
-    color: #8797a1;
+    color: var(--muted);
 }
 
 .exercise-field input:hover,
 .exercise-field textarea:hover {
-    border-color: #a7b9c3;
+    border-color: var(--line);
 }
 
 .exercise-field input:focus,
 .exercise-field textarea:focus {
     outline: none;
-    border-color: #21b987;
+    border-color: var(--line);
     box-shadow: 0 0 0 3px #4bdfa027;
 }
 
 .exercise-field [aria-invalid="true"] {
-    border-color: #c74545;
+    border-color: #9f645a;
 }
 
 .exercise-field-error {
-    color: #a52e2e;
+    color: #ffb0a3;
     font-size: 13px;
     line-height: 1.4;
 }
 
 .exercise-global-errors {
     border-radius: 6px;
-    background: #fff2f2;
-    border: 1px solid #efc1c1;
-    color: #a32e2e;
+    background: #382322;
+    border: 1px solid #9f645a;
+    color: #ffb0a3;
     padding: 12px 15px;
 }
 
@@ -152,13 +152,13 @@
 }
 
 .exercise-cancel {
-    background: #edf2f4;
-    color: #314652;
-    border-color: #e1e8ec;
+    background: var(--surface);
+    color: var(--muted);
+    border-color: var(--line);
 }
 
 .exercise-cancel:hover {
-    background: #e3ebee;
+    background: #272426;
 }
 
 .exercise-submit {
@@ -166,8 +166,8 @@
 }
 
 .exercise-info {
-    background: #eaf3fc;
-    border: 1px solid #dce9f5;
+    background: var(--surface);
+    border: 1px solid var(--line);
     border-radius: 7px;
     display: flex;
     align-items: flex-start;
@@ -181,7 +181,7 @@
     flex-shrink: 0;
     display: grid;
     place-items: center;
-    color: #1e66cc;
+    color: var(--muted);
 }
 
 .exercise-info-icon svg {
@@ -192,11 +192,11 @@
 .exercise-info h2 {
     font-size: 18px;
     margin: 2px 0 11px;
-    color: #1d354a;
+    color: var(--text);
 }
 
 .exercise-info p {
-    color: #466071;
+    color: var(--muted);
     font-size: 15px;
     margin: 0;
     line-height: 1.65;

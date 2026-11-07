@@ -6,8 +6,10 @@
     <title th:text="${routine.nome} + ' | WeFit'">Dettaglio routine | WeFit</title>
     <link rel="stylesheet" href="/css/home.css" th:href="@{/css/home.css}">
     <link rel="stylesheet" href="/css/routine-workflow.css" th:href="@{/css/routine-workflow.css}"> <!-- /*!!!!!!!!!!!!!!!!!!!*/ -->
+    <link rel="stylesheet" href="../static/css/studio.css" th:href="@{/css/studio.css}">
+    <link rel="stylesheet" href="../static/css/pagine-interne.css" th:href="@{/css/pagine-interne.css}">
 </head>
-<body>
+<body data-posa="affondo">
 <header th:replace="~{fragments/navbar :: navbar('routine')}"></header>
 
 <!-- /*!!!!!!!!!!!!!!!!!!!*/ Il dettaglio è usato sia da /routines/{id} sia da /routines/{id}/esercizi. -->
@@ -33,6 +35,7 @@
                     <span>Creata da <strong th:text="${routine.autore.username}">Autore</strong></span>
                     <span th:text="|${#lists.size(listaEsercizi)} esercizi nella routine|">0 esercizi nella routine</span>
                 </div>
+                <a class="wf-btn wf-btn--primary" style="margin-top:1rem" th:if="${!#lists.isEmpty(listaEsercizi)}" th:href="${allenamentoUrl}">Avvia allenamento →</a>
             </div>
             <div class="wf-detail-actions" th:if="${utente != null and utente.role != 'ADMIN' and !puoModificare}">
                 <form method="post" th:action="@{/routines/{id}/bookmark(id=${routine.id})}">
@@ -50,11 +53,6 @@
                 <a class="wf-btn wf-btn--primary" th:href="@{/routines/{id}/esercizi/select(id=${routine.id})}">+ Aggiungi esercizi</a>
             </div>
         </section>
-
-        <div class="wf-card" th:if="${!#lists.isEmpty(listaEsercizi)}" style="margin-bottom:20px; padding:24px; display:flex; align-items:center; justify-content:space-between; gap:18px;">
-            <div><h2 style="margin:0 0 6px;">Visualizza la routine</h2><p style="margin:0; color:#657b89;">Consulta gli esercizi, le serie e le ripetizioni nella nuova pagina React.</p></div>
-            <a class="wf-btn wf-btn--primary" th:href="|http://localhost:5173/routines/${routine.id}|" style="white-space:nowrap;">Apri in React</a>
-        </div>
 
         <section class="wf-card" aria-labelledby="wf-routine-exercises">
             <div class="wf-card-head">

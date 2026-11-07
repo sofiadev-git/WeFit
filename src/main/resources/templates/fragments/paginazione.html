@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav class="page-controls" th:fragment="controlli(pagina, percorso)" aria-label="Paginazione"
+     th:with="totale=${pagina.totalPages}, precedente=${pagina.number >= pagina.totalPages ? pagina.totalPages - 1 : pagina.number - 1}">
+    <a class="page-control" th:if="${totale > 0 and pagina.hasPrevious()}"
+       th:href="${!#strings.isEmpty(ricerca)} ? @{${percorso}(page=${precedente},q=${ricerca})} : @{${percorso}(page=${precedente})}">
+        <span aria-hidden="true">←</span> Pagina precedente
+    </a>
+    <button class="page-control" th:unless="${totale > 0 and pagina.hasPrevious()}" type="button" disabled>
+        <span aria-hidden="true">←</span> Pagina precedente
+    </button>
+    <span class="page-position" aria-live="polite" th:text="${totale > 0 and pagina.number >= totale} ? |Pagina ${pagina.number + 1} (ultima disponibile: ${totale})| : |Pagina ${totale == 0 ? 1 : pagina.number + 1} di ${totale == 0 ? 1 : totale}|">Pagina 1 di 1</span>
+    <a class="page-control" th:if="${pagina.hasNext()}"
+       th:href="${!#strings.isEmpty(ricerca)} ? @{${percorso}(page=${pagina.number + 1},q=${ricerca})} : @{${percorso}(page=${pagina.number + 1})}">
+        Pagina successiva <span aria-hidden="true">→</span>
+    </a>
+    <button class="page-control" th:unless="${pagina.hasNext()}" type="button" disabled>
+        Pagina successiva <span aria-hidden="true">→</span>
+    </button>
+</nav>
+</body>
+</html>

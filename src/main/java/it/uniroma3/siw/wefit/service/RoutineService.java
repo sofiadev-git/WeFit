@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,8 +32,16 @@ public class RoutineService {
     private UtenteRepository utenteRepository;
 
     @Transactional(readOnly = true)
-    public Page<Routine> getAllRoutines(int page){
-        Pageable pageable = PageRequest.of(page,ROUTINE_PER_PAGINA);
+    public Page<Routine> getAllRoutines(int page) {
+        return getAllRoutines(page, "");
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Routine> getAllRoutines(int page, String ricerca){
+        Pageable pageable = PageRequest.of(page, ROUTINE_PER_PAGINA, Sort.by("id"));
+        if (!ricerca.isEmpty()) {
+            return routineRepository.findByNomeContainingIgnoreCaseOrAutore_UsernameContainingIgnoreCase(ricerca, ricerca, pageable);
+        }
         return routineRepository.findAll(pageable);
     }
 
@@ -43,7 +52,7 @@ public class RoutineService {
 
     @Transactional(readOnly = true)
     public Page<Routine> getRoutinesUtente(Utente utente,int page){
-        Pageable pageable = PageRequest.of(page,ROUTINE_PER_PAGINA);
+        Pageable pageable = PageRequest.of(page, ROUTINE_PER_PAGINA, Sort.by("id"));
         return routineRepository.findByAutore_Id(utente.getId(),pageable);
     }
 
@@ -140,7 +149,7 @@ public class RoutineService {
         if (utente == null) {
             throw new NotAllowedException("Utente non autenticato");
         }
-        Pageable pageable = PageRequest.of(page,ROUTINE_PER_PAGINA);
+        Pageable pageable = PageRequest.of(page, ROUTINE_PER_PAGINA, Sort.by("id"));
         return routineRepository.findBookmarkedRoutinesOfOtherAuthors(utente.getId(),pageable);
     }
 

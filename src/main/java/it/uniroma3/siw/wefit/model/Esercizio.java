@@ -38,6 +38,20 @@ public class Esercizio {
     private List<EsercizioRoutine> eserciziRoutines = new ArrayList<>();
 
 
+    private String percorsoImmagine;
+
+    public String getPercorsoImmagine() {
+        return percorsoImmagine;
+    }
+
+    public void setPercorsoImmagine(String percorsoImmagine) {
+        this.percorsoImmagine = percorsoImmagine;
+    }
+
+    public boolean isConImmagine() {
+        return percorsoImmagine != null;
+    }
+
     public Long getId() {
         return id;
     }

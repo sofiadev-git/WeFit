@@ -1,6 +1,6 @@
 /* WeFit - Area privata / I miei esercizi / catalogo pubblico */
 .private-dashboard, .private-list-page {
-    color: #172b3b;
+    color: var(--text);
 }
 
 .private-hero {
@@ -8,7 +8,7 @@
     display: flex;
     align-items: center;
     background: linear-gradient(90deg, rgba(14, 35, 52, .96) 0%, rgba(14, 35, 52, .9) 40%, rgba(14, 35, 52, .49) 80%), url('../images/home.png') center 45% / cover;
-    color: white;
+    color: var(--text);
 }
 
 .private-hero-inner {
@@ -26,7 +26,7 @@
 }
 
 .private-hero p {
-    color: #c0d0dc;
+    color: var(--muted);
     font-size: clamp(17px, 1.7vw, 26px);
     line-height: 1.4;
     margin: 0;
@@ -48,9 +48,9 @@
 .private-action-card {
     min-height: 345px;
     padding: 38px 42px;
-    border: 1px solid #e7edf1;
+    border: 1px solid var(--line);
     border-radius: 16px;
-    background: white;
+    background: var(--surface);
     box-shadow: 0 9px 26px #152e4012;
     display: flex;
     flex-direction: column;
@@ -63,8 +63,8 @@
     display: grid;
     place-items: center;
     border-radius: 16px;
-    background: linear-gradient(145deg, #83f9ba, #55e6aa);
-    color: #07543d;
+    background: linear-gradient(145deg, #402921, #402921);
+    color: var(--accent);
 }
 
 .private-card-icon svg {
@@ -86,7 +86,7 @@
 
 .private-action-card p {
     font-size: 19px;
-    color: #4b6178;
+    color: var(--muted);
     line-height: 1.44;
     margin: 0 0 24px;
     max-width: 470px;
@@ -97,9 +97,9 @@
     min-width: 250px;
     padding: 15px 26px;
     font-weight: 750;
-    background: #63eeb0;
+    background: #402921;
     border-radius: 10px;
-    color: #0b2c27;
+    color: var(--accent);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -108,7 +108,7 @@
 }
 
 .private-card-button:hover {
-    background: #7af8c2;
+    background: #402921;
 }
 
 .private-card-button span {
@@ -117,8 +117,8 @@
 }
 
 .private-card-button-disabled {
-    background: #e9eff1;
-    color: #778a93;
+    background: #272426;
+    color: var(--muted);
     cursor: not-allowed;
 }
 
@@ -127,8 +127,8 @@
     align-items: center;
     gap: 28px;
     padding: 40px 44px;
-    background: white;
-    border: 1px solid #e2ebee;
+    background: var(--surface);
+    border: 1px solid var(--line);
     box-shadow: 0 8px 28px #173e4c12;
     border-radius: 16px;
     max-width: 900px;
@@ -144,7 +144,7 @@
 .private-guest-card p {
     font-size: 18px;
     line-height: 1.55;
-    color: #536a7b;
+    color: var(--muted);
     margin: 0 0 23px;
 }
 
@@ -153,8 +153,8 @@
     place-items: center;
     min-width: 86px;
     height: 86px;
-    background: #dbf8e9;
-    color: #158259;
+    background: #402921;
+    color: var(--accent);
     border-radius: 20px;
     font-size: 40px;
 }
@@ -167,20 +167,20 @@
 }
 
 .private-secondary-button {
-    border: 1px solid #a4b3ba;
-    color: #1a3647;
-    background: #fff;
+    border: 1px solid var(--line);
+    color: var(--text);
+    background: var(--surface);
 }
 
 .private-secondary-button:hover {
-    background: #eaf3f0;
+    background: #402921;
 }
 
 .private-admin-notice {
-    background: #e8f4fd;
-    border: 1px solid #b7d8f1;
-    border-left: 4px solid #3575ad;
-    color: #234965;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--line);
+    color: var(--muted);
     border-radius: 9px;
     padding: 17px 21px;
     margin-bottom: 28px;
@@ -189,7 +189,7 @@
 }
 
 .private-list-page {
-    background: #f5f8fa;
+    background: var(--surface);
     min-height: calc(100vh - 90px);
 }
 
@@ -205,13 +205,13 @@
     align-items: center;
     gap: 10px;
     font-size: 14px;
-    color: #61778a;
+    color: var(--muted);
     margin-bottom: 27px;
 }
 
 .private-breadcrumb a:hover {
     text-decoration: underline;
-    color: #0d7853;
+    color: var(--accent);
 }
 
 .private-list-heading {
@@ -231,7 +231,7 @@
 
 .private-list-heading p {
     font-size: 17px;
-    color: #597083;
+    color: var(--muted);
     margin: 0;
     line-height: 1.55;
 }
@@ -241,8 +241,8 @@
     gap: 9px;
     align-items: center;
     justify-content: center;
-    background: #16a575;
-    color: #fff;
+    background: #402921;
+    color: var(--text);
     border-radius: 8px;
     padding: 15px 22px;
     font-size: 16px;
@@ -251,7 +251,7 @@
 }
 
 .private-create-button:hover {
-    background: #0b8d62;
+    background: #402921;
 }
 
 .private-tools {
@@ -266,16 +266,16 @@
     display: flex;
     align-items: center;
     gap: 9px;
-    border: 1px solid #d7e1e6;
+    border: 1px solid var(--line);
     border-radius: 8px;
-    background: #fff;
+    background: var(--surface);
     padding: 0 15px;
     min-height: 48px;
 }
 
 .private-filter-input > span {
     font-size: 25px;
-    color: #708592;
+    color: var(--muted);
 }
 
 .private-filter-input input {
@@ -285,24 +285,24 @@
     outline: 0;
     width: 100%;
     background: transparent;
-    color: #1a3040;
+    color: var(--text);
 }
 
 .private-tools select {
-    border: 1px solid #d7e1e6;
+    border: 1px solid var(--line);
     border-radius: 8px;
     min-width: 210px;
-    background: #fff;
+    background: var(--surface);
     padding: 0 14px;
     font: inherit;
-    color: #425b68;
+    color: var(--muted);
 }
 
 .private-table-wrap {
     overflow-x: auto;
-    border: 1px solid #e2e8ed;
+    border: 1px solid var(--line);
     border-radius: 12px;
-    background: #fff;
+    background: var(--surface);
     box-shadow: 0 3px 18px #1133440c;
 }
 
@@ -317,17 +317,17 @@
     font-size: 13px;
     font-weight: 800;
     letter-spacing: .15px;
-    background: #f8fafb;
-    color: #556b79;
+    background: var(--surface);
+    color: var(--muted);
     padding: 18px 22px;
-    border-bottom: 1px solid #e4edf0;
+    border-bottom: 1px solid var(--line);
 }
 
 .private-exercise-table td {
     font-size: 15px;
-    color: #415464;
+    color: var(--muted);
     padding: 16px 22px;
-    border-bottom: 1px solid #e9eff1;
+    border-bottom: 1px solid var(--line);
     vertical-align: middle;
 }
 
@@ -336,7 +336,7 @@
 }
 
 .private-exercise-table tbody tr:hover {
-    background: #fbfefd;
+    background: #402921;
 }
 
 .private-exercise-table tr[hidden] {
@@ -345,11 +345,11 @@
 
 .private-name-link {
     font-weight: 750;
-    color: #203444;
+    color: var(--text);
 }
 
 .private-name-link:hover {
-    color: #078d63;
+    color: var(--accent);
     text-decoration: underline;
 }
 
@@ -363,13 +363,13 @@
 }
 
 .private-pill-global {
-    background: #d8f6e7;
-    color: #216b4d;
+    background: #402921;
+    color: var(--accent);
 }
 
 .private-pill-personal {
-    background: #e5effe;
-    color: #32669c;
+    background: var(--surface);
+    color: var(--muted);
 }
 
 .private-actions-head {
@@ -390,13 +390,13 @@
     place-items: center;
     border: 0;
     border-radius: 8px;
-    background: #f0f4f7;
-    color: #34586b;
+    background: var(--surface);
+    color: var(--muted);
     cursor: pointer;
 }
 
 .private-icon-button:hover {
-    background: #e1eaf0;
+    background: #272426;
 }
 
 .private-icon-button svg {
@@ -414,17 +414,17 @@
 }
 
 .private-delete-button {
-    color: #ba384d;
-    background: #fcf0f1;
+    color: #ffb0a3;
+    background: #382322;
 }
 
 .private-delete-button:hover {
-    background: #f9dfe4;
+    background: #382322;
 }
 
 .private-table-view {
     font-weight: 700;
-    color: #0c9066;
+    color: var(--accent);
     white-space: nowrap;
 }
 
@@ -435,7 +435,7 @@
 .private-no-filter-results {
     text-align: center;
     padding: 28px;
-    color: #667d88;
+    color: var(--muted);
 }
 
 .private-no-filter-results[hidden] {
@@ -445,19 +445,19 @@
 .private-empty-list {
     text-align: center;
     padding: 65px 25px;
-    border: 1px dashed #b9cdd2;
+    border: 1px dashed var(--line);
     border-radius: 14px;
-    background: white;
+    background: var(--surface);
 }
 
 .private-empty-icon {
     font-size: 36px;
-    color: #08996a;
+    color: var(--accent);
     display: inline-grid;
     place-items: center;
     width: 72px;
     height: 72px;
-    background: #dcf9e9;
+    background: #402921;
     border-radius: 16px;
 }
 
@@ -467,7 +467,7 @@
 }
 
 .private-empty-list p {
-    color: #607685;
+    color: var(--muted);
     font-size: 17px;
     margin: 0 0 26px;
 }
@@ -477,8 +477,8 @@
 }
 
 .private-detail-card {
-    background: #fff;
-    border: 1px solid #e1e9ed;
+    background: var(--surface);
+    border: 1px solid var(--line);
     border-radius: 14px;
     padding: 45px 48px;
     box-shadow: 0 5px 18px #173e4c0a;
@@ -492,7 +492,7 @@
 
 .private-detail-category {
     font-size: 18px;
-    color: #526b7c;
+    color: var(--muted);
     margin: 0 0 35px;
 }
 
@@ -503,7 +503,7 @@
 
 .private-detail-description {
     font-size: 17px;
-    color: #496375;
+    color: var(--muted);
     line-height: 1.65;
     white-space: pre-wrap;
 }
@@ -518,18 +518,18 @@
 
 .private-return-link {
     font-weight: 700;
-    color: #0f8b61;
+    color: var(--accent);
 }
 
 .private-account-link {
     display: block;
     padding: 10px 12px;
     font-size: 14px;
-    color: #203343;
+    color: var(--text);
 }
 
 .private-account-link:hover {
-    background: #e9f4ed;
+    background: #402921;
 }
 
 @media (max-width: 920px) {
@@ -631,7 +631,7 @@
 
 .private-action-link {
     font-size: 14px;
-    color: #067f59;
+    color: var(--accent);
     font-weight: 750;
 }
 
@@ -640,9 +640,9 @@
 }
 
 .private-action-delete {
-    background: #fff0f1;
-    color: #b63d48;
-    border: 1px solid #f4ced2;
+    background: #382322;
+    color: #ffb0a3;
+    border: 1px solid #9f645a;
     border-radius: 7px;
     padding: 7px 11px;
     cursor: pointer;
@@ -652,7 +652,7 @@
 }
 
 .private-action-delete:hover {
-    background: #ffe2e7;
+    background: #382322;
 }
 
 .private-routine-description {

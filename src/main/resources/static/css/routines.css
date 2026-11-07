@@ -1,12 +1,12 @@
 /* PAGINA ROUTINE — riprende i colori definiti in home.css */
 .routines-page {
     min-height: calc(100vh - 90px);
-    background: #f4f8fa;
+    background: var(--surface);
 }
 
 /* Intestazione */
 .routines-hero {
-    color: #fff;
+    color: var(--text);
     background: linear-gradient(90deg, rgba(14, 34, 50, .97) 0%, rgba(14, 34, 50, .87) 53%, rgba(14, 34, 50, .47) 100%),
     url('../images/home.png') center 42% / cover no-repeat;
 }
@@ -33,7 +33,7 @@
 }
 
 .routines-kicker {
-    color: #75f0b7;
+    color: var(--accent);
 }
 
 .routines-hero h1 {
@@ -46,7 +46,7 @@
 
 .routines-hero p {
     margin: 0;
-    color: #d5e2e9;
+    color: var(--muted);
     line-height: 1.6;
     font-size: 18px;
     max-width: 630px;
@@ -60,8 +60,8 @@
 }
 
 .routines-main-button {
-    background: var(--green, #4bdfa0);
-    color: #0c332a;
+    background: var(--accent, #402921);
+    color: var(--accent);
     padding: 13px 20px;
     border-radius: 7px;
     font-size: 15px;
@@ -73,7 +73,7 @@
 }
 
 .routines-main-button:hover {
-    background: #7befb9;
+    background: #402921;
     transform: translateY(-1px);
 }
 
@@ -98,28 +98,28 @@
 }
 
 .routines-section-kicker {
-    color: #188b66;
+    color: var(--accent);
     margin-bottom: 8px;
 }
 
 .routines-section-heading h2 {
     margin: 0 0 9px;
-    color: #203343;
+    color: var(--text);
     font-size: clamp(30px, 3vw, 41px);
     letter-spacing: -1px;
 }
 
 .routines-subtitle {
     margin: 0;
-    color: #637787;
+    color: var(--muted);
     font-size: 16px;
     line-height: 1.55;
 }
 
 .routines-total-count {
-    background: #e3f8ed;
-    border: 1px solid #c8ebda;
-    color: #21694f;
+    background: #402921;
+    border: 1px solid var(--line);
+    color: var(--accent);
     padding: 10px 15px;
     border-radius: 7px;
     font-size: 14px;
@@ -144,15 +144,15 @@
     display: flex;
     align-items: center;
     gap: 13px;
-    border: 1px solid #d8e4e8;
+    border: 1px solid var(--line);
     border-radius: 9px;
-    background: #fff;
+    background: var(--surface);
     padding: 0 18px;
     box-shadow: 0 2px 10px rgba(19, 52, 68, .03);
 }
 
 .routines-search-field:focus-within {
-    border-color: #37b789;
+    border-color: var(--line);
     box-shadow: 0 0 0 3px rgba(58, 205, 146, .13);
 }
 
@@ -160,7 +160,7 @@
     width: 21px;
     height: 21px;
     flex-shrink: 0;
-    stroke: #687f8e;
+    stroke: var(--muted);
     stroke-width: 2;
     stroke-linecap: round;
     fill: none;
@@ -174,17 +174,17 @@
     background: transparent;
     font: inherit;
     font-size: 16px;
-    color: #203343;
+    color: var(--text);
 }
 
 .routines-search-field input::placeholder {
-    color: #8495a1;
+    color: var(--muted);
 }
 
 .routines-reset-button {
     background: transparent;
-    border: 1px solid #cfdee3;
-    color: #446172;
+    border: 1px solid var(--line);
+    color: var(--muted);
     padding: 15px 18px;
     border-radius: 8px;
     font: inherit;
@@ -194,7 +194,7 @@
 }
 
 .routines-reset-button:hover {
-    background: #eaf1f4;
+    background: #272426;
 }
 
 .routines-reset-button[hidden] {
@@ -214,8 +214,8 @@
     min-width: 0;
     min-height: 320px;
     padding: 26px 27px 0;
-    background: #fff;
-    border: 1px solid #e2eaee;
+    background: var(--surface);
+    border: 1px solid var(--line);
     border-radius: 11px;
     box-shadow: 0 4px 15px rgba(14, 45, 62, .045);
     transition: box-shadow .18s ease, border-color .18s ease, transform .18s ease;
@@ -226,7 +226,7 @@
 }
 
 .routine-card:hover {
-    border-color: #b6dfce;
+    border-color: var(--line);
     box-shadow: 0 12px 29px rgba(17, 52, 69, .095);
     transform: translateY(-2px);
 }
@@ -244,8 +244,8 @@
     height: 49px;
     display: grid;
     place-items: center;
-    color: #097b58;
-    background: #ddf8ea;
+    color: var(--accent);
+    background: #402921;
     border-radius: 10px;
 }
 
@@ -260,7 +260,7 @@
 }
 
 .routine-card-tag {
-    color: #3b8e70;
+    color: var(--accent);
     font-size: 11px;
     font-weight: 800;
     letter-spacing: 1.4px;
@@ -268,7 +268,7 @@
 
 .routine-card h3 {
     margin: 0 0 12px;
-    color: #213748;
+    color: var(--text);
     font-size: 23px;
     line-height: 1.3;
     letter-spacing: -.5px;
@@ -277,7 +277,7 @@
 
 .routine-card-description {
     margin: 0 0 23px;
-    color: #617587;
+    color: var(--muted);
     line-height: 1.65;
     font-size: 15px;
     display: -webkit-box;
@@ -295,7 +295,7 @@
     gap: 12px;
     margin-top: auto;
     padding-bottom: 21px;
-    color: #617786;
+    color: var(--muted);
     font-size: 13px;
 }
 
@@ -314,7 +314,7 @@
     height: 17px;
     width: 17px;
     fill: none;
-    stroke: #668795;
+    stroke: var(--muted);
     stroke-width: 1.8;
     stroke-linecap: round;
     stroke-linejoin: round;
@@ -324,8 +324,8 @@
 .routine-card-link {
     margin: 0 -27px;
     padding: 18px 27px;
-    border-top: 1px solid #e6edf0;
-    color: #0b875d;
+    border-top: 1px solid var(--line);
+    color: var(--accent);
     font-size: 15px;
     font-weight: 800;
     display: flex;
@@ -341,12 +341,12 @@
 }
 
 .routine-card-link:hover {
-    background: #f0fcf5;
+    background: #402921;
 }
 
 .routines-empty-state {
-    background: #fff;
-    border: 1px dashed #bfced5;
+    background: var(--surface);
+    border: 1px dashed var(--line);
     border-radius: 12px;
     padding: 58px 24px;
     text-align: center;
@@ -363,19 +363,19 @@
     place-items: center;
     margin: 0 auto 17px;
     font-size: 35px;
-    color: #188963;
-    background: #e2f8ec;
+    color: var(--accent);
+    background: #402921;
     border-radius: 14px;
 }
 
 .routines-empty-state h3 {
     font-size: 24px;
-    color: #243d4c;
+    color: var(--text);
     margin: 0 0 11px;
 }
 
 .routines-empty-state p {
-    color: #657b89;
+    color: var(--muted);
     margin: 0 0 16px;
     font-size: 16px;
 }
@@ -383,7 +383,7 @@
 .routines-empty-state a {
     display: inline-block;
     margin-top: 7px;
-    color: #08885c;
+    color: var(--accent);
     font-weight: 800;
 }
 
@@ -441,10 +441,10 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid #a3d9c0;
+    border: 1px solid var(--line);
     border-radius: 7px;
-    background: #ebfbf3;
-    color: #066943;
+    background: #402921;
+    color: var(--accent);
     padding: 9px 12px;
     cursor: pointer;
     font: inherit;
@@ -453,11 +453,11 @@
 }
 
 .routine-bookmark-button:hover {
-    background: #d8f7e7;
+    background: #402921;
 }
 
 .routine-bookmark-button.is-saved {
-    background: #eff4f7;
-    border-color: #d2dee4;
-    color: #496070;
+    background: var(--surface);
+    border-color: var(--line);
+    color: var(--muted);
 }

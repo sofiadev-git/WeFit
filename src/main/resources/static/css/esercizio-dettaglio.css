@@ -1,371 +1,40 @@
-/* ========================================
-   WEFIT - DETTAGLIO ESERCIZIO
-   ======================================== */
+.detail-page { padding: clamp(16px, 3vh, 30px) 4vw 18px; }
+.exercise-container { width: min(100%, 1152px); margin: auto; }
+.exercise-breadcrumb { display:flex; align-items:center; gap:10px; margin-bottom:14px; color:#ffe7d7; font-size:14px; }
+.exercise-breadcrumb a:hover { text-decoration:underline; }
 
-.exercise-page {
-    min-height: calc(100vh - 82px);
-    background: #f3f6f8;
-    padding: 42px 30px 100px;
-    box-sizing: border-box;
-    color: #102b40;
+.detail-card {
+    --portrait-height: clamp(280px, calc(100vh - 172px), 464px);
+    --portrait-height: clamp(280px, calc(100svh - 172px), 464px);
+    display:grid; grid-template-columns:minmax(0,1fr) auto;
+    gap:clamp(16px,2.5vw,38px); padding:12px; box-sizing:border-box;
 }
-
-.exercise-container {
-    width: 100%;
-    max-width: 1100px;
-    margin: 0 auto;
+.detail-copy { min-width:0; display:flex; flex-direction:column; align-items:flex-start; padding:clamp(10px,2vw,26px); gap:14px; }
+.exercise-labels,.exercise-muscle,.exercise-footer,.exercise-actions { display:flex; align-items:center; flex-wrap:wrap; gap:9px; }
+.exercise-overline { font-size:11px; font-weight:750; letter-spacing:.12em; color:var(--accent); }
+.exercise-badge,.exercise-muscle strong { font-size:13px; border-radius:20px; background:#34262bcc; padding:5px 11px; color:#ffcfb2; }
+.detail-copy h1 { margin:0; font:650 clamp(30px,3.3vw,48px)/1.04 var(--title); letter-spacing:-.05em; overflow-wrap:anywhere; }
+.exercise-muscle-label { color:#ead8cd; font-size:14px; }
+.detail-description { flex:1 1 auto; width:100%; margin-top:4px; }
+.detail-description h2 { margin:0 0 6px; font-size:18px; letter-spacing:-.025em; }
+.exercise-description { margin:0; max-height:clamp(4rem,18vh,10rem); overflow:auto; white-space:pre-line; overflow-wrap:anywhere; line-height:1.55; color:#f2e1d8; }
+.exercise-footer { margin-top:auto; }
+.exercise-delete-form { margin:0; }
+.detail-visual { height:var(--portrait-height); aspect-ratio:9/16; align-self:stretch; }
+.detail-visual :is(.exercise-photo,.exercise-hero-icon) {
+    display:block; width:100%; height:100%; max-width:none; margin:0; object-fit:cover; object-position:center;
+    background:#342125; border-radius:17px; box-shadow:0 5px 12px #10070b70,0 12px 22px #1006094a;
 }
-
-/* Breadcrumb */
-
-.exercise-breadcrumb {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 25px;
-    color: #708496;
-    font-size: 14px;
+.detail-visual .exercise-hero-icon { display:grid; place-items:center; color:#ffc6a8; background:linear-gradient(145deg,#69402c,#26191d); }
+.exercise-hero-icon svg { width:52px; }
+@media (max-height: 660px) and (min-width: 701px) {
+    .detail-page { padding-block:10px; }
+    .detail-copy { gap:9px; padding:10px 15px; }
+    .exercise-description { max-height:14vh; }
 }
-
-.exercise-breadcrumb a {
-    color: #527286;
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.exercise-breadcrumb a:hover {
-    color: #159c77;
-}
-
-/* Card principale */
-
-.exercise-card {
-    background: white;
-    border: 1px solid #e0e9ed;
-    border-radius: 18px;
-    overflow: hidden;
-    box-shadow: 0 12px 35px rgba(22, 48, 65, 0.055);
-}
-
-/* Intestazione */
-
-.exercise-hero {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 30px;
-
-    padding: 48px 55px 46px;
-
-    background: linear-gradient(
-            110deg,
-            #ffffff 42%,
-            #f0fbf6 100%
-    );
-
-    border-bottom: 1px solid #e8efed;
-}
-
-.exercise-hero-content {
-    flex: 1;
-    min-width: 0;
-}
-
-.exercise-labels {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 16px;
-    margin-bottom: 20px;
-}
-
-.exercise-overline {
-    color: #209b78;
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: 1.6px;
-}
-
-.exercise-badge {
-    display: inline-flex;
-    align-items: center;
-    padding: 7px 12px;
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: 700;
-}
-
-.exercise-badge-personal {
-    background: #e8f2ff;
-    color: #285f9c;
-}
-
-.exercise-badge-global {
-    background: #def8eb;
-    color: #14845e;
-}
-
-/* Titolo */
-
-.exercise-hero h1 {
-    margin: 0 0 27px;
-    font-size: clamp(34px, 3.5vw, 49px);
-    font-weight: 800;
-    letter-spacing: -1.5px;
-    line-height: 1.15;
-    color: #102b40;
-    overflow-wrap: anywhere;
-}
-
-/* Gruppo muscolare */
-
-.exercise-muscle {
-    display: inline-flex;
-    align-items: center;
-    gap: 13px;
-    flex-wrap: wrap;
-}
-
-.exercise-muscle-label {
-    color: #728596;
-    font-size: 15px;
-}
-
-.exercise-muscle strong {
-    color: #126d55;
-    background: #e4f7ec;
-    border: 1px solid #c9eeda;
-    padding: 8px 15px;
-    border-radius: 7px;
-    font-size: 14px;
-    font-weight: 700;
-}
-
-/* Icona decorativa */
-
-.exercise-hero-icon {
-    width: 108px;
-    height: 108px;
-    flex-shrink: 0;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 22px;
-
-    background: #ddf6e9;
-    color: #269e78;
-
-    transform: rotate(-5deg);
-}
-
-.exercise-hero-icon svg {
-    width: 60px;
-    height: 60px;
-    transform: rotate(5deg);
-}
-
-/* Descrizione */
-
-.exercise-body {
-    padding: 40px 55px 55px;
-    min-height: 140px;
-    box-sizing: border-box;
-}
-
-.exercise-body h2 {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-
-    font-size: 21px;
-    font-weight: 800;
-    color: #102b40;
-
-    margin: 0 0 22px;
-}
-
-.exercise-body h2::before {
-    content: "";
-    width: 4px;
-    height: 24px;
-    background: #42d6a0;
-    border-radius: 3px;
-}
-
-.exercise-description {
-    margin: 0;
-
-    font-size: 16px;
-    line-height: 1.85;
-    color: #526879;
-
-    white-space: pre-line;
-    overflow-wrap: anywhere;
-}
-
-/* Footer */
-
-.exercise-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-    flex-wrap: wrap;
-
-    padding: 25px 55px;
-
-    background: #fafcfd;
-    border-top: 1px solid #e7edf0;
-}
-
-/* Pulsante ritorno */
-
-.exercise-back-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-
-    padding: 13px 18px;
-
-    background: white;
-    border: 1px solid #cedce3;
-    border-radius: 8px;
-
-    text-decoration: none;
-    color: #17374a;
-    font-size: 14px;
-    font-weight: 700;
-
-    transition: 0.2s ease;
-}
-
-.exercise-back-button:hover {
-    border-color: #1da57b;
-    color: #168c69;
-    background: #f4fbf7;
-}
-
-/* Gruppo azioni */
-
-.exercise-actions {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    flex-wrap: wrap;
-    gap: 13px;
-}
-
-.exercise-personal-link {
-    margin-right: 12px;
-    color: #138a65;
-    font-size: 14px;
-    font-weight: 700;
-    text-decoration: none;
-}
-
-.exercise-personal-link:hover {
-    text-decoration: underline;
-}
-
-/* Modifica */
-
-.exercise-edit-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    min-height: 45px;
-    padding: 0 25px;
-
-    border-radius: 8px;
-    background: #43d69c;
-
-    color: #092d2a;
-    font-weight: 800;
-    font-size: 14px;
-    text-decoration: none;
-
-    transition: 0.2s ease;
-}
-
-.exercise-edit-button:hover {
-    background: #2bc58a;
-    transform: translateY(-1px);
-}
-
-/* Eliminazione */
-
-.exercise-delete-form {
-    margin: 0;
-}
-
-.exercise-delete-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-
-    min-height: 45px;
-    padding: 0 19px;
-
-    background: #fff2f2;
-    color: #c8444a;
-
-    border: 1px solid #f4d8da;
-    border-radius: 8px;
-
-    font-size: 14px;
-    font-weight: 700;
-    font-family: inherit;
-
-    cursor: pointer;
-    transition: 0.2s ease;
-}
-
-.exercise-delete-button svg {
-    width: 17px;
-    height: 17px;
-}
-
-.exercise-delete-button:hover {
-    background: #ffe5e5;
-    border-color: #e9a5a9;
-}
-
-/* Accessibilità */
-
-.exercise-card a:focus-visible,
-.exercise-card button:focus-visible {
-    outline: 3px solid #178f71;
-    outline-offset: 3px;
-}
-
-/* Schermi più piccoli */
-
-@media (max-width: 700px) {
-    .exercise-page {
-        padding: 25px 16px 60px;
-    }
-
-    .exercise-hero {
-        padding: 30px 25px;
-    }
-
-    .exercise-hero-icon {
-        display: none;
-    }
-
-    .exercise-body {
-        padding: 30px 25px 40px;
-    }
-
-    .exercise-footer {
-        padding: 22px 25px;
-    }
-
-    .exercise-actions {
-        justify-content: flex-start;
-    }
+@media (max-width:700px) {
+    .detail-card { --portrait-height:clamp(145px,35vw,235px); gap:8px; padding:8px; }
+    .detail-copy { padding:6px; gap:9px; }
+    .exercise-labels { gap:5px; }
+    .detail-visual { align-self:start; }
 }

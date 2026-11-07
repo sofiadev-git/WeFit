@@ -23,6 +23,9 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class EsercizioRoutineController {
 
+    @org.springframework.beans.factory.annotation.Value("${wefit.react-url}")
+    private String reactUrl;
+
     @Autowired
     RoutineService routineService;
 
@@ -45,6 +48,7 @@ public class EsercizioRoutineController {
         model.addAttribute("esercizi", esercizioRoutineService.getEserciziRoutine(id));
         model.addAttribute("bookmarkedIds", routineService.getBookmarkedRoutineIds(utente));
 
+        model.addAttribute("allenamentoUrl", reactUrl + "/routines/" + id + "/avvia");
         return "dettaglioRoutine";
     }
 

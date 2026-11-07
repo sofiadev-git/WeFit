@@ -43,7 +43,7 @@ public class UtenteController {
         /*Valid invece serve per il Bean Validation, ovvero controlla quelle annotazione come @Notblan @Min ecc, ma non gli errori come runTimeExeption.
         * Se ci sono errori di quel tipo nei campi inseriti, allora non si lascia la pagina*/
         if(bindingResult.hasErrors()){
-            return "/register";
+            return "register";
         }
         try{
             utenteService.registraUtente(utente.getUsername(), utente.getPassword());

@@ -7,8 +7,10 @@
     <link rel="stylesheet" th:href="@{/css/home.css}">
     <link rel="stylesheet" th:href="@{/css/area-privata.css}">
     <script th:src="@{/js/mie-routine.js}" defer></script>
+    <link rel="stylesheet" href="../static/css/studio.css" th:href="@{/css/studio.css}">
+    <link rel="stylesheet" href="../static/css/pagine-interne.css" th:href="@{/css/pagine-interne.css}">
 </head>
-<body th:with="isAdmin=${utente.role == 'ADMIN'}">
+<body data-posa="piegamenti" th:with="isAdmin=${utente.role == 'ADMIN'}">
 <header th:replace="~{fragments/navbar :: navbar('area')}"></header>
 <main class="private-list-page">
     <div class="private-list-container">
@@ -24,33 +26,32 @@
             </div>
             <a class="private-create-button" th:href="@{/routines/new}">＋ Crea nuova routine</a>
         </div>
-        <div class="private-tools" th:if="${routines.hasContent()}">
-            <div class="private-filter-input">
-                <span aria-hidden="true">⌕</span>
+        <div class="routines-toolbar" th:if="${routines.hasContent()}">
+            <div class="routines-search-field">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 5 5"></path></svg>
                 <label class="visually-hidden" for="my-routines-search">Cerca tra le tue routine</label>
                 <input id="my-routines-search" type="search" placeholder="Cerca tra le tue routine..." autocomplete="off" data-my-routines-search>
             </div>
         </div>
-        <div class="private-table-wrap" th:if="${routines.hasContent()}">
-            <table class="private-exercise-table private-routine-table">
-                <thead><tr><th scope="col">Routine</th><th scope="col">Descrizione</th><th scope="col">Gestione</th></tr></thead>
-                <tbody>
-                <tr th:each="routine : ${routines}" data-my-routine-row th:attr="data-name=${routine.nome},data-description=${routine.descrizione}">
-                    <td><a class="private-name-link" th:href="|http://localhost:5173/routines/${routine.id}|" th:text="${routine.nome}">Allenamento completo</a></td>
-                    <td class="private-routine-description" th:text="${#strings.isEmpty(routine.descrizione) ? 'Nessuna descrizione' : routine.descrizione}">Descrizione</td>
-                    <td>
+        <div th:if="${routines.hasContent()}">
+            <div class="personal-grid">
+                <article class="personal-card" th:each="routine : ${routines}" data-my-routine-row th:attr="data-name=${routine.nome},data-description=${routine.descrizione}">
+                    <a class="personal-card-open" th:href="@{/routines/{id}(id=${routine.id})}" th:attr="aria-labelledby=|titolo-routine-${routine.id}|"></a>
+                    <div class="personal-card-caption">
+                        <small class="personal-card-label">La mia routine</small>
+                        <h2 class="personal-card-title" th:id="|titolo-routine-${routine.id}|" th:text="${routine.nome}">Routine</h2>
+                        <p class="private-routine-description" th:text="${routine.descrizione}">Descrizione</p>
                         <div class="private-routine-actions">
-                            <a class="private-action-link" th:href="|http://localhost:5173/routines/${routine.id}|">Visualizza</a>
+                            <a class="private-action-link" th:href="@{/routines/{id}(id=${routine.id})}">Apri</a>
                             <a class="private-action-link" th:href="@{/routines/{id}/edit(id=${routine.id})}">Modifica</a>
                             <a class="private-action-link" th:href="@{/routines/{id}/esercizi/select(id=${routine.id})}">Esercizi</a>
                             <form method="post" th:action="@{/routines/{id}/delete(id=${routine.id})}" onsubmit="return confirm('Eliminare questa routine e tutti i suoi esercizi associati?');">
                                 <button class="private-action-delete" type="submit">Elimina</button>
                             </form>
                         </div>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+                    </div>
+                </article>
+            </div>
             <div class="private-no-filter-results" data-my-routines-empty-filter hidden>Nessuna routine corrisponde alla ricerca.</div>
         </div>
         <div class="private-empty-list" th:if="${routines.totalElements == 0}">
@@ -64,11 +65,7 @@
             <p>La pagina richiesta non contiene routine.</p>
             <a class="button button-primary" th:href="${isAdmin} ? @{/admin/routines(page=0)} : @{/area-personale/routines(page=0)}">Torna alla prima pagina</a>
         </div>
-        <nav class="private-pagination" th:if="${routines.totalPages > 1}" aria-label="Paginazione routine personali">
-            <a th:if="${routines.hasPrevious()}" th:href="${isAdmin} ? @{/admin/routines(page=${routines.number - 1})} : @{/area-personale/routines(page=${routines.number - 1})}">← Precedente</a>
-            <span>Pagina <span th:text="${routines.number + 1}">1</span> di <span th:text="${routines.totalPages}">1</span></span>
-            <a th:if="${routines.hasNext()}" th:href="${isAdmin} ? @{/admin/routines(page=${routines.number + 1})} : @{/area-personale/routines(page=${routines.number + 1})}">Successiva →</a>
-        </nav>
+        <nav th:replace="~{fragments/paginazione :: controlli(${routines}, ${isAdmin ? '/admin/routines' : '/area-personale/routines'})}"></nav>
     </div>
 </main>
 </body>

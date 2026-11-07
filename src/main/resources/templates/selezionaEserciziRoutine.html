@@ -9,8 +9,10 @@
 
     <script src="/js/routine-selezione.js" th:src="@{/js/routine-selezione.js}" defer></script>
 
+    <link rel="stylesheet" href="../static/css/studio.css" th:href="@{/css/studio.css}">
+    <link rel="stylesheet" href="../static/css/pagine-interne.css" th:href="@{/css/pagine-interne.css}">
 </head>
-<body>
+<body data-posa="step" class="glass-form-page">
 <header th:replace="~{fragments/navbar :: navbar('routine')}"></header>
 
 <main class="wf-flow">
@@ -65,7 +67,8 @@
                 <ul class="wf-catalog-list" th:if="${eserciziDisponibili.hasContent()}">
                     <li class="wf-catalog-item" th:each="esercizio : ${eserciziDisponibili}" data-wf-exercise
                         th:attr="data-wf-name=${esercizio.nome},data-wf-category=${esercizio.categoria},data-wf-kind=${esercizio.esercizioDefault ? 'default' : 'personale'}">
-                        <span class="wf-catalog-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path
+                        <img class="exercise-thumb" th:if="${esercizio.conImmagine}" th:src="@{/uploads/esercizi/{nome}(nome=${esercizio.percorsoImmagine})}" alt="" loading="lazy">
+                        <span th:unless="${esercizio.conImmagine}" class="wf-catalog-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path
                                 d="M3 9v6M6 7v10M9 9v6m6-6v6m3-8v10m3-8v6M3 12h18"/></svg></span>
                         <span class="wf-catalog-copy">
                             <strong th:text="${esercizio.nome}">Panca piana</strong>
@@ -80,13 +83,7 @@
                            href="/routines/1/esercizi/new?esercizioId=1">+ Aggiungi</a>
                     </li>
                 </ul>
-                <nav class="wf-pagination" th:if="${eserciziDisponibili.totalPages > 1}" aria-label="Paginazione esercizi">
-                    <a th:if="${eserciziDisponibili.hasPrevious()}"
-                       th:href="@{/routines/{id}/esercizi/select(id=${routine.id},page=${eserciziDisponibili.number - 1})}">← Precedente</a>
-                    <span>Pagina <span th:text="${eserciziDisponibili.number + 1}">1</span> di <span th:text="${eserciziDisponibili.totalPages}">1</span></span>
-                    <a th:if="${eserciziDisponibili.hasNext()}"
-                       th:href="@{/routines/{id}/esercizi/select(id=${routine.id},page=${eserciziDisponibili.number + 1})}">Successiva →</a>
-                </nav>
+                <nav th:replace="~{fragments/paginazione :: controlli(${eserciziDisponibili}, |/routines/${routine.id}/esercizi/select|)}"></nav>
                 <div class="wf-no-results" th:if="${eserciziDisponibili.totalElements > 0 and !eserciziDisponibili.hasContent()}">
                     <strong>Nessun esercizio in questa pagina</strong>
                     <a th:href="@{/routines/{id}/esercizi/select(id=${routine.id},page=0)}">Torna alla prima pagina</a>

@@ -7,75 +7,76 @@
     <title>Esercizi | WeFit</title>
     <link rel="stylesheet" th:href="@{/css/home.css}">
     <link rel="stylesheet" th:href="@{/css/area-privata.css}">
+    <link rel="stylesheet" th:href="@{/css/routines.css}">
     <script th:src="@{/js/esercizi-elenco.js}" defer></script>
+    <link rel="stylesheet" href="../static/css/studio.css" th:href="@{/css/studio.css}">
+    <link rel="stylesheet" href="../static/css/pagine-interne.css" th:href="@{/css/pagine-interne.css}">
 </head>
-<body>
+<body data-posa="squat">
 <header th:replace="~{fragments/navbar :: navbar('esercizi')}"></header>
-<main class="private-list-page">
-    <div class="private-list-container">
-        <div class="private-list-heading">
-            <div>
-                <h1>Esercizi</h1>
-                <p>Esplora gli esercizi globali disponibili per tutti, creati dagli amministratori WeFit.</p>
+<main class="private-list-page routines-page">
+    <section class="routines-hero" aria-labelledby="exercises-title">
+        <div class="routines-hero-inner">
+            <div class="routines-hero-copy">
+                <h1 id="exercises-title">Inizia da qui.</h1>
+                <p>Esplora gli esercizi creati da noi, per prendere ispirazione, oppure creane i tuoi esercizi preferiti.</p>
+                <div class="routines-hero-actions">
+                    <a class="routines-main-button" href="/esercizi/new" th:href="@{/esercizi/new}">
+                        <span aria-hidden="true">+</span> Crea i tuoi esercizi
+                    </a>
+                </div>
             </div>
         </div>
+    </section>
 
-        <div class="private-tools">
-            <div class="private-filter-input">
-                <span aria-hidden="true">⌕</span>
+    <section class="routines-catalogue" aria-labelledby="exercises-catalogue-title">
+        <div class="routines-section-heading">
+            <div>
+                <p class="routines-section-kicker">SCOPRI E ALLENATI</p>
+                <h2 id="exercises-catalogue-title">Tutti gli esercizi</h2>
+                <p class="routines-subtitle">Cerca un esercizio per nome o scegli il gruppo muscolare da allenare.</p>
+            </div>
+            <span class="routines-total-count"><strong th:text="${eserciziDefault.totalElements}">0</strong> esercizi totali</span>
+        </div>
+        <div class="routines-toolbar">
+            <div class="routines-search-field">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 5 5"></path></svg>
                 <label class="visually-hidden" for="default-exercises-search">Cerca esercizi</label>
                 <input id="default-exercises-search" type="search" placeholder="Cerca un esercizio..." data-exercise-search>
             </div>
 
             <label class="visually-hidden" for="default-exercises-category">Filtra per gruppo muscolare</label>
-            <select id="default-exercises-category" data-exercise-category>
+            <select class="catalog-group-filter" id="default-exercises-category" data-exercise-category>
                 <option value="">Tutti i gruppi</option>
                 <option th:each="esercizio : ${eserciziDefault.content}" th:value="${esercizio.categoria}" th:text="${esercizio.categoria}">Petto</option>
             </select>
         </div>
 
-        <div class="private-table-wrap" th:if="${eserciziDefault.hasContent()}">
-            <table class="private-exercise-table">
-                <thead>
-                <tr>
-                    <th scope="col">Nome</th>
-                    <th scope="col">Gruppo muscolare</th>
-                    <th scope="col">Visibilità</th>
-                    <th scope="col">Dettagli</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="esercizio : ${eserciziDefault.content}" data-exercise-row th:attr="data-name=${esercizio.nome},data-category=${esercizio.categoria}">
-                    <td>
-                        <a class="private-name-link" th:text="${esercizio.nome}" th:href="@{/esercizi/{id}(id=${esercizio.id})}">Panca piana</a>
-                    </td>
-                    <td th:text="${esercizio.categoria}">Petto</td>
-                    <td><span class="private-pill private-pill-global">Globale</span></td>
-                    <td>
-                        <a class="private-table-view" th:href="@{/esercizi/{id}(id=${esercizio.id})}">Visualizza <span aria-hidden="true">→</span></a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-
+        <section class="exercise-gallery" th:if="${eserciziDefault.hasContent()}" aria-label="Catalogo esercizi">
+            <a class="exercise-tile" th:each="esercizio : ${eserciziDefault.content}" data-exercise-row
+               th:attr="data-name=${esercizio.nome},data-category=${esercizio.categoria}"
+               th:href="@{/esercizi/{id}(id=${esercizio.id})}">
+                <div class="exercise-tile-media">
+                    <img th:if="${esercizio.conImmagine}" th:src="@{/uploads/esercizi/{nome}(nome=${esercizio.percorsoImmagine})}" alt="" loading="lazy">
+                    <span th:unless="${esercizio.conImmagine}" class="weight-disc" aria-hidden="true"></span>
+                </div>
+                <div class="card-copy">
+                    <small th:text="${esercizio.categoria}">Petto</small>
+                    <h2><span th:text="${esercizio.nome}">Panca piana</span> <span aria-hidden="true">↗</span></h2>
+                </div>
+            </a>
             <div class="private-no-filter-results" data-no-filter-results hidden>
                 Nessun esercizio corrisponde alla ricerca.
             </div>
-        </div>
+        </section>
 
         <div class="private-empty-list" th:if="${!eserciziDefault.hasContent()}">
             <h2>Nessun esercizio disponibile</h2>
             <p>Gli esercizi globali saranno mostrati qui non appena verranno creati.</p>
         </div>
 
-        <nav class="private-pagination" th:if="${eserciziDefault.totalPages > 1}" aria-label="Paginazione esercizi">
-            <a th:if="${eserciziDefault.hasPrevious()}" th:href="@{/esercizi(page=${eserciziDefault.number - 1})}">← Precedente</a>
-
-            <span>Pagina <span th:text="${eserciziDefault.number + 1}">1</span> di <span th:text="${eserciziDefault.totalPages}">1</span></span>
-
-            <a th:if="${eserciziDefault.hasNext()}" th:href="@{/esercizi(page=${eserciziDefault.number + 1})}">Successiva →</a>
-        </nav>
-    </div>
+        <nav th:replace="~{fragments/paginazione :: controlli(${eserciziDefault}, '/esercizi')}"></nav>
+    </section>
 </main>
 </body>
 </html>

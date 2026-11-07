@@ -7,8 +7,10 @@
     <link rel="stylesheet" href="/css/home.css" th:href="@{/css/home.css}">
     <link rel="stylesheet" href="/css/routine-workflow.css" th:href="@{/css/routine-workflow.css}">
     <script src="/js/routine-form-esercizio.js" th:src="@{/js/routine-form-esercizio.js}" defer></script>
+    <link rel="stylesheet" href="../static/css/studio.css" th:href="@{/css/studio.css}">
+    <link rel="stylesheet" href="../static/css/pagine-interne.css" th:href="@{/css/pagine-interne.css}">
 </head>
-<body>
+<body data-posa="swing" class="glass-form-page">
 <header th:replace="~{fragments/navbar :: navbar('routine')}"></header>
 
 <main class="wf-flow" th:with="isEdit=${modifica == true},hasExercises=${eserciziDisponibili != null and !#lists.isEmpty(eserciziDisponibili)}">

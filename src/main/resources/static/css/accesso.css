@@ -1,6 +1,6 @@
 .auth-body {
     min-height: 100vh;
-    background: #f4f8fa;
+    background: var(--surface);
 }
 
 .auth-page {
@@ -17,8 +17,8 @@
     width: 100%;
     max-width: 520px;
     padding: 44px 46px;
-    background: #fff;
-    border: 1px solid #e3eaee;
+    background: var(--surface);
+    border: 1px solid var(--line);
     border-radius: 6px;
     box-shadow: 0 5px 22px #20334312;
 }
@@ -64,9 +64,9 @@
     width: 100%;
     min-height: 50px;
     padding: 13px 15px;
-    border: 1px solid #cbd6dd;
+    border: 1px solid var(--line);
     border-radius: 6px;
-    background: #fff;
+    background: var(--surface);
     color: var(--text);
     font-family: inherit;
     font-size: 16px;
@@ -74,15 +74,15 @@
 }
 
 .form-field input::placeholder {
-    color: #8997a2;
+    color: var(--muted);
 }
 
 .form-field input:hover {
-    border-color: #aabac4;
+    border-color: var(--line);
 }
 
 .form-field input:focus {
-    border-color: var(--green);
+    border-color: var(--accent);
     outline: none;
     box-shadow: 0 0 0 3px #4bdfa026;
 }
@@ -104,7 +104,7 @@
 }
 
 .auth-switch a {
-    color: #16724e;
+    color: var(--accent);
     font-weight: 700;
 }
 
@@ -126,19 +126,19 @@
 }
 
 .form-message.error {
-    border-color: #e4bcbc;
-    background: #fff4f4;
-    color: #982d2d;
+    border-color: #9f645a;
+    background: #382322;
+    color: #ffb0a3;
 }
 
 .form-message.success {
-    border-color: #a9dfc5;
-    background: #edfaf4;
-    color: #176348;
+    border-color: var(--line);
+    background: #402921;
+    color: var(--accent);
 }
 
 .field-error {
-    color: #a52e2e;
+    color: #ffb0a3;
     font-size: 13px;
     line-height: 1.4;
 }

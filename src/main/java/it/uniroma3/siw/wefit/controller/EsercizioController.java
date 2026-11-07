@@ -6,6 +6,9 @@ import it.uniroma3.siw.wefit.model.Utente;
 import it.uniroma3.siw.wefit.service.EsercizioService;
 import it.uniroma3.siw.wefit.service.UtenteService;
 import jakarta.validation.Valid;
+import it.uniroma3.siw.wefit.exception.NotValidException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -51,18 +54,22 @@ public class EsercizioController {
     }
 
     @PostMapping("/esercizi")
-    public String creaEsercizio(@Valid @ModelAttribute("esercizio") EsercizioFormDto dto, BindingResult bindingResult, Authentication authentication, Model model){
+    public String creaEsercizio(@Valid @ModelAttribute("esercizio") EsercizioFormDto dto, BindingResult bindingResult, @RequestParam(required = false) MultipartFile foto, Authentication authentication, Model model){
         Utente utente = getUtenteCorrente(authentication);
-        if(bindingResult.hasErrors()){
-            model.addAttribute("utente", utente);
-            return "formEsercizio";
+        if (!bindingResult.hasErrors()) {
+            try {
+                Esercizio esercizio = new Esercizio();
+                esercizio.setNome(dto.nome());
+                esercizio.setDescrizione(dto.descrizione());
+                esercizio.setCategoria(dto.categoria());
+                Esercizio e= esercizioService.createEsercizio(esercizio,utente,foto);
+                return "redirect:/esercizi/" + e.getId();
+            } catch (NotValidException e) {
+                bindingResult.reject("foto.nonValida", e.getMessage());
+            }
         }
-        Esercizio esercizio = new Esercizio();
-        esercizio.setNome(dto.nome());
-        esercizio.setDescrizione(dto.descrizione());
-        esercizio.setCategoria(dto.categoria());
-        Esercizio e= esercizioService.createEsercizio(esercizio,utente);
-        return "redirect:/esercizi/" + e.getId();
+        model.addAttribute("utente", utente);
+        return "formEsercizio";
     }
 
     @GetMapping("/esercizi/{id}/edit")
@@ -72,34 +79,46 @@ public class EsercizioController {
         model.addAttribute("utente", utente);
         model.addAttribute("esercizio", new EsercizioFormDto(esercizio.getNome(),esercizio.getDescrizione(),esercizio.getCategoria()));
         model.addAttribute("esercizioId",id);
+        model.addAttribute("nomeFoto", esercizio.getPercorsoImmagine());
         model.addAttribute("isDefault", esercizio.isEsercizioDefault());
         return "formModificaEsercizio";
     }
 
     @PostMapping("/esercizi/{id}")
-    public String aggiornaEsercizio(@PathVariable Long id, @Valid @ModelAttribute("esercizio") EsercizioFormDto dto, BindingResult bindingResult, Authentication authentication,Model model){ // "esercizio ha ora i nuovi valori
+    public String aggiornaEsercizio(@PathVariable Long id, @Valid @ModelAttribute("esercizio") EsercizioFormDto dto, BindingResult bindingResult, @RequestParam(required = false) MultipartFile foto, Authentication authentication,Model model){ // "esercizio ha ora i nuovi valori
         Utente utente = getUtenteCorrente(authentication);
         model.addAttribute("esercizioId", id);
-        if(bindingResult.hasErrors()){
-            Esercizio esercizioOriginale = esercizioService.getEsercizioAutore(id,utente);
-            model.addAttribute("isDefault", esercizioOriginale.isEsercizioDefault());
-            model.addAttribute("utente", utente);
-            return "formModificaEsercizio";
+        if (!bindingResult.hasErrors()) {
+            try {
+                Esercizio esercizio = new Esercizio();
+                esercizio.setNome(dto.nome());
+                esercizio.setDescrizione(dto.descrizione());
+                esercizio.setCategoria(dto.categoria());
+                Esercizio e = esercizioService.updateEsercizio(esercizio,id,utente,foto);
+                return "redirect:/esercizi/" + e.getId();
+            } catch (NotValidException e) {
+                bindingResult.reject("foto.nonValida", e.getMessage());
+            }
         }
-        Esercizio esercizio = new Esercizio();
-        esercizio.setNome(dto.nome());
-        esercizio.setDescrizione(dto.descrizione());
-        esercizio.setCategoria(dto.categoria());
-        Esercizio e = esercizioService.updateEsercizio(esercizio,id, utente);
-        return "redirect:/esercizi/" + e.getId();
+        Esercizio esercizioOriginale = esercizioService.getEsercizioAutore(id,utente);
+        model.addAttribute("nomeFoto", esercizioOriginale.getPercorsoImmagine());
+        model.addAttribute("isDefault", esercizioOriginale.isEsercizioDefault());
+        model.addAttribute("utente", utente);
+        return "formModificaEsercizio";
     }
 
     @PostMapping("/esercizi/{id}/delete")
-    public String eliminaEsercizio(@PathVariable Long id, Authentication authentication){
+    public String eliminaEsercizio(@PathVariable Long id, Authentication authentication, RedirectAttributes redirectAttributes){
         Utente utente = getUtenteCorrente(authentication);
-        esercizioService.deleteEsercizio(id,utente);
+        try {
+            esercizioService.deleteEsercizio(id,utente);
+        } catch (NotValidException e) {
+            redirectAttributes.addFlashAttribute("erroreEliminazione", e.getMessage());
+            return "redirect:/esercizi/" + id;
+        }
         return "redirect:/esercizi";
     }
+
 
     private Utente getUtenteCorrente(Authentication authentication) {
 

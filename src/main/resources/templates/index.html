@@ -5,48 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WeFit | Il tuo percorso, la tua forza</title>
     <link rel="stylesheet" href="../static/css/home.css" th:href="@{/css/home.css}">
+    <link rel="stylesheet" href="../static/css/studio.css" th:href="@{/css/studio.css}">
 </head>
-<body>
+<body class="motion-home">
 <header th:replace="~{fragments/navbar :: navbar('home')}"></header>
 
-<main>
-    <section class="hero" aria-labelledby="hero-title">
-        <div class="hero-content">
-            <h1 id="hero-title">Il tuo percorso,<br>la tua forza.</h1>
-            <p>Crea, segui e condividi le tue routine di allenamento.</p>
-            <div class="hero-actions">
-                <a class="button button-primary" href="/routines" th:href="@{/routines}">Scopri le routine</a>
-                <a class="button button-outline" href="/routines/nuova" th:href="@{/routines/nuova}">Crea la tua routine</a>
+<main class="home-studio">
+    <section class="studio-hero" aria-labelledby="hero-title">
+        <div class="studio-intro">
+            <h1 id="hero-title">Allenati al<br>tuo ritmo.</h1>
+            <p>Scegli gli esercizi, componi le tue routine e ritrova gli allenamenti che ami.</p>
+            <div class="studio-actions">
+                <a class="studio-cta" th:href="@{/routines}" href="/routines">Esplora le routine <span aria-hidden="true">↗</span></a>
+                <a class="studio-link" th:href="@{/routines/new}" href="/routines/new">Crea una routine <span aria-hidden="true">→</span></a>
             </div>
         </div>
     </section>
-
-    <div th:if="${errorMessage}" class="home-error-message" role="alert">
-        <span th:text="${errorMessage}"></span>
-    </div>
-
-    <section class="features" aria-label="Cosa puoi fare con WeFit">
-        <article class="feature-card">
-            <div class="feature-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="16" rx="2"/><path d="M9 3h6v4H9zM9 11h6M9 15h6M9 18h3"/></svg>
-            </div>
-            <h2>Routine personalizzate</h2>
-            <p>Crea routine su misura per i tuoi obiettivi.</p>
-        </article>
-        <article class="feature-card">
-            <div class="feature-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="m7 7 10 10M3 7l4-4M5 9l4-4M15 19l4-4M17 21l4-4M3 3l6 6M15 15l6 6"/></svg>
-            </div>
-            <h2>Esercizi per tutti</h2>
-            <p>Usa esercizi globali o crea i tuoi.</p>
-        </article>
-        <article class="feature-card">
-            <div class="feature-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/></svg>
-            </div>
-            <h2>Salva le tue preferite</h2>
-            <p>Salva le routine che ami e ritrovale quando vuoi.</p>
-        </article>
+    <div th:if="${errorMessage}" class="home-error-message" role="alert"><span th:text="${errorMessage}"></span></div>
+    <section class="studio-index" aria-labelledby="index-title">
+        <h2 id="index-title">Esplora WeFit</h2>
+        <div class="studio-cards">
+            <a class="studio-card plan" th:href="@{/routines}" href="/routines">
+                <div class="card-copy"><h3>Routine <span aria-hidden="true">↗</span></h3><p>Esplora gli allenamenti della community.</p></div>
+            </a>
+            <a class="studio-card lift" th:href="@{/esercizi}" href="/esercizi">
+                <div class="card-copy"><h3>Esercizi <span aria-hidden="true">↗</span></h3><p>Sfoglia il catalogo per gruppo muscolare.</p></div>
+            </a>
+            <a class="studio-card create" th:href="@{/routines/new}" href="/routines/new">
+                <div class="card-copy"><h3>Crea una routine <span aria-hidden="true">↗</span></h3><p>Componi il tuo allenamento.</p></div>
+            </a>
+            <a class="studio-card personal" th:href="${utente != null and utente.role == 'ADMIN'} ? @{/admin} : @{/area-personale}" href="/area-personale">
+                <div class="card-copy"><h3>Area personale <span aria-hidden="true">↗</span></h3><p>Ritrova le tue routine e i tuoi esercizi.</p></div>
+            </a>
+        </div>
     </section>
 </main>
 </body>

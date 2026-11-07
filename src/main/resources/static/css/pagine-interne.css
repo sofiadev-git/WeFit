@@ -1,0 +1,346 @@
+/* Sfondo e navigazione condividono la stessa copertina su ogni pagina interna. */
+body, body.auth-body, body.wefit-form-body {
+    min-height: 100vh;
+    background-color: var(--base);
+    background-image: linear-gradient(180deg, #50170433, #43120766 27%, #14090cdd 70%, var(--base)), linear-gradient(90deg, #67200585, #b73c0c28), url('../images/corsa-panoramica.jpg');
+    background-size: 100% clamp(550px, 46vw, 730px);
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    background-position: center top;
+}
+.site-header {
+    position: relative;
+    z-index: 5;
+    border: 0;
+    background: linear-gradient(#421a115c, transparent);
+}
+.nav-links a, .nav-search input, .nav-search input::placeholder { color: white; }
+.nav-search, .auth-actions .button-outline { background: #40200e45; border-color: #ffffff80; }
+.site-header .button-primary { background: #fff7ee; border-color: #fff7ee; color: #502310; }
+.site-header .button-primary:hover { background: #ffe3cc; }
+.routines-page, .private-list-page, .exercise-page, .wf-flow, .private-hero, .routines-hero { background: transparent; }
+
+.private-hero, .routines-hero-inner { min-height: 260px; }
+.private-hero h1, .routines-hero h1, .private-list-heading h1, .wf-page-header h1, .exercise-page-heading h1 {
+    font: 620 clamp(38px, 4.6vw, 70px)/1.03 var(--title);
+    letter-spacing: -.059em;
+    color: #fff9f3;
+}
+.private-list-heading p, .wf-page-header p, .private-hero p, .routines-hero p,
+.exercise-back-link, .wf-back, .private-breadcrumb, .exercise-breadcrumb, .wf-overline { color: #ffede3; }
+.private-list-heading, .exercise-page-heading { border-color: #ffffff39; }
+
+.exercise-tile, .routine-card, .private-action-card, .auth-card, .wf-card, .exercise-card,
+.exercise-form-card, .private-guest-card, .private-table-wrap, .wf-detail-intro, .private-empty-list,
+.routines-empty-state, .wf-stepper, .exercise-info {
+    border: 1px solid #f7d4bd36;
+    border-radius: 22px;
+    background: linear-gradient(145deg, #302425, #161418 82%);
+    box-shadow: 0 14px 35px #09060938;
+}
+.exercise-tile, .routine-card, .private-action-card { overflow: hidden; }
+.exercise-tile { display: grid; grid-template: 1fr / 1fr; height: clamp(260px, 24vw, 350px); }
+.exercise-tile[hidden], .routine-card[hidden] { display: none; }
+.exercise-tile-media, .exercise-tile .card-copy { grid-area: 1 / 1; }
+.exercise-tile-media { height: 100%; min-height: 0; }
+.exercise-tile .card-copy {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    gap: 8px;
+    background: linear-gradient(0deg,#100c10fa 2%,#100b10c9 24%,transparent 75%);
+    padding: 24px;
+}
+.exercise-tile small { align-self: start; border: 1px solid #ffede75c; border-radius: 30px; background: #211614b8; padding: 4px 10px; color: #fff1e7; }
+.exercise-tile h2 { align-items: center; gap: 10px; margin: 0; font: 600 clamp(23px,2.1vw,32px)/1.1 var(--title); letter-spacing: -.045em; overflow-wrap: anywhere; }
+.exercise-tile h2 span:last-child { flex-shrink: 0; color: var(--accent); }
+.routine-card { padding: 0 24px; }
+.routine-card-top {
+    margin: 0 -24px 22px;
+    min-height: 155px;
+    padding: 16px 20px;
+    align-items: end;
+    background: linear-gradient(0deg,#1a1418cc,transparent 80%), var(--routine-photo, url('../images/corsa-serale.jpg')) center 42% / cover;
+}
+.routine-card:nth-child(3n + 2) { --routine-photo: url('../images/scatto.jpg'); }
+.routine-card:nth-child(3n) { --routine-photo: url('../images/kickboxing.jpg'); }
+.routine-card-icon { display: none; }
+.routine-card-tag { background: #130d0fc9; border: 1px solid #ffffff60; border-radius: 30px; padding: 5px 10px; color: #fff3e9; }
+.routine-card-link { margin-inline: -24px; padding-inline: 24px; }
+.private-action-card {
+    min-height: 320px;
+    justify-content: end;
+    padding: 24px;
+    background: linear-gradient(0deg,#0e0a0efc 5%,#100a0edb 46%,#100a0e35), var(--area-photo,url('../images/kickboxing.jpg')) center 38% / cover;
+}
+.private-action-card:nth-child(2) { --area-photo: url('../images/scatto.jpg'); }
+.private-action-card:nth-child(3) { --area-photo: url('../images/corsa-serale.jpg'); }
+.private-action-card .private-card-icon { display: none; }
+.private-action-card h2 { font-weight: 600; letter-spacing: -.045em; }
+.private-action-card p { font-size: 15px; color: #f2e7e1; }
+.private-action-card .private-card-button { margin-top: 0; min-width: 0; gap: 28px; border-radius: 30px; }
+.auth-card, .exercise-form-card { border-top-color: #ffbe89a8; }
+.wf-card-head, .wf-card-foot { background: #241c20; border-color: #ffffff22; }
+.wf-card, .wf-detail-intro { overflow: hidden; }
+.wf-catalog-item, .wf-detail-item { border-radius: 14px; }
+.exercise-hero { background: linear-gradient(130deg,#42251f,#19151a 78%); }
+:is(.exercise-tile,.routine-card,.private-action-card) { transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease; }
+:is(.exercise-tile,.routine-card,.private-action-card):is(:hover,:focus-within) {
+    transform: translateY(-3px);
+    border-color: #ffb086;
+    box-shadow: 0 16px 32px #09060966;
+}
+@media (max-width: 760px) {
+    body, body.auth-body, body.wefit-form-body { background-size: auto 560px; background-position: 64% top; }
+    .site-header { background: #281511; }
+    .exercise-tile { height: 245px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    :is(.exercise-tile,.routine-card,.private-action-card):is(:hover,:focus-within) { transition: none; transform: none; }
+}
+
+/* Pannelli di vetro ambrato per form e dettagli. */
+.glass-form-page :is(.auth-card,.exercise-form-card,.wf-card,.exercise-info,.wf-stepper) {
+    border: 0;
+    border-radius: 26px;
+    background: linear-gradient(132deg,#452f2b,#211a20);
+    box-shadow: inset 0 1px 0 #ffd4b92b, inset 0 -1px 0 #10070b38, 0 20px 54px #12090c44;
+}
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .glass-form-page :is(.auth-card,.exercise-form-card,.wf-card,.exercise-info,.wf-stepper) {
+        background: linear-gradient(135deg,#37211eb0,#1c151bc2 88%);
+        -webkit-backdrop-filter: blur(24px) saturate(1.16);
+        backdrop-filter: blur(24px) saturate(1.16);
+    }
+}
+.glass-form-page :is(.wf-card-head,.wf-card-body,.wf-card-foot) { background: transparent; border-color: #371e1d44; }
+.glass-form-page :is(.form-field,.wf-field,.exercise-field) :is(input,textarea,select) {
+    background: #1c141a74;
+    color: #fff7f1;
+    border: 1px solid transparent;
+    border-radius: 14px;
+    box-shadow: inset 0 1px 3px #12090c38;
+}
+.glass-form-page :is(.form-field,.wf-field,.exercise-field) :is(input,textarea,select):focus-visible {
+    outline: 2px solid #ffd0aa;
+    outline-offset: 2px;
+}
+.glass-form-page :is(.form-field,.wf-field,.exercise-field) :is(input,textarea,select)[aria-invalid="true"] { border-color: #ff9c8d; }
+.glass-form-page :is(.auth-heading p,.auth-switch,.wf-card-head p,.exercise-info p) { color: #f2dcce; }
+.glass-form-page select option { background: #261c21; color: white; }
+
+/* Il rapporto si applica alla card intera, foto e didascalia comprese. */
+.exercise-gallery, .routines-grid { grid-template-columns: repeat(auto-fill,minmax(min(100%,196px),1fr)); align-items: start; }
+.exercise-tile, .routine-card {
+    position: relative;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 9 / 16;
+    padding: 0;
+    display: block;
+    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+    isolation: isolate;
+}
+.exercise-tile[hidden], .routine-card[hidden] { display: none; }
+.exercise-tile-media { position: absolute; inset: 0; }
+.routine-card {
+    background: linear-gradient(180deg,#150b1426 0%,transparent 45%,#140b15aa),var(--routine-photo,url('../images/corsa-serale.jpg')) center 40% / cover;
+}
+.exercise-tile .card-copy, .catalog-caption {
+    position: absolute;
+    inset: auto 0 0;
+    display: grid;
+    gap: 3px;
+    padding: 11px 17px 13px;
+    background: linear-gradient(105deg,#221715cf,#19151ab5);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+}
+.exercise-tile small, .catalog-caption .routine-author {
+    font: 500 12px/1.3 var(--title);
+    color: #ffdfc7;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: block;
+    background: none;
+    border: none;
+    padding: 0;
+}
+.catalog-caption h3, .exercise-tile h2 { margin: 0; font: 620 clamp(19px,1.65vw,27px)/1.1 var(--title); letter-spacing: -.045em; }
+.catalog-caption h3, .exercise-tile h2 { width: 100%; display: flex; gap: 8px; align-items: center; justify-content: space-between; }
+.routine-card > .routine-card-link { position: absolute; inset: 0; display: block; padding: 0; margin: 0; border: none; background: none; font: inherit; color: white; }
+.catalog-caption h3 span, .exercise-tile h2 span:first-child {
+    min-width: 0; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; font: inherit;
+}
+.catalog-caption h3 b, .exercise-tile h2 span:last-child { font: 20px/1 var(--title); color: #ffd5b3; }
+.routine-card-tools { position: relative; z-index: 1; pointer-events: none; display: flex; align-items: start; justify-content: space-between; gap: 8px; padding: 12px; }
+.routine-card-tools :is(.routine-exercises,.routine-save) {
+    padding: 5px 10px; border: 0; border-radius: 20px; background: #21151bd1; color: white; font: 600 12px/1.4 var(--title);
+}
+.routine-card-tools .routine-save { pointer-events: auto; cursor: pointer; }
+.routine-save[aria-pressed="true"] { color: #ffcfaa; }
+.catalog-caption .routine-author span { font: inherit; }
+
+/* Stessa luce e sfumatura in ogni sezione. Cambia la posa sportiva. */
+body[data-posa="step-alto"] { --posa: url('../images/sfondo-step-alto.jpg'); }
+body[data-posa="corda"] { --posa: url('../images/sfondo-corda.jpg'); }
+body[data-posa="press"] { --posa: url('../images/sfondo-press.jpg'); }
+body[data-posa="stacco"] { --posa: url('../images/sfondo-stacco.jpg'); }
+body[data-posa="squat"] { --posa: url('../images/sfondo-squat.jpg'); }
+body[data-posa="plank"] { --posa: url('../images/sfondo-plank.jpg'); }
+body[data-posa="guardia"] { --posa: url('../images/sfondo-guardia.jpg'); }
+body[data-posa="affondo"] { --posa: url('../images/sfondo-affondo.jpg'); }
+body[data-posa="sprint"] { --posa: url('../images/sfondo-sprint.jpg'); }
+body[data-posa="step"] { --posa: url('../images/sfondo-step.jpg'); }
+body[data-posa="swing"] { --posa: url('../images/sfondo-swing.jpg'); }
+body[data-posa="pugilato"] { --posa: url('../images/sfondo-pugilato.jpg'); }
+body[data-posa="piegamenti"] { --posa: url('../images/sfondo-piegamenti.jpg'); }
+body[data-posa="affondo-laterale"] { --posa: url('../images/sfondo-affondo-laterale.jpg'); }
+body[data-posa="scatto"] { --posa: url('../images/sfondo-scatto.jpg'); }
+
+body[data-posa] {
+    background-color: var(--base);
+    background-image: linear-gradient(180deg,#43120533,#47160746 38%,#2110129c 70%,var(--base)),var(--posa);
+    background-size: 100% clamp(590px,47vw,800px),100% clamp(590px,47vw,800px);
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+}
+.exercise-gallery,.routines-grid { gap: clamp(14px,1.7vw,24px); }
+.exercise-card,.wf-detail-intro,.wf-flow .wf-card,.private-table-wrap {
+    border: 0;
+    border-radius: 26px;
+    background: linear-gradient(135deg,#38211ed9,#1a151ac9);
+    box-shadow: inset 0 1px 0 #ffd9bf24,0 15px 40px #11080c47;
+    -webkit-backdrop-filter: blur(24px) saturate(1.16);
+    backdrop-filter: blur(24px) saturate(1.16);
+}
+.exercise-card :is(.exercise-hero,.exercise-body,.exercise-footer),
+.wf-flow :is(.wf-card-head,.wf-card-foot,.wf-card-body) { background: transparent; border-color: #3d25264d; }
+.wf-detail-item,.exercise-hero-icon { background: #281b1e70; }
+@media (max-width:650px) {
+    .exercise-gallery,.routines-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+    .routine-card-tools { flex-wrap:wrap; padding:8px; gap:4px; }
+    .exercise-tile .card-copy,.catalog-caption { padding:10px; }
+    body[data-posa] { background-size:100% 580px,auto 580px; background-position:center top,65% top; }
+}
+
+/* Comandi dei due cataloghi sullo stesso vetro ambrato dei form. */
+.routines-toolbar :is(.routines-search-field,.catalog-group-filter,.routines-reset-button) {
+    background: linear-gradient(130deg,#422b24b8,#1c161bc4);
+    -webkit-backdrop-filter: blur(22px) saturate(1.16);
+    backdrop-filter: blur(22px) saturate(1.16);
+    border: 0;
+    border-radius: 16px;
+    color: #fff4ea;
+    box-shadow: inset 0 1px 0 #ffd9b82b,0 6px 20px #14090d33;
+}
+.routines-search-field input::placeholder, .routines-search-field svg { color: #f2dfd2; }
+.routines-search-field svg { stroke: currentColor; }
+.routines-toolbar :is(.routines-search-field:focus-within,.catalog-group-filter:focus-visible,.routines-reset-button:focus-visible) {
+    outline: 2px solid #ffc69c;
+    outline-offset: 2px;
+}
+.catalog-group-filter { min-height: 55px; padding: 0 17px; font: inherit; cursor: pointer; }
+.catalog-group-filter option { background: #281e22; color: #fff5eb; }
+@media (max-width:720px) {
+    .routines-toolbar :is(.routines-search-field,.catalog-group-filter) { width:100%; }
+}
+
+.personal-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,196px),1fr)); gap:clamp(14px,1.7vw,24px); }
+.personal-card {
+    position:relative; isolation:isolate; overflow:hidden; min-width:0; aspect-ratio:9/16; border-radius:20px;
+    background: #20171b url('../images/corsa-serale.jpg') center/cover;
+}
+.personal-card:nth-child(3n + 2) { background-image:url('../images/scatto.jpg'); }
+.personal-card:nth-child(3n) { background-image:url('../images/kickboxing.jpg'); }
+.personal-grid .personal-exercise { background-image:url('../images/manubri.jpg'); }
+.personal-card[hidden] { display:none; }
+.personal-card-photo { width:100%;height:100%;object-fit:cover; }
+.personal-card-caption {
+    position:absolute;inset:auto 0 0; padding:14px; background:linear-gradient(130deg,#21141ace,#1c151ad9);
+    backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+}
+.personal-card-label { font-size:12px;color:#ffdcc5; }
+.personal-card h2 { font:600 22px/1.12 var(--title); letter-spacing:-.04em; margin:5px 0 9px; }
+.personal-card h2,.personal-card .private-routine-description { color:var(--text);overflow-wrap:anywhere;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden; }
+.personal-card .private-routine-description { margin:0 0 10px;font-size:13px;color:#eee0d8; }
+.personal-card .private-routine-actions { display:flex;flex-wrap:wrap;gap:5px; }
+.personal-card .private-routine-actions :is(a,button) { font:600 12px/1.2 var(--title); padding:6px 9px; border:0; border-radius:15px; background:#3d3035; color:#fff5ec; }
+.personal-card .private-routine-actions button { color:#ffc6b8;cursor:pointer; }
+.personal-card .private-routine-actions :is(a,button):hover { background:#614236; }
+.exercise-hero .exercise-photo,.exercise-hero .exercise-hero-icon {
+    display:block; width:clamp(150px,18vw,230px);max-width:100%;height:auto;aspect-ratio:9/16;
+    object-fit:cover;object-position:center;border-radius:18px;flex:none;
+}
+.exercise-hero .exercise-hero-icon { display:grid;place-items:center; }
+.exercise-footer .exercise-action {
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    min-height:42px; padding:9px 15px; border:1px solid #ffddc92e;border-radius:24px;
+    background:#382a2c;color:#fff4eb;font:600 14px/1.2 var(--title);cursor:pointer;
+}
+.exercise-footer .exercise-action:hover { background:#56403c; }
+.exercise-footer .exercise-action-danger { color:#ffc3b2; }
+.exercise-action svg { width:16px;height:16px; }
+@media (max-width:650px) {
+    .personal-grid { grid-template-columns:repeat(auto-fill,minmax(min(100%,155px),1fr)); gap:10px; }
+}
+
+.page-controls { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:12px; margin:24px 0 5px; }
+.page-control {
+    display:inline-flex; justify-content:center; align-items:center; gap:8px; min-height:40px;
+    padding:8px 15px; border-radius:24px; border:1px solid #ffdabe38; color:#fff5ee;
+    background:linear-gradient(125deg,#51362dcc,#261d22dc); backdrop-filter:blur(16px);
+    font:600 14px/1.25 var(--title); text-decoration:none;
+}
+a.page-control:hover { border-color:var(--accent); background:#51372f; }
+button.page-control:disabled { background:#292127b8; color:#b3a5a1; border-color:#ddc5b81a; cursor:not-allowed; }
+.page-position { font-size:14px; color:#ffe7d7; font-variant-numeric:tabular-nums; }
+@media (max-width:510px) {
+    .page-controls { gap:7px; }
+    .page-control { padding:7px 9px; font-size:12px; }
+    .page-position { font-size:12px; }
+}
+
+/* Il catalogo personale usa la stessa barra anche nelle pagine senza routines.css. */
+.private-list-page .routines-toolbar { display:flex; align-items:center; gap:14px; margin:24px 0; }
+.private-list-page .routines-search-field { display:flex; flex:1; min-width:0; align-items:center; gap:12px; min-height:55px; padding:0 17px; }
+.private-list-page .routines-search-field svg { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.8; flex:none; }
+.private-list-page .routines-search-field input { min-width:0; width:100%; background:transparent; border:0; outline:0; font:inherit; color:#fff5ec; }
+.private-list-page .routines-search-field input:focus { outline:0; }
+.group-picker { position:relative; flex:none; min-width:180px; }
+.group-picker-toggle {
+    display:flex; justify-content:space-between; align-items:center; gap:18px; width:100%; min-height:55px;
+    padding:0 17px; border:0; border-radius:16px; font:inherit; cursor:pointer; color:#fff4ea;
+    background:linear-gradient(130deg,#422b24b8,#1c161bc4); box-shadow:inset 0 1px 0 #ffd9b82b,0 6px 20px #14090d33;
+    -webkit-backdrop-filter:blur(22px); backdrop-filter:blur(22px);
+}
+.group-picker-toggle::after { content:""; width:8px; height:8px; border:solid #ffd4b7; border-width:0 1.5px 1.5px 0; transform:translateY(-2px) rotate(45deg); }
+.group-picker-toggle[aria-expanded="true"]::after { transform:translateY(2px) rotate(225deg); }
+.group-picker-panel {
+    position:absolute; inset:calc(100% + 7px) 0 auto auto; z-index:4; width:max-content; min-width:100%; max-width:min(80vw,320px); max-height:16rem;
+    overflow-y:auto; padding:6px; border-radius:17px; color:#fff1e7; background:linear-gradient(140deg,#472e27ed,#21191eef);
+    -webkit-backdrop-filter:blur(24px); backdrop-filter:blur(24px); box-shadow:inset 0 1px 0 #ffe0c538,0 12px 30px #0b060a66;
+}
+.group-picker-panel[hidden] { display:none; }
+.group-picker-panel label { position:relative; display:flex; align-items:center; justify-content:space-between; gap:12px; min-height:38px; padding:7px 12px; border-radius:11px; font-size:14px; cursor:pointer; overflow-wrap:anywhere; }
+.group-picker-panel label:hover { background:#ffffff0f; }
+.group-picker-panel label:has(:checked) { color:#ffddc5; background:#ff995d26; }
+.group-picker-panel label:has(:checked)::after { content:"✓"; color:#ffc296; }
+.group-picker-panel label:has(:focus-visible) { outline:2px solid #ffc69c; outline-offset:-2px; }
+.group-picker-panel input { position:absolute; width:1px; height:1px; opacity:0; }
+@media (max-width:720px) {
+    .private-list-page .routines-toolbar { flex-direction:column; align-items:stretch; }
+    .group-picker { width:100%; }
+}
+
+.personal-card-open { position:absolute; inset:0; z-index:1; border-radius:inherit; }
+.personal-card-open:focus-visible { outline:3px solid var(--accent); outline-offset:-3px; }
+.personal-card .personal-card-caption { z-index:2; pointer-events:none; }
+.personal-card .private-routine-actions :is(a,button) { pointer-events:auto; }
+.personal-card:has(.personal-card-open:is(:hover,:focus-visible)) h2 { color:#ffd3b4; }

@@ -21,19 +21,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class RoutineController {
 
+    @org.springframework.beans.factory.annotation.Value("${wefit.react-url}")
+    private String reactUrl;
+
     @Autowired
     RoutineService routineService;
     @Autowired
     UtenteService utenteService;
 
     @GetMapping("/routines")
-    public String visualizzaRoutines(@RequestParam(defaultValue = "0") int page,Model model, Authentication authentication){
+    public String visualizzaRoutines(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "") String q, Model model, Authentication authentication){
         Utente utente = getUtenteCorrente(authentication);
         if (page < 0) {
             page = 0;
         }
         model.addAttribute("utente",utente);
-        model.addAttribute("routines", routineService.getAllRoutines(page));
+        model.addAttribute("ricerca", q.trim());
+        model.addAttribute("routines", routineService.getAllRoutines(page, q.trim()));
         model.addAttribute("bookmarkedIds", routineService.getBookmarkedRoutineIds(utente));
         return "paginaListaRoutines";
     }
@@ -44,6 +48,7 @@ public class RoutineController {
         model.addAttribute("utente", utente);
         model.addAttribute("routine", routineService.getRoutine(id));
         model.addAttribute("bookmarkedIds", routineService.getBookmarkedRoutineIds(utente));
+        model.addAttribute("allenamentoUrl", reactUrl + "/routines/" + id + "/avvia");
         return "dettaglioRoutine";
     }
 

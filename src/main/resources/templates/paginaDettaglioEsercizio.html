@@ -11,13 +11,15 @@
 
     <link rel="stylesheet" th:href="@{/css/home.css}">
     <link rel="stylesheet" th:href="@{/css/esercizio-dettaglio.css}">
+    <link rel="stylesheet" href="../static/css/studio.css" th:href="@{/css/studio.css}">
+    <link rel="stylesheet" href="../static/css/pagine-interne.css" th:href="@{/css/pagine-interne.css}">
 </head>
 
-<body>
+<body data-posa="plank">
 
 <header th:replace="~{fragments/navbar :: navbar('esercizi')}"></header>
 
-<main class="exercise-page">
+<main class="detail-page">
     <div class="exercise-container">
 
         <!-- Breadcrumb -->
@@ -27,43 +29,99 @@
             <span th:text="${esercizio.nome}">Nome esercizio</span>
         </nav>
 
-        <article class="exercise-card">
+        <article class="exercise-card detail-card">
 
-            <!-- Intestazione -->
-            <div class="exercise-hero">
+            <div class="detail-copy">
+                <div class="exercise-labels">
+                    <span class="exercise-overline">
+                        DETTAGLIO ESERCIZIO
+                    </span>
 
-                <div class="exercise-hero-content">
+                    <span class="exercise-badge"
+                          th:classappend="${esercizio.esercizioDefault} ? 'exercise-badge-global' : 'exercise-badge-personal'"
+                          th:text="${esercizio.esercizioDefault} ? 'Esercizio globale' : 'Esercizio personale'">
+                        Esercizio personale
+                    </span>
+                </div>
 
-                    <div class="exercise-labels">
-                        <span class="exercise-overline">
-                            DETTAGLIO ESERCIZIO
-                        </span>
+                <h1 th:text="${esercizio.nome}">
+                    Nome esercizio
+                </h1>
 
-                        <span class="exercise-badge"
-                              th:classappend="${esercizio.esercizioDefault} ? 'exercise-badge-global' : 'exercise-badge-personal'"
-                              th:text="${esercizio.esercizioDefault} ? 'Esercizio globale' : 'Esercizio personale'">
-                            Esercizio personale
-                        </span>
-                    </div>
+                <div class="exercise-muscle">
+                    <span class="exercise-muscle-label">
+                        Gruppo muscolare
+                    </span>
 
-                    <h1 th:text="${esercizio.nome}">
-                        Nome esercizio
-                    </h1>
+                    <strong th:text="${esercizio.categoria}">
+                        Spalle
+                    </strong>
+                </div>
+                <section class="detail-description">
 
-                    <div class="exercise-muscle">
-                        <span class="exercise-muscle-label">
-                            Gruppo muscolare
-                        </span>
+                    <h2>Descrizione</h2>
 
-                        <strong th:text="${esercizio.categoria}">
-                            Spalle
-                        </strong>
+                    <p class="exercise-description"
+                       th:text="${!#strings.isEmpty(esercizio.descrizione) ? esercizio.descrizione : 'Nessuna descrizione disponibile.'}">
+                        Descrizione dell'esercizio.
+                    </p>
+
+                </section>
+                <p th:if="${erroreEliminazione}" th:text="${erroreEliminazione}" role="alert" class="form-message error"></p>
+                <div class="exercise-footer">
+
+                    <a class="exercise-action"
+                       th:href="@{/esercizi}">
+                        <span>←</span>
+                        Torna agli esercizi
+                    </a>
+
+                    <div class="exercise-actions">
+
+                        <a th:if="${utente != null and esercizio.autore != null and esercizio.autore.id == utente.id}"
+                           class="exercise-action"
+                           th:href="${utente.role == 'ADMIN'} ? @{/admin/esercizi} : @{/area-personale/esercizi}">
+                            I miei esercizi →
+                        </a>
+
+                        <a th:if="${utente != null and esercizio.autore != null and esercizio.autore.id == utente.id}"
+                           class="exercise-action"
+                           th:href="@{/esercizi/{id}/edit(id=${esercizio.id})}">
+                            Modifica
+                        </a>
+
+                        <form th:if="${utente != null and esercizio.autore != null and esercizio.autore.id == utente.id}"
+                              th:action="@{/esercizi/{id}/delete(id=${esercizio.id})}"
+                              method="post"
+                              class="exercise-delete-form"
+                              data-delete-form onsubmit="return confirm('Eliminare questo esercizio?');">
+
+                            <button type="submit"
+                                    class="exercise-action exercise-action-danger"
+                                    th:attr="aria-label=${'Elimina ' + esercizio.nome}">
+
+                                <svg viewBox="0 0 24 24"
+                                     fill="none"
+                                     aria-hidden="true">
+                                    <path d="M4 7h16M10 11v6m4-6v6M6 7l1 14h10l1-14M9 7V4h6v3"
+                                          stroke="currentColor"
+                                          stroke-width="1.8"
+                                          stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                </svg>
+
+                                Elimina
+                            </button>
+
+                        </form>
+
                     </div>
 
                 </div>
-
-                <!-- Icona decorativa -->
-                <div class="exercise-hero-icon" aria-hidden="true">
+            </div>
+            <div class="detail-visual">
+                <img class="exercise-photo" th:if="${esercizio.conImmagine}" th:src="@{/uploads/esercizi/{nome}(nome=${esercizio.percorsoImmagine})}" th:alt="${esercizio.nome}">
+                <div th:unless="${esercizio.conImmagine}" class="exercise-hero-icon" aria-hidden="true">
                     <svg viewBox="0 0 64 64" fill="none">
                         <path d="M18 24v16M46 24v16M12 28v8M52 28v8M18 32h28"
                               stroke="currentColor"
@@ -75,73 +133,7 @@
                               stroke="currentColor" stroke-width="3"/>
                     </svg>
                 </div>
-
             </div>
-
-            <!-- Descrizione -->
-            <section class="exercise-body">
-
-                <h2>Descrizione</h2>
-
-                <p class="exercise-description"
-                   th:text="${!#strings.isEmpty(esercizio.descrizione) ? esercizio.descrizione : 'Nessuna descrizione disponibile.'}">
-                    Descrizione dell'esercizio.
-                </p>
-
-            </section>
-
-            <!-- Azioni -->
-            <div class="exercise-footer">
-
-                <a class="exercise-back-button"
-                   th:href="@{/esercizi}">
-                    <span>←</span>
-                    Torna agli esercizi
-                </a>
-
-                <div class="exercise-actions">
-
-                    <a th:if="${utente != null and esercizio.autore != null and esercizio.autore.id == utente.id}"
-                       class="exercise-personal-link"
-                       th:href="${utente.role == 'ADMIN'} ? @{/admin/esercizi} : @{/area-personale/esercizi}">
-                        I miei esercizi →
-                    </a>
-
-                    <a th:if="${utente != null and esercizio.autore != null and esercizio.autore.id == utente.id}"
-                       class="exercise-edit-button"
-                       th:href="@{/esercizi/{id}/edit(id=${esercizio.id})}">
-                        Modifica
-                    </a>
-
-                    <form th:if="${utente != null and esercizio.autore != null and esercizio.autore.id == utente.id}"
-                          th:action="@{/esercizi/{id}/delete(id=${esercizio.id})}"
-                          method="post"
-                          class="exercise-delete-form"
-                          data-delete-form>
-
-                        <button type="submit"
-                                class="exercise-delete-button"
-                                th:attr="aria-label=${'Elimina ' + esercizio.nome}">
-
-                            <svg viewBox="0 0 24 24"
-                                 fill="none"
-                                 aria-hidden="true">
-                                <path d="M4 7h16M10 11v6m4-6v6M6 7l1 14h10l1-14M9 7V4h6v3"
-                                      stroke="currentColor"
-                                      stroke-width="1.8"
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"/>
-                            </svg>
-
-                            Elimina
-                        </button>
-
-                    </form>
-
-                </div>
-
-            </div>
-
         </article>
 
     </div>

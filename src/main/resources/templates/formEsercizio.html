@@ -6,8 +6,11 @@
     <title>Crea esercizio | WeFit</title>
     <link rel="stylesheet" href="../static/css/home.css" th:href="@{/css/home.css}">
     <link rel="stylesheet" href="../static/css/esercizi-form.css" th:href="@{/css/esercizi-form.css}">
+    <link rel="stylesheet" href="../static/css/studio.css" th:href="@{/css/studio.css}">
+    <script th:src="@{/js/foto-esercizio.js}" defer></script>
+    <link rel="stylesheet" href="../static/css/pagine-interne.css" th:href="@{/css/pagine-interne.css}">
 </head>
-<body>
+<body data-posa="press" class="glass-form-page">
 <header th:replace="~{fragments/navbar :: navbar('area')}"></header>
 
 <main class="exercise-page" th:if="${utente != null}">
@@ -22,7 +25,7 @@
 
     <div class="exercise-layout">
         <section class="exercise-form-card" aria-label="Dati dell'esercizio">
-            <form class="exercise-form" method="post" th:action="@{/esercizi}" th:object="${esercizio}">
+            <form class="exercise-form" enctype="multipart/form-data" method="post" th:action="@{/esercizi}" th:object="${esercizio}">
 
                 <div class="exercise-global-errors" th:if="${#fields.hasGlobalErrors()}">
                     <p th:each="errore : ${#fields.globalErrors()}" th:text="${errore}"></p>
@@ -66,6 +69,14 @@
                           th:errors="*{descrizione}"></span>
                 </div>
 
+                <div class="exercise-field">
+                    <label for="foto">Foto dell’esercizio <span class="exercise-optional">(opzionale)</span></label>
+                    
+                    <input id="foto" type="file" name="foto" accept="image/jpeg,image/png" aria-describedby="foto-hint">
+                    <img class="foto-anteprima" alt="Anteprima della foto selezionata" hidden>
+                    <small id="foto-hint">JPEG o PNG, fino a 4 MB.</small>
+                </div>
+
                 <div class="exercise-actions">
                     <a class="button exercise-cancel" href="/area-personale/esercizi"
                        th:href="${utente.role == 'ADMIN'} ? @{/admin/esercizi} : @{/area-personale/esercizi}">Annulla</a>
@@ -102,7 +113,7 @@
     </span>
             <div>
                 <h2>Esercizio personale</h2>
-                <p>Questo esercizio sarà utilizzabile solo a te. Potrai usarlo nelle tue routine.</p>
+                <p>Questo esercizio sarà disponibile solo per te. Potrai usarlo nelle tue routine.</p>
             </div>
         </aside>
     </div>

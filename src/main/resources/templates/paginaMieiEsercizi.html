@@ -8,8 +8,10 @@
     <link rel="stylesheet" th:href="@{/css/home.css}">
     <link rel="stylesheet" th:href="@{/css/area-privata.css}">
     <script th:src="@{/js/esercizi-elenco.js}" defer></script>
+    <link rel="stylesheet" href="../static/css/studio.css" th:href="@{/css/studio.css}">
+    <link rel="stylesheet" href="../static/css/pagine-interne.css" th:href="@{/css/pagine-interne.css}">
 </head>
-<body>
+<body data-posa="affondo-laterale">
 <header th:replace="~{fragments/navbar :: navbar('area')}"></header>
 <main th:replace="~{mieiEsercizi :: mieiContent}"></main>
 </body>

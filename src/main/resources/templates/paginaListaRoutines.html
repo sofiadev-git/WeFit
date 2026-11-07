@@ -8,8 +8,10 @@
     <link rel="stylesheet" href="/css/home.css" th:href="@{/css/home.css}">
     <link rel="stylesheet" href="/css/routines.css" th:href="@{/css/routines.css}">
     <script src="/js/routines-elenco.js" th:src="@{/js/routines-elenco.js}" defer></script>
+    <link rel="stylesheet" href="../static/css/studio.css" th:href="@{/css/studio.css}">
+    <link rel="stylesheet" href="../static/css/pagine-interne.css" th:href="@{/css/pagine-interne.css}">
 </head>
-<body>
+<body data-posa="guardia">
 <!-- Riutilizziamo la navbar: 'routine' sottolinea la voce corretta. -->
 <header th:replace="~{fragments/navbar :: navbar('routine')}"></header>
 
@@ -46,7 +48,7 @@
                 </span>
         </div>
 
-        <div class="routines-toolbar" th:if="${routines.hasContent()}">
+        <form class="routines-toolbar" method="get" th:action="@{/routines}" action="/routines">
             <div class="routines-search-field">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <circle cx="10.5" cy="10.5" r="6.5"></circle>
@@ -54,60 +56,35 @@
                 </svg>
                 <label for="routine-filter" class="visually-hidden">Cerca per nome della routine o autore</label>
                 <input id="routine-filter" type="search" placeholder="Cerca una routine o un autore..."
-                       autocomplete="off" data-routine-filter
-                       th:value="${param.q != null ? param.q[0] : ''}">
+                       autocomplete="off" name="q" data-routine-filter
+                       th:value="${ricerca}">
             </div>
-            <button class="routines-reset-button" type="button" data-clear-filter hidden>Rimuovi filtro</button>
-        </div>
+            <button class="routines-reset-button" type="submit">Cerca</button>
+            <a class="routines-reset-button" th:if="${!#strings.isEmpty(ricerca)}" th:href="@{/routines}">Rimuovi filtro</a>
+        </form>
 
         <div class="routines-grid" th:if="${routines.hasContent()}">
             <article class="routine-card" th:each="routine : ${routines}"
                      th:attr="data-name=${routine.nome},data-author=${routine.autore.username}">
-                <div class="routine-card-top">
-                        <span class="routine-card-icon" aria-hidden="true">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M3 12h4l2.5-5 4.5 10 2.5-5H21"></path>
-                            </svg>
-                        </span>
-                    <span class="routine-card-tag">ROUTINE</span>
-                </div>
-
-                <h3 th:text="${routine.nome}">Allenamento completo</h3>
-                <p class="routine-card-description"
-                   th:text="${#strings.isEmpty(routine.descrizione) ? 'Una routine da scoprire: apri i dettagli per saperne di più.' : routine.descrizione}">
-                    Una routine da scoprire: apri i dettagli per saperne di più.
-                </p>
-
-                <div class="routine-card-meta">
-                        <span class="routine-author">
-                            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"></circle><path d="M5.5 20c0-3.6 2.4-6 6.5-6s6.5 2.4 6.5 6"></path></svg>
-                            <span th:text="${routine.autore.username}">utente</span>
-                        </span>
-                    <span class="routine-exercises">
-                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6m3-9v12m3-9v6m6-6v6m3-9v12m3-9v6M3 12h18"></path></svg>
-                            <span th:text="${#lists.size(routine.eserciziDellaRoutine)}">0</span>
-                            esercizi
-                        </span>
-                </div>
-                <div class="routine-bookmark-row" th:if="${utente != null and utente.role != 'ADMIN' and utente.id != routine.autore.id}">
-                    <form method="post" th:action="@{/routines/{id}/bookmark(id=${routine.id})}">
+                <div class="routine-card-tools">
+                    <span class="routine-exercises"><span th:text="${#lists.size(routine.eserciziDellaRoutine)}">0</span> esercizi</span>
+                    <form th:if="${utente != null and utente.role != 'ADMIN' and utente.id != routine.autore.id}" method="post" th:action="@{/routines/{id}/bookmark(id=${routine.id})}">
                         <input type="hidden" name="origine" value="catalogo">
-                        <button type="submit" class="routine-bookmark-button"
-                                th:classappend="${bookmarkedIds.contains(routine.id)} ? ' is-saved' : ''"
-                                th:text="${bookmarkedIds.contains(routine.id)} ? '✓ Salvata · Rimuovi' : '＋ Salva routine'">＋ Salva routine</button>
+                        <button class="routine-save" type="submit" th:attr="aria-pressed=${bookmarkedIds.contains(routine.id)}" th:text="${bookmarkedIds.contains(routine.id)} ? '✓ Salvata' : '+ Salva'">+ Salva</button>
                     </form>
+                    <a class="routine-save" th:if="${utente == null}" th:href="@{/login}" aria-label="Accedi per salvare la routine">+ Salva</a>
                 </div>
-                <div class="routine-bookmark-row" th:if="${utente == null}">
-                    <a class="routine-bookmark-button" th:href="@{/login}">Accedi per salvarla</a>
-                </div>
-                <a class="routine-card-link" href="http://localhost:5173/routines/1" th:href="|http://localhost:5173/routines/${routine.id}|">
-                    Visualizza routine <span aria-hidden="true">→</span>
+                <a class="routine-card-link" th:href="@{/routines/{id}(id=${routine.id})}" href="/routines/1">
+                    <div class="catalog-caption">
+                        <span class="routine-author">di <span th:text="${routine.autore.username}">utente</span></span>
+                        <h3><span th:text="${routine.nome}">Allenamento completo</span><b aria-hidden="true">↗</b></h3>
+                    </div>
                 </a>
             </article>
         </div>
 
         <!-- Nessuna routine nel database. -->
-        <div class="routines-empty-state" th:if="${routines.totalElements == 0}">
+        <div class="routines-empty-state" th:if="${routines.totalElements == 0 and #strings.isEmpty(ricerca)}">
             <div class="routines-empty-icon" aria-hidden="true">＋</div>
             <h3>Non ci sono ancora routine</h3>
             <p>Le routine create dalla community compariranno qui.</p>
@@ -117,27 +94,25 @@
             </a>
         </div>
 
+        <div class="routines-empty-state" th:if="${routines.totalElements == 0 and !#strings.isEmpty(ricerca)}">
+            <h3>Nessuna routine trovata</h3><p>Prova con un altro nome o autore.</p>
+        </div>
+
         <!-- Pagina oltre l'ultima disponibile. -->
         <div class="routines-empty-state" th:if="${routines.totalElements > 0 and !routines.hasContent()}">
             <div class="routines-empty-icon" aria-hidden="true">⌕</div>
             <h3>Nessuna routine in questa pagina</h3>
             <p>La pagina richiesta non contiene routine.</p>
-            <a th:href="@{/routines(page=0)}">Torna alla prima pagina →</a>
+            <a th:href="@{/routines(page=0,q=${ricerca})}">Torna alla prima pagina →</a>
         </div>
 
         <!-- Nessun risultato per il filtro lato browser. -->
         <div class="routines-empty-state" data-no-results hidden>
             <div class="routines-empty-icon" aria-hidden="true">⌕</div>
-            <h3>Nessuna routine trovata</h3>
-            <p>Prova con un altro nome o cerca un autore diverso.</p>
+            <h3>Nessuna corrispondenza in questa pagina</h3>
+            <p>Premi Cerca per controllare tutte le routine.</p>
         </div>
-        <nav class="routines-pagination" th:if="${routines.totalPages > 1}" aria-label="Paginazione routine">
-            <a th:if="${routines.hasPrevious()}" th:href="@{/routines(page=${routines.number - 1})}">← Precedente</a>
-
-            <span>Pagina <span th:text="${routines.number + 1}">1</span> di <span th:text="${routines.totalPages}">1</span></span>
-
-            <a th:if="${routines.hasNext()}" th:href="@{/routines(page=${routines.number + 1})}">Successiva →</a>
-        </nav>
+        <nav th:replace="~{fragments/paginazione :: controlli(${routines}, '/routines')}"></nav>
     </section>
 </main>
 </body>

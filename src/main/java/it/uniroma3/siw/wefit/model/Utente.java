@@ -7,10 +7,15 @@ import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.Set;
 
 @Entity
 public class Utente {
+    private static final Pattern INIZIALE = Pattern.compile("\\X");
+
     public static final String DEFAULT_ROLE = "USER";  // accesso limitato
     public static final String ADMIN_ROLE = "ADMIN"; // accesso completo
 
@@ -54,6 +59,14 @@ public class Utente {
 
     public String getUsername() {
         return username;
+    }
+
+    public String getIniziale() {
+        if (username == null) {
+            return "U";
+        }
+        Matcher lettere = INIZIALE.matcher(username.strip());
+        return lettere.find() ? lettere.group().toUpperCase(Locale.ROOT) : "U";
     }
 
     public void setUsername(String username) {

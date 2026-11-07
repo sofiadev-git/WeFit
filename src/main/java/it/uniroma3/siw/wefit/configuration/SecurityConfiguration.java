@@ -45,7 +45,7 @@ public class SecurityConfiguration {
             authorize.requestMatchers("/area-personale", "/area-personale/**").hasAuthority(DEFAULT_ROLE);
             // Queste rotte devono precedere /routines/{id} e /esercizi/{id}, che altrimenti intercetterebbero "new".
             authorize.requestMatchers(HttpMethod.GET, "/routines/new", "/esercizi/new").authenticated();
-            authorize.requestMatchers(HttpMethod.GET, "/", "/index", "/register", "/login", "/css/**", "/js/**", "/images/**", "/favicon.ico", "/esercizi", "/esercizi/{id}", "/routines", "/routines/{id}", "/routines/{id}/esercizi", "/api/routines/{id}").permitAll();
+            authorize.requestMatchers(HttpMethod.GET, "/", "/index", "/register", "/login", "/css/**", "/js/**", "/images/**", "/favicon.ico", "/esercizi", "/esercizi/{id}", "/uploads/esercizi/**", "/routines", "/routines/{id}", "/routines/{id}/esercizi", "/api/routines/{id}").permitAll();
             authorize.requestMatchers(HttpMethod.POST, "/register", "/login").permitAll();
             authorize.anyRequest().authenticated();
         });
@@ -54,7 +54,7 @@ public class SecurityConfiguration {
          * perché la sicurezza deve essere controllata prima che la richiesta arrivi ai controller*/
         httpSecurity.formLogin(form -> {
             form.loginPage("/login").permitAll();
-            form.defaultSuccessUrl("/", true);
+            form.defaultSuccessUrl("/", false);
             form.failureUrl("/login?error=true");
         });
 

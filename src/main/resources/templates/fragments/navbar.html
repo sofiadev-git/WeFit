@@ -2,10 +2,9 @@
 <html lang="it" xmlns:th="http://www.thymeleaf.org">
 <body>
 <header class="site-header" th:fragment="navbar(attiva)"
-        th:with="autenticato=${utente != null or (authentication != null and authentication.name != 'anonymousUser')},
-                 nomeAccount=${utente != null ? utente.username : (authentication != null ? authentication.name : 'Utente')}">
+        th:with="autenticato=${utente != null}">
     <nav class="navbar" aria-label="Navigazione principale">
-        <a class="logo" th:href="@{/}" href="/" aria-label="WeFit, homepage">We<span>Fit</span></a>
+        <a class="logo" th:href="@{/}" href="/" aria-label="WeFit, homepage"><i class="brand-mark" aria-hidden="true"></i>WeFit</a>
         <div class="nav-links">
             <a th:href="@{/}" href="/" th:classappend="${attiva == 'home' ? 'active' : ''}" th:attr="aria-current=${attiva == 'home' ? 'page' : null}">Home</a>
             <a th:href="@{/routines}" href="/routines" th:classappend="${attiva == 'routine' ? 'active' : ''}" th:attr="aria-current=${attiva == 'routine' ? 'page' : null}">Routine</a>
@@ -25,7 +24,15 @@
                 <a class="button button-primary" th:href="@{/register}" href="/register">Registrati</a>
             </div>
             <details class="account-menu" th:if="${autenticato}">
-                <summary><span th:text="${nomeAccount}">Utente</span></summary>
+                <summary th:title="${utente.username}">
+                    <span class="account-initial" aria-hidden="true"
+                          th:text="${utente.iniziale}">U</span>
+                    <span class="visually-hidden">Menu account di </span>
+                    <span class="account-name" th:text="${utente.username}">Utente</span>
+                    <svg class="account-chevron" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                        <path d="m4 6 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </summary>
                 <div class="account-dropdown">
                     <a class="private-account-link" th:href="${utente != null and utente.role == 'ADMIN'} ? @{/admin} : @{/area-personale}"
                        th:text="${utente != null and utente.role == 'ADMIN'} ? 'Area admin' : 'Area personale'">Area personale</a>
@@ -34,6 +41,7 @@
             </details>
         </div>
     </nav>
+    <script defer th:src="@{/js/menu-account.js}"></script>
 </header>
 </body>
 </html>

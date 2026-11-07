@@ -8,6 +8,8 @@ import java.util.Optional;
 
 public interface EsercizioRoutineRepository extends JpaRepository<EsercizioRoutine,Long> {
 
+    boolean existsByEsercizio_Id(Long esercizioId);
+
     List<EsercizioRoutine> findByRoutine_Id(Long routineId);
 
     Optional<EsercizioRoutine> findByRoutine_IdAndId(Long routineId, Long id);

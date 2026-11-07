@@ -1,15 +1,15 @@
 /* Form routine e associazione esercizi: stili locali, senza alterare la navbar. */
 .wefit-form-body {
     margin: 0;
-    background: #101914;
-    color: #f5f8f3;
+    background: #402921;
+    color: var(--accent);
 }
 
 .routine-form-page {
     min-height: calc(100vh - 90px);
     padding: 44px 5% 85px;
     font-family: "Segoe UI", Arial, sans-serif;
-    background: radial-gradient(ellipse at 8% 15%, rgba(100, 163, 80, .08), transparent 40%), #101914;
+    background: radial-gradient(ellipse at 8% 15%, rgba(100, 163, 80, .08), transparent 40%), #402921;
 }
 
 .routine-form-page * {
@@ -25,13 +25,13 @@
     display: inline-block;
     margin-bottom: 42px;
     text-decoration: none;
-    color: #c5d0c3;
+    color: var(--muted);
     font-size: 14px;
     font-weight: 600;
 }
 
 .routine-back-link:hover, .routine-secondary-link:hover {
-    color: #9cdb72;
+    color: var(--accent);
 }
 
 .routine-form-layout {
@@ -48,7 +48,7 @@
 .routine-eyebrow {
     display: inline-block;
     margin-bottom: 25px;
-    color: #9cdb72;
+    color: var(--accent);
     font-size: 12px;
     font-weight: 750;
     letter-spacing: .18em;
@@ -56,7 +56,7 @@
 
 .routine-form-intro h1 {
     margin: 0 0 22px;
-    color: #fff;
+    color: var(--text);
     font-size: clamp(37px, 3.4vw, 57px);
     line-height: 1.07;
     letter-spacing: -.035em;
@@ -66,7 +66,7 @@
 .routine-form-intro > p {
     margin: 0;
     max-width: 445px;
-    color: #b6c3b5;
+    color: var(--muted);
     font-size: 17px;
     line-height: 1.7;
 }
@@ -77,11 +77,11 @@
     align-items: flex-start;
     margin-top: 65px;
     padding-top: 27px;
-    border-top: 1px solid #344339;
+    border-top: 1px solid var(--line);
 }
 
 .routine-step-number {
-    color: #9cdb72;
+    color: var(--accent);
     font-size: 22px;
     font-weight: 750;
 }
@@ -93,20 +93,20 @@
 
 .routine-step-note strong {
     font-size: 15px;
-    color: #f3f8f0;
+    color: var(--accent);
 }
 
 .routine-step-note div span {
     max-width: 310px;
-    color: #9eaea0;
+    color: var(--muted);
     font-size: 13px;
     line-height: 1.6;
 }
 
 .routine-form-panel {
-    border: 1px solid #35453a;
+    border: 1px solid var(--line);
     padding: 38px 40px;
-    background: #1b2820;
+    background: #402921;
     border-radius: 5px;
 }
 
@@ -114,7 +114,7 @@
     margin: 0 0 32px;
     font-size: 23px;
     font-weight: 750;
-    color: #fff;
+    color: var(--text);
 }
 
 .routine-form-panel form {
@@ -130,22 +130,22 @@
 }
 
 .routine-form-field label {
-    color: #f2f8f1;
+    color: var(--accent);
     font-size: 14px;
     font-weight: 680;
 }
 
 .routine-required {
-    color: #9cdb72;
+    color: var(--accent);
 }
 
 .routine-form-field input, .routine-form-field textarea, .routine-form-field select {
     box-sizing: border-box;
     width: 100%;
     min-width: 0;
-    border: 1px solid #526357;
-    background: #131e17;
-    color: #f7fbf5;
+    border: 1px solid var(--line);
+    background: #402921;
+    color: var(--accent);
     border-radius: 3px;
     padding: 14px 15px;
     font: inherit;
@@ -163,18 +163,18 @@
 }
 
 .routine-form-field input::placeholder, .routine-form-field textarea::placeholder {
-    color: #819084;
+    color: var(--muted);
 }
 
 .routine-form-field input:focus, .routine-form-field textarea:focus, .routine-form-field select:focus {
-    outline: 2px solid #91d269;
+    outline: 2px solid var(--line);
     outline-offset: 1px;
-    border-color: #91d269;
+    border-color: var(--line);
 }
 
 .routine-form-field option, .routine-form-field optgroup {
-    color: #172119;
-    background: #f4f8f1;
+    color: var(--text);
+    background: #402921;
 }
 
 .routine-form-grid {
@@ -185,30 +185,30 @@
 
 .routine-field-hint {
     margin: 1px 0 0;
-    color: #a5b2a5;
+    color: var(--muted);
     font-size: 12px;
     line-height: 1.6;
 }
 
 .routine-field-hint a {
-    color: #9cdb72;
+    color: var(--accent);
 }
 
 .routine-form-error {
     margin: 0;
-    color: #ffb9ae;
+    color: #ffb0a3;
     font-size: 13px;
     line-height: 1.5;
 }
 
 .routine-form-field .routine-invalid {
-    border-color: #e59b90;
+    border-color: #9f645a;
 }
 
 .routine-form-alert {
     padding: 13px 16px;
-    border-left: 3px solid #e59b90;
-    color: #ffe1dc;
+    border-left: 3px solid #9f645a;
+    color: #ffb0a3;
     background: rgba(220, 100, 100, .09);
 }
 
@@ -222,7 +222,7 @@
     justify-content: flex-end;
     gap: 13px;
     align-items: center;
-    border-top: 1px solid #384b3e;
+    border-top: 1px solid var(--line);
     padding-top: 25px;
     margin-top: 2px;
 }
@@ -242,29 +242,29 @@
 }
 
 .routine-btn-outline {
-    color: #fff;
+    color: var(--text);
     background: transparent;
-    border: 1px solid #809084;
+    border: 1px solid var(--line);
 }
 
 .routine-btn-outline:hover {
-    background: #29372d;
+    background: #19171a;
 }
 
 .routine-btn-primary {
-    color: #102012;
-    background: #96d36c;
-    border: 1px solid #96d36c;
+    color: var(--accent);
+    background: #402921;
+    border: 1px solid var(--line);
 }
 
 .routine-btn-primary:hover {
-    background: #a4e47c;
+    background: #402921;
 }
 
 .routine-secondary-link {
     display: inline-block;
     margin-top: 26px;
-    color: #a5d989;
+    color: var(--accent);
     font-size: 13px;
     text-decoration: underline;
     text-underline-offset: 4px;
