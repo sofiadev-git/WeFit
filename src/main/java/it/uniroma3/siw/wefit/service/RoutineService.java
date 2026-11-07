@@ -64,6 +64,7 @@ public class RoutineService {
                     er.getId(),
                     er.getEsercizio().getNome(),
                     er.getEsercizio().getDescrizione(),
+                    er.getEsercizio().getCategoria(),
                     er.getNumeroSet(),
                     er.getRipetizioni()
             ));
