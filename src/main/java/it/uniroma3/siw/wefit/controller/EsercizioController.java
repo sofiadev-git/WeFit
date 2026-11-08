@@ -25,13 +25,16 @@ public class EsercizioController {
     UtenteService utenteService;
 
     @GetMapping("/esercizi")
-    public String visualizzaEsercizi(@RequestParam(defaultValue = "0") int page, Authentication authentication, Model model) {
+    public String visualizzaEsercizi(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "") String categoria, @RequestParam(defaultValue = "") String q, Authentication authentication, Model model) {
         Utente utente = getUtenteCorrente(authentication);
         if (page < 0) {
             page = 0;
         }
         model.addAttribute("utente", utente);
-        model.addAttribute("eserciziDefault", esercizioService.getEserciziDefault(page));
+        model.addAttribute("categoriaSelezionata", categoria.trim());
+        model.addAttribute("ricerca", q.trim());
+        model.addAttribute("categorie", esercizioService.getCategorieDefault());
+        model.addAttribute("eserciziDefault", esercizioService.getEserciziDefault(page, categoria.trim(), q.trim()));
 
         return "paginaEsercizi";
     }

@@ -63,15 +63,9 @@
                             <span class="wf-error" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}">Nome obbligatorio</span>
                         </div>
                         <div class="wf-field">
-                            <!-- /*!!!!!!!!!!!!!!!!!!!*/ @NotBlank sul DTO: descrizione obbligatoria. -->
-                            <label for="wf-routine-description">Descrizione <span class="wf-required"
-                                                                                  aria-hidden="true">*</span></label>
-                            <textarea id="wf-routine-description" th:field="*{descrizione}" rows="5" required
-                                      placeholder="Descrivi l'obiettivo, il livello e il tipo di allenamento..."
-                                      th:classappend="${#fields.hasErrors('descrizione')} ? 'wf-invalid' : ''"
-                                      th:attr="aria-invalid=${#fields.hasErrors('descrizione')}"></textarea>
-                            <span class="wf-error" th:if="${#fields.hasErrors('descrizione')}"
-                                  th:errors="*{descrizione}">Descrizione obbligatoria</span>
+                            <label for="wf-routine-description">Descrizione (facoltativa)</label>
+                            <textarea id="wf-routine-description" th:field="*{descrizione}" rows="5"
+                                      placeholder="Descrivi l'obiettivo, il livello e il tipo di allenamento..."></textarea>
                             <span class="wf-help">Queste informazioni saranno visibili nella pagina della routine.</span>
                         </div>
                     </div>

@@ -73,7 +73,6 @@
             <ol class="wf-detail-list" th:unless="${#lists.isEmpty(listaEsercizi)}">
                 <li class="wf-detail-item" th:each="er,stato : ${listaEsercizi}">
                     <span class="wf-side-number" th:text="${stato.count}">1</span>
-                    <span class="wf-catalog-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9v6M6 7v10M9 9v6m6-6v6m3-8v10m3-8v6M3 12h18"/></svg></span>
                     <div class="wf-detail-copy">
                         <h3 th:text="${er.esercizio.nome}">Panca piana</h3>
                         <p><span th:text="${er.esercizio.categoria}">Petto</span> · <span th:text="|${er.numeroSet} serie × ${er.ripetizioni} ripetizioni|">3 serie × 10 ripetizioni</span></p>

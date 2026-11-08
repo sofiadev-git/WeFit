@@ -10,6 +10,12 @@ document.querySelectorAll(".private-list-page").forEach(pagina => {
     }
 
     preparaFiltroGruppo(categoria);
+    if (categoria.form) {
+        const form = categoria.form;
+        form.addEventListener("formdata", event => event.formData.delete(categoria.id + "-opzioni"));
+        categoria.addEventListener("change", () => form.requestSubmit());
+        return;
+    }
 
     function filtraEsercizi() {
         const testo = ricerca.value.trim().toLowerCase();
@@ -116,7 +122,7 @@ function preparaFiltroGruppo(select) {
         if (!elenco.hidden && !filtro.contains(event.target)) chiudi(false);
     });
     filtro.addEventListener("focusout", event => {
-        if (!filtro.contains(event.relatedTarget)) chiudi(false);
+        if (event.relatedTarget && !filtro.contains(event.relatedTarget)) chiudi(false);
     });
     select.addEventListener("change", sincronizza);
     select.after(filtro);

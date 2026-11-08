@@ -42,5 +42,16 @@ public interface EsercizioRepository extends JpaRepository<Esercizio,Long> {
             """)
     List<Esercizio> findEserciziDisponibili(@Param("utenteId") Long utenteId);
 
-    Page<Esercizio> findByEsercizioDefaultTrue(Pageable pageable);
+    @Query("""
+            SELECT e FROM Esercizio e WHERE e.esercizioDefault = true
+            AND (:categoria = '' OR LOWER(TRIM(e.categoria)) = LOWER(:categoria))
+            AND (:ricerca = '' OR LOCATE(LOWER(:ricerca), LOWER(e.nome)) > 0)
+            """)
+    Page<Esercizio> cercaNelCatalogo(@Param("categoria") String categoria, @Param("ricerca") String ricerca, Pageable pageable);
+
+    @Query("""
+            SELECT MIN(TRIM(e.categoria)) FROM Esercizio e WHERE e.esercizioDefault = true
+            GROUP BY LOWER(TRIM(e.categoria)) ORDER BY LOWER(TRIM(e.categoria))
+            """)
+    List<String> findCategorieDefault();
 }

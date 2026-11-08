@@ -51,9 +51,14 @@ public class EsercizioService {
 
 
     @Transactional(readOnly = true)
-    public Page<Esercizio> getEserciziDefault(int page) {
+    public Page<Esercizio> getEserciziDefault(int page, String categoria, String ricerca) {
         Pageable pageable = PageRequest.of(page, ESERCIZI_PER_PAGINA, Sort.by("id"));
-        return esercizioRepository.findByEsercizioDefaultTrue(pageable);
+        return esercizioRepository.cercaNelCatalogo(categoria, ricerca, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public List<String> getCategorieDefault() {
+        return esercizioRepository.findCategorieDefault();
     }
 
     /*usato nel form per mostrare tutti gli esercizi selezionabili*/
