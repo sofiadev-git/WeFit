@@ -67,7 +67,6 @@
             <article class="routine-card" th:each="routine : ${routines}"
                      th:attr="data-name=${routine.nome},data-author=${routine.autore.username}">
                 <div class="routine-card-tools">
-                    <span class="routine-exercises"><span th:text="${#lists.size(routine.eserciziDellaRoutine)}">0</span> esercizi</span>
                     <form th:if="${utente != null and utente.role != 'ADMIN' and utente.id != routine.autore.id}" method="post" th:action="@{/routines/{id}/bookmark(id=${routine.id})}">
                         <input type="hidden" name="origine" value="catalogo">
                         <button class="routine-save" type="submit" th:attr="aria-pressed=${bookmarkedIds.contains(routine.id)}" th:text="${bookmarkedIds.contains(routine.id)} ? '✓ Salvata' : '+ Salva'">+ Salva</button>

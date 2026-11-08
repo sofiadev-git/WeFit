@@ -31,7 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class EsercizioService {
 
-    private static final int ESERCIZI_PER_PAGINA = 3;
+    private static final int ESERCIZI_PER_PAGINA = 6;
 
     @Autowired
     EsercizioRepository esercizioRepository;

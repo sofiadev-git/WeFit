@@ -24,7 +24,7 @@ import java.util.Set;
 @Service
 public class RoutineService {
 
-    private static final int ROUTINE_PER_PAGINA = 2;
+    private static final int ROUTINE_PER_PAGINA = 6;
 
     @Autowired
     RoutineRepository routineRepository;
