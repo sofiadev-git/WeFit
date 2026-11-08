@@ -1,5 +1,5 @@
 package it.uniroma3.siw.wefit.repository;
-
+//Il repository si occupa di accedere ai dati, mentre il service organizza le operazioni dell'applicazione.
 import it.uniroma3.siw.wefit.model.Esercizio;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +14,7 @@ import org.springframework.data.jpa.repository.Lock;
 
 public interface EsercizioRepository extends JpaRepository<Esercizio,Long> {
 
+    /* Alternativo a findById, che non ha lock*/
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT e FROM Esercizio e WHERE e.id = :id")
     Optional<Esercizio> findPerModifica(@Param("id") Long id);
@@ -28,6 +29,7 @@ public interface EsercizioRepository extends JpaRepository<Esercizio,Long> {
 
     List<Esercizio> findByEsercizioDefaultTrue();
 
+    /* Serve per la pagina dei selezionabili, il punto 2 della creazione/modifica della routine, che usa la paginazione*/
     @Query("""
             SELECT e FROM Esercizio e
             WHERE e.esercizioDefault = true OR e.autore.id = :utenteId
@@ -35,6 +37,7 @@ public interface EsercizioRepository extends JpaRepository<Esercizio,Long> {
             """)
     Page<Esercizio> findEserciziDisponibiliPaginati(@Param("utenteId") Long utenteId, Pageable pageable);
 
+    /*Serve per i form*/
     @Query("""
             SELECT e FROM Esercizio e
             WHERE e.esercizioDefault = true OR e.autore.id = :utenteId
@@ -42,6 +45,7 @@ public interface EsercizioRepository extends JpaRepository<Esercizio,Long> {
             """)
     List<Esercizio> findEserciziDisponibili(@Param("utenteId") Long utenteId);
 
+    /* Serve per gli esercizi default nella pagina esercizi*/
     @Query("""
             SELECT e FROM Esercizio e WHERE e.esercizioDefault = true
             AND (:categoria = '' OR LOWER(TRIM(e.categoria)) = LOWER(:categoria))
@@ -49,6 +53,7 @@ public interface EsercizioRepository extends JpaRepository<Esercizio,Long> {
             """)
     Page<Esercizio> cercaNelCatalogo(@Param("categoria") String categoria, @Param("ricerca") String ricerca, Pageable pageable);
 
+    /* Viene usato per il filtro nella pagina degli esercizi di default, ci restituisce la lista delle categorie*/
     @Query("""
             SELECT MIN(TRIM(e.categoria)) FROM Esercizio e WHERE e.esercizioDefault = true
             GROUP BY LOWER(TRIM(e.categoria)) ORDER BY LOWER(TRIM(e.categoria))

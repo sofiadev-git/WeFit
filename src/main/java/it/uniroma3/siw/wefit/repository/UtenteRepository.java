@@ -11,10 +11,6 @@ import java.util.Optional;
 
 public interface UtenteRepository extends JpaRepository<Utente,Long> {
 
-    @Modifying
-    @Query(value = "DELETE FROM user_bookmarked_routines WHERE routine_id = :routineId",nativeQuery = true)
-    void deleteRoutineSalvataByRoutineId(@Param("routineId") Long routineId);
-
     boolean existsUtenteByUsername(String normalizedUsername);
 
     Optional<Utente> findUtenteByUsername(String username);

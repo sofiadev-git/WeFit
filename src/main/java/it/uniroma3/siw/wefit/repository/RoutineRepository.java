@@ -13,13 +13,17 @@ import java.util.Set;
 
 public interface RoutineRepository extends JpaRepository<Routine,Long> {
 
+    /*Per la barra di ricerca*/
     Page<Routine> findByNomeContainingIgnoreCaseOrAutore_UsernameContainingIgnoreCase(String nome, String username, Pageable pageable);
 
+    /*per le routine nell'area privata*/
     Page<Routine> findByAutore_Id(Long autoreId, Pageable pageable);
 
+    /*area salvati*/
     @Query("select r from Utente u join u.bookmarkedRoutines r where u.id = :utenteId and r.autore.id <> :utenteId order by r.nome, r.id")
     Page<Routine> findBookmarkedRoutinesOfOtherAuthors(@Param("utenteId") Long utenteId, Pageable pageable);
 
+    /*per capire se una routine è salvata o meno per il tasto*/
     @Query("select r.id from Utente u join u.bookmarkedRoutines r where u.id = :utenteId and r.autore.id <> :utenteId")
     Set<Long> findBookmarkedRoutineIds(@Param("utenteId") Long utenteId);
 
